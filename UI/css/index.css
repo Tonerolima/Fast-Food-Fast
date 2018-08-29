@@ -3,6 +3,7 @@
 }
 
 body {
+  background: rgb(244, 244, 244);
   position: relative;
   margin: 0;
 }
@@ -200,11 +201,13 @@ a {
   #nav-toggle {
     display: inline;
   }
+  
+}
 
+@media screen and (max-width: 700px) {
   .section {
     font-size: 1em;
   }
-  
 }
 
 input {
@@ -228,4 +231,8 @@ input[type='submit']:hover {
 
 input:focus {
   box-shadow: 0px 0px 2px 2px rgb(89, 114, 148);
+}
+
+.hidden {
+  display: none !important;
 }
