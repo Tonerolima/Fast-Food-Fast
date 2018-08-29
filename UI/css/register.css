@@ -1,16 +1,3 @@
-#navbar {
-  position: sticky; top: 0;
-  width: 100%;
-  font-size: 1.3rem;
-  z-index: 2;
-  padding: 0 30px;
-  box-sizing: border-box;
-  background: rgb(244, 244, 244);
-  box-shadow: 0px 3px 5px 2px rgb(89, 114, 148);
-  color: rgb(22, 41, 67);
-  transition: background 0.4s ease-out;
-}
-
 form {
   display: flex;
   flex-direction: column;
@@ -23,4 +10,16 @@ form {
   height: 500px;
   width: 350px;
   color: rgb(22, 41, 67);
+  margin-top: 100px;
+}
+
+.section::after {
+  z-index: -1;
+  content: "";
+  background: url('https://images.unsplash.com/photo-1516684542079-927175cedbb0?ixlib=rb-0.3.5&s=c7b72efdc4542787d00119eb9a16c31e&auto=format&fit=crop&w=1050&q=80');
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: .8;
+  top: 0;  bottom: 0;  left: 0;  right: 0;
+  position: absolute;
 }
