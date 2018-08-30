@@ -170,6 +170,7 @@ input:focus {
   align-items: baseline; 
   border-bottom: 2px solid rgb(201, 186, 186);
   width: 600px;
+  padding: 0 20px;
 }
 
 #filter {
@@ -411,22 +412,21 @@ input:focus {
     padding-left: 0;
   }
 
-  .card {
+  .horizontal.card {
     width: 400px;
   }
 
   .order-details {
-    margin-left: 10px; 
+    margin-left: 5px; 
   }
 
   .section-header {
     width: 400px;
   }
 
-  /* .order-buttons>button {
-    height: 30px;
+  .small.button {
     width: 60px;
-  } */
+  }
 
   .section-footer {
     margin-right: 10px;
