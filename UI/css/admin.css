@@ -89,15 +89,15 @@ body {
 }
 
 .confirm {
-  background: blue;
+  background: rgb(24, 77, 213);
 }
 
 .decline {
-  background: red;
+  background: rgb(226, 20, 20);
 }
 
 .complete {
-  background: green;
+  background: rgb(13, 206, 13);
 }
 
 @media screen and (max-width: 700px) {
