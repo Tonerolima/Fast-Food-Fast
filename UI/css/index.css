@@ -36,6 +36,11 @@ body {
   line-height: 80px;
 }
 
+#nav-button {
+  display: none;
+  cursor: pointer;
+}
+
 #nav-container {
   max-width: 1100px;
   display: flex;
@@ -60,6 +65,7 @@ body {
 }
 
 .nav-links>li {
+  display: flex;
   padding: 0 20px;
   list-style-type: none;
   transition-property: transform;
@@ -411,7 +417,15 @@ input:focus {
     display: inline;
     z-index: 3;
   }
-  
+  #nav-button{
+    display: inline;
+    font-size: 3.4em;
+    font-weight: 900;
+    height: 0px;
+    margin: 0 10px 0 0;
+    width: 35px;
+    z-index: 3;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -448,3 +462,4 @@ input:focus {
     margin-right: 10px;
   }
 }
+  
