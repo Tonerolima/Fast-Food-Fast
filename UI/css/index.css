@@ -253,6 +253,22 @@ input:focus {
   margin: 5px 0 0 0;
 }
 
+.food-name {
+  font-size: 20px;
+}
+
+.amount {
+  font-size: 14px;
+}
+
+.customer-name {
+  font-size: 17px;
+}
+
+.order-status {
+  font-size: 12px;
+}
+
 .horizontal.card>.img-thumbnail {
   max-width: 160px;
   height: 100%;
