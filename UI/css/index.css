@@ -359,6 +359,11 @@ input:focus {
   align-items: center;
 }
 
+.small.section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .section-footer>* {
   margin-left: 20px;
 }
