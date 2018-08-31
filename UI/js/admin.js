@@ -1,5 +1,5 @@
 const filter = document.getElementById("filter");
-let orders = document.getElementsByClassName('order');
+let orders = document.getElementsByClassName('card');
 let pending = document.getElementsByClassName('pending');
 let confirmed = document.getElementsByClassName('confirmed');
 let delivered = document.getElementsByClassName('delivered');
