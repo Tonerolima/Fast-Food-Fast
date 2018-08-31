@@ -107,11 +107,11 @@ a {
   color: #fff;
   position: relative;
   z-index: 1;
-  height: 100%;
   justify-content: center;
   font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
+  height: 100vh;
 }
 
 .section>h1 {
@@ -182,6 +182,7 @@ input {
   border: none;
   margin-bottom: 15px;
   font-family: 'Exo 2', sans-serif;
+  box-sizing: border-box;
 }
 
 input[type='submit'] {
