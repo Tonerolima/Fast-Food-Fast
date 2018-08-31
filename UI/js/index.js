@@ -4,24 +4,18 @@ const nav = document.querySelector('#navbar');
 
 const openMenu = () => {
     toggler.classList.remove('fa-bars');
-    toggler.classList.add('fa-times');
-    linksWrapper.classList.add('toggleShow');
-    setTimeout(function () {
-        linksWrapper.classList.add('animate');
-    }, 10)
+    toggler.classList.add('fa-times', 'white');
+    linksWrapper.classList.add('animate');
 }
 
 const closeMenu = () => {
-    toggler.classList.remove('fa-times');
+    toggler.classList.remove('fa-times', 'white');
     toggler.classList.add('fa-bars');
     linksWrapper.classList.remove('animate');
-    setTimeout(function () {
-        linksWrapper.classList.remove('toggleShow');
-    }, 300)
 }
 
 toggler.addEventListener('click', function () {
-    if (!linksWrapper.classList.contains('toggleShow')) {
+    if (!linksWrapper.classList.contains('animate')) {
         openMenu();
     } else {
         closeMenu();
