@@ -33,7 +33,7 @@ body {
 
 #nav-toggle {
   display: none;
-  padding-top: 15px;
+  line-height: 80px;
 }
 
 #nav-container {
@@ -49,7 +49,6 @@ body {
   justify-content: space-between;
   transition: all 0.3s ease-out;
   box-sizing: border-box;
-  min-width: 500px;
 }
 
 .nav-links {
@@ -164,6 +163,9 @@ input:focus {
 }
 
 /* Shared rules */
+.white {
+  color: white !important;
+}
 
 .section-header {
   display: flex;
@@ -360,10 +362,22 @@ input:focus {
   }
     
   .nav-links-wrapper {
-    display: none;
+    background: rgb(22, 41, 67);
+    color: white;
+    position: fixed; left: -300px; top: 0;
     flex-direction: column;
-    padding: 0;
+    justify-content: flex-start;
+    padding: 85px 0;
     margin: 0;
+    width: 250px;
+    height: 100%;
+  }
+
+  .nav-links-wrapper a {
+    padding-left: 30px;
+    height: 100%;
+    width: 100%;
+    line-height: 50px;
   }
 
   .nav-links {
@@ -372,25 +386,21 @@ input:focus {
     margin: 0;
     padding: 0;
   }
-
-  .nav-links>li:hover {
-    transform: translateX(10px);
-  }
-  
-  .nav-links-wrapper.toggleShow {
-    display: flex;
-    max-height: 0;
-    overflow: hidden;
-  }
   
   .nav-links-wrapper.animate {
-    max-height: 230px;
-    padding-bottom: 20px;
+    left: 0;
   }
   
   .nav-links>li {
-    margin: 0 0 20px 0;
+    height: 50px;
     padding: 0;
+    border-bottom: 1px solid white;
+  }
+
+  .nav-links>li:hover {
+    transform: none;
+    background: white;
+    color: rgb(22, 41, 67);
   }
 
   .nav-links>li:not(:first-of-type) {
@@ -399,11 +409,16 @@ input:focus {
   
   #nav-toggle {
     display: inline;
+    z-index: 3;
   }
   
 }
 
 @media screen and (max-width: 500px) {
+  #nav-toggle {
+    margin-right: 10px;
+  }
+
   .section.landing {
     font-size: 1em;
   }
