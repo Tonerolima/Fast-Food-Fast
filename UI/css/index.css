@@ -2,13 +2,13 @@
   width: device-width;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Exo+2:400,700|Monoton');
+@import url('https://fonts.googleapis.com/css?family=Exo+2:400,700|Monoton|Patua+One');
 
 
 body {
   background: rgb(244, 244, 244);
   position: relative;
-  font-family: cursive;
+  font-family: 'Patua One', cursive;
   margin: 0;
 }
 
