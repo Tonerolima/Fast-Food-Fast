@@ -42,6 +42,7 @@ body {
 #nav-toggle {
   display: none;
   line-height: 80px;
+  cursor: pointer;
 }
 
 #nav-container {
