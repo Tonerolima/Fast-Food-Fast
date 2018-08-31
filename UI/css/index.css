@@ -31,14 +31,13 @@ body {
   font-size: 1.3em;
 }
 
-#nav-toggle {
-  display: none;
-  line-height: 80px;
-}
-
 #nav-button {
   display: none;
   cursor: pointer;
+  font-size: 3.4em;
+  font-weight: 900;
+  margin: 0 20px 0 0;
+  z-index: 3;
 }
 
 #nav-container {
@@ -413,26 +412,12 @@ input:focus {
     border-left: none;
   }
   
-  #nav-toggle {
+  #nav-button {
     display: inline;
-    z-index: 3;
-  }
-  #nav-button{
-    display: inline;
-    font-size: 3.4em;
-    font-weight: 900;
-    height: 0px;
-    margin: 0 10px 0 0;
-    width: 35px;
-    z-index: 3;
   }
 }
 
 @media screen and (max-width: 500px) {
-  #nav-toggle {
-    margin-right: 10px;
-  }
-
   .section.landing {
     font-size: 1em;
   }
