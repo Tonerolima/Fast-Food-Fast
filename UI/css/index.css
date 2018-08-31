@@ -33,7 +33,7 @@ body {
 
 #nav-toggle {
   display: none;
-  padding-top: 15px;
+  line-height: 80px;
 }
 
 #nav-container {
@@ -163,6 +163,9 @@ input:focus {
 }
 
 /* Shared rules */
+.white {
+  color: white !important;
+}
 
 .section-header {
   display: flex;
@@ -406,11 +409,16 @@ input:focus {
   
   #nav-toggle {
     display: inline;
+    z-index: 3;
   }
   
 }
 
 @media screen and (max-width: 500px) {
+  #nav-toggle {
+    margin-right: 10px;
+  }
+
   .section.landing {
     font-size: 1em;
   }

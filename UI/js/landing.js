@@ -1,5 +1,3 @@
-const landingNav = document.querySelector('#navbar');
-
 window.onscroll = () => {
-  this.scrollY <= 100 ? landingNav.className = 'landing' : landingNav.className = '';
+  this.scrollY <= 100 ? nav.className = 'landing' : nav.className = '';
 };

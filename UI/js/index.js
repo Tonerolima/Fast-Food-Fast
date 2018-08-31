@@ -4,12 +4,12 @@ const nav = document.querySelector('#navbar');
 
 const openMenu = () => {
     toggler.classList.remove('fa-bars');
-    toggler.classList.add('fa-times');
+    toggler.classList.add('fa-times', 'white');
     linksWrapper.classList.add('animate');
 }
 
 const closeMenu = () => {
-    toggler.classList.remove('fa-times');
+    toggler.classList.remove('fa-times', 'white');
     toggler.classList.add('fa-bars');
     linksWrapper.classList.remove('animate');
 }
