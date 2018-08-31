@@ -35,6 +35,10 @@ body {
   font-family: 'Monoton', cursive;
 }
 
+#logo {
+  margin-left: 5px;
+}
+
 #nav-toggle {
   display: none;
   line-height: 80px;
@@ -150,6 +154,7 @@ input {
   font-size: 1.01em;
   transition-duration: .5s;
   border: none;
+  margin-bottom: 15px;
 }
 
 input[type='submit'] {
@@ -445,7 +450,8 @@ input:focus {
 
 @media screen and (max-width: 500px) {
   #navbar {
-    padding: 0;
+    padding-left: 5px;
+    padding-right: 0;
   }
 
   #nav-toggle {
