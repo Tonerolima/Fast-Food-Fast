@@ -2,9 +2,13 @@
   width: device-width;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Exo+2:400,700|Monoton');
+
+
 body {
   background: rgb(244, 244, 244);
   position: relative;
+  font-family: cursive;
   margin: 0;
 }
 
@@ -20,7 +24,6 @@ body {
   background: white;
   box-shadow: darkslategrey 0px 3px 5px 2px;
   position: sticky; top: 0;
-  font-size: 1.3rem;
   z-index: 2;
   padding: 0 30px;
   width: 100%;
@@ -28,7 +31,8 @@ body {
 }
 
 .nav-title {
-  font-size: 1.3em;
+  font-size: 24px;
+  font-family: 'Monoton', cursive;
 }
 
 #nav-toggle {
@@ -38,6 +42,7 @@ body {
 
 #nav-container {
   max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -49,13 +54,14 @@ body {
   justify-content: space-between;
   transition: all 0.3s ease-out;
   box-sizing: border-box;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 17px;
 }
 
 .nav-links {
   display: flex;
   justify-content: space-evenly;
   max-width: 500px;
-  font-size: .9em;
   padding-left: 0;
 }
 
@@ -252,6 +258,26 @@ input:focus {
   margin: 5px 0 0 0;
 }
 
+.food-name {
+  font-size: 20px;
+}
+
+.amount {
+  font-size: 14px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: normal;
+}
+
+.customer-name {
+  font-size: 17px;
+}
+
+.order-status {
+  font-size: 12px;
+  font-weight: normal;
+  font-family: 'Exo 2', sans-serif;
+}
+
 .horizontal.card>.img-thumbnail {
   max-width: 160px;
   height: 100%;
@@ -276,6 +302,8 @@ input:focus {
   cursor: pointer;
   border-radius: 2px;
   transition-duration: .5s;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
 }
 
 .inverted.button {
@@ -415,6 +443,10 @@ input:focus {
 }
 
 @media screen and (max-width: 500px) {
+  #navbar {
+    padding: 0;
+  }
+
   #nav-toggle {
     margin-right: 10px;
   }
