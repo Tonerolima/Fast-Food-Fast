@@ -1,22 +1,13 @@
-import express from "express";
+import express from 'express';
+import orders from './routes/orders';
+import bodyParser from 'body-parser';
+
 const app = express();
 
-const v1 = express.Router();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ strict: false }));
+app.use(bodyParser.raw());
+app.use(orders);
 
 
-v1.get('/', (req, res) => {
-    res.send('Version 1 setup complete');
-});
- 
-
-v1.get('/orders', (req, res) => {
-    res.send('I will soon be returning a list of orders');
-});
-
-
-app.use('/api/v1', v1);
-
-
-app.listen(process.env.PORT, process.env.IP, ()=> {
-    console.log("Fast-food-fast app running");
-})
+app.listen(process.env.PORT, process.env.IP, () => console.log('Fast-food-fast app running'));
