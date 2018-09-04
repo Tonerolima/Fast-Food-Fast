@@ -60,7 +60,10 @@ const dishes = [
 
 //Retrieve menu
 v1.get('/dishes', (req, res) => {
-    res.status(200).send(dishes);
+    let limit = req.query.limit || 10;
+    let offset = req.query.offset || 0;
+    let result = dishes.slice(offset, offset + limit);
+    res.status(200).send(result);
 });
 
 
