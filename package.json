@@ -24,6 +24,7 @@
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
+    "babel-preset-airbnb": "^2.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0"
   }
