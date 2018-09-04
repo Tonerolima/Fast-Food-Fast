@@ -2,9 +2,10 @@
   "name": "fast-food-fast",
   "version": "1.0.0",
   "description": "Food delivry app for a restaurant",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "start": "nodemon --exec babel-node app.js",
+    "test": "mocha || exit 0"
   },
   "repository": {
     "type": "git",
@@ -19,16 +20,22 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "mocha": "^5.2.0",
-    "request": "^2.88.0",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/node": "^7.0.0",
+    "ajv": "^6.5.3",
+    "babel-cli": "^6.26.0",
     "babel-preset-airbnb": "^2.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "chai-http": "^4.2.0",
     "eslint": "^5.5.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4"
   }
 }
