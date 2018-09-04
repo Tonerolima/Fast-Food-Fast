@@ -1,6 +1,7 @@
 import express from 'express';
-import orders from './routes/orders';
 import bodyParser from 'body-parser';
+import orders from './routes/orders';
+
 
 const app = express();
 
@@ -10,4 +11,4 @@ app.use(bodyParser.raw());
 app.use(orders);
 
 
-app.listen(process.env.PORT, process.env.IP, () => console.log('Fast-food-fast app running'));
+app.listen(process.env.PORT, process.env.IP);
