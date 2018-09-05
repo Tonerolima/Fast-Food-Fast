@@ -44,4 +44,19 @@ middleware.deleteOrder = (req, res, next) => {
 };
 
 
+middleware.getMenu = (req, res, next) => {
+  const limit = req.query.limit || 10;
+  const offset = req.query.offset || 0;
+  if(req.query.search) {
+    const search = req.query.search.toLowerCase();
+    const result = menu.filter(food => {
+      return food.name.toLowerCase().includes(search);
+    });
+    req.menu = result.slice(offset, offset + limit);
+    return next();
+  }
+  req.menu = menu.slice(offset, offset + limit);
+  next();
+};
+
 export default middleware;

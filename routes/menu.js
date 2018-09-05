@@ -1,16 +1,15 @@
 import express from 'express';
-import menu from '../data/menu';
+import middleware from '../middleware';
 
 const router = express();
 const v1 = express.Router();
 
 
 // retrieve menu
-v1.get('/', (req, res) => {
-  const limit = req.query.limit || 10;
-  const offset = req.query.offset || 0;
-  const result = menu.slice(offset, offset + limit);
-  res.send({ status: true, result });
+v1.get('/', middleware.getMenu, (req, res) => {
+  if(req.menu.length === 0)
+    return res.status(404).send({ status: false, message: 'No dish found for the search criteria' });
+  res.status(200).send({ status: true, result: req.menu });
 });
 
 
