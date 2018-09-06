@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 
 const { assert } = chai;
 const { expect } = chai;
-const server = 'https://portfolio-tonerolima.c9users.io/api/v1';
+const server = 'http://0.0.0.0:8080/api/v1';
 const foodId = 'eexbt1qvjlm5nj38';
 let orderId;
 
