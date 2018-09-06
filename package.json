@@ -4,7 +4,9 @@
   "description": "Food delivry app for a restaurant",
   "main": "app.js",
   "scripts": {
-    "start": "npx babel-node app.js",
+    "start": "babel-node lib/app.js",
+    "build": "babel lib -d dist",
+    "serve": "node dist/app.js",
     "test": "mocha || exit 0"
   },
   "repository": {
