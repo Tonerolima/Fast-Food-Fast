@@ -9,6 +9,17 @@ let orderId;
 
 chai.use(chaiHttp);
 
+describe('Root route', () => {
+  it('should return 400 for any endpoint not defined', (done) => {
+    chai.request(app)
+      .get('/')
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        return done();
+      })
+  })
+})
+
 describe('Menu route', () => {
   it('should should have the correct status', (done) => {
     chai.request(app)
@@ -30,7 +41,15 @@ describe('Menu route', () => {
     chai.request(app)
       .get('/api/v1/menu?search=rice')
       .end((err, res) => {
-        assert.lengthOf(res.body.result, 2);
+        assert.isAtLeast(res.body.result.length, 1);
+        return done();
+      });
+  });
+  it('should should return 404 if no food match a seacrh string', (done) => {
+    chai.request(app)
+      .get('/api/v1/menu?search=zzz')
+      .end((err, res) => {
+        expect(res).to.have.status(404);
         return done();
       });
   });
