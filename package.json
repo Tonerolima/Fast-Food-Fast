@@ -7,7 +7,7 @@
     "start": "babel-node lib/app.js",
     "build": "babel lib -d dist",
     "serve": "node dist/app.js",
-    "test": "mocha"
+    "test": "mocha --require babel-core/register --exit"
   },
   "repository": {
     "type": "git",
