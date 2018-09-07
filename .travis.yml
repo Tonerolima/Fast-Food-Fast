@@ -1,4 +1,12 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=e2ce25cd87b36e19fd9021b6fa1c7799819be2f1e61efcd9fe8385dc0a142911
 language: node_js
 node_js:
   - "7"
+before_script:
+  - npm install codeclimate-test-reporter -g
+  - codeclimate-test-reporter before-build
+script:
+  - codeclimate-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 after_success: npm run coverage
