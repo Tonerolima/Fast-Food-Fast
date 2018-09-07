@@ -21,7 +21,7 @@ describe('Root route', () => {
 })
 
 describe('Menu route', () => {
-  it('should should have the correct status', (done) => {
+  it('should return 200 for a successful request', (done) => {
     chai.request(app)
       .get('/api/v1/menu')
       .end((err, res) => {
@@ -29,15 +29,15 @@ describe('Menu route', () => {
         return done();
       });
   });
-  it('should should return an array', (done) => {
+  it('should return an array', (done) => {
     chai.request(app)
       .get('/api/v1/menu')
       .end((err, res) => {
-        assert.isArray(res.body.result, 'what kind of tea do we want?');
+        assert.isArray(res.body.result);
         return done();
       });
   });
-  it('should should return menu items that match a seacrh string', (done) => {
+  it('should return menu items that match a seacrh string', (done) => {
     chai.request(app)
       .get('/api/v1/menu?search=rice')
       .end((err, res) => {
@@ -45,7 +45,7 @@ describe('Menu route', () => {
         return done();
       });
   });
-  it('should should return 404 if no food match a seacrh string', (done) => {
+  it('should return 404 if no food match a seacrh string', (done) => {
     chai.request(app)
       .get('/api/v1/menu?search=zzz')
       .end((err, res) => {
@@ -53,7 +53,7 @@ describe('Menu route', () => {
         return done();
       });
   });
-  it('should should limit the number of returned menu items', (done) => {
+  it('should limit the number of returned menu items', (done) => {
     chai.request(app)
       .get('/api/v1/menu?limit=5')
       .end((err, res) => {
