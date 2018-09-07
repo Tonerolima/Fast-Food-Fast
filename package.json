@@ -7,7 +7,7 @@
     "start": "babel-node lib/app.js",
     "build": "babel lib -d dist",
     "serve": "node dist/app.js",
-    "test": "nyc mocha --require babel-core/register --exit",
+    "test": "nyc --reporter=lcov mocha --require babel-core/register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
