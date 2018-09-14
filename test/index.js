@@ -59,7 +59,8 @@ describe('Menu route', () => {
   });
   it('should limit the number of returned menu items', (done) => {
     chai.request(app)
-      .get('/api/v1/menu?limit=5')
+      .get('/api/v1/menu')
+      .query({ limit: '5', offset: '1' })
       .end((err, res) => {
         assert.lengthOf(res.body.result, 5);
         return done();
