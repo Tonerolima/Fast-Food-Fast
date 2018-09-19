@@ -37,25 +37,33 @@ const createCart = () => {
   }
 }
 
-const addToCart = (food) => {
-  const cart = new Map(JSON.parse(localStorage.cart));
+const retrieveCart = () => {
+  return new Map(JSON.parse(localStorage.cart));
+}
+
+const resaveCart = (array) => {
+  return localStorage.cart = JSON.stringify(Array.from(array.entries()));
+}
+
+const addToCart = async (food) => {
+  if (!food) { return false }
   const { id } = food;
   const properties = (({ name, image, cost}) => ({name, image, cost}))(food);
-  cart.set(id, properties);
-  localStorage.cart = JSON.stringify(Array.from(cart.entries()));
-  console.log(localStorage.cart);
+  const cart = retrieveCart();
+  await cart.set(id, properties);
+  return resaveCart(cart);
 }
 
 const removeFromCart = async (foodId) => {
-  const cart = new Map(JSON.parse(localStorage.cart));
+  if (!foodId) { return false }
+  const cart = retrieveCart();
   await cart.delete(foodId);
-  localStorage.cart = JSON.stringify(Array.from(cart.entries()));
-  console.log(localStorage.cart);
+  return resaveCart(cart);
 }
 
 const checkCartForItem = (foodId) => {
-  const cart = new Map(JSON.parse(localStorage.cart));
-  return cart.has(foodId);
+  if (!foodId) { return false }
+  return retrieveCart().has(foodId);
 }
 
 const checkout = ([...foodId]) => {
