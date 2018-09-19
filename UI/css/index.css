@@ -12,6 +12,10 @@ body {
   margin: 0;
 }
 
+body > * {
+  box-sizing: content-box;
+}
+
 #navbar.landing {
   position: fixed;
   background: none;
@@ -290,6 +294,10 @@ input:focus {
   margin: 7px 0 0 0;
 }
 
+.vertical.card-details {
+  width: 100%;
+}
+
 .vertical.card-details>* {
   margin: 5px 0 0 0;
 }
@@ -337,6 +345,7 @@ input:focus {
   color: white;
   cursor: pointer;
   border-radius: 2px;
+  transition-property: transform;
   transition-duration: .5s;
   font-family: 'Exo 2', sans-serif;
   font-weight: 700;
