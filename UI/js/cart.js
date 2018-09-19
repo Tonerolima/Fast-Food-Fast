@@ -1,8 +1,9 @@
 const list = document.querySelector('.vertical.list');
 const total = document.getElementById('total');
-const cart = retrieveCart();
+const checkoutButton = document.getElementById('checkout');
 
 document.onreadystatechange = () => {
+  const cart = retrieveCart();
   if (document.readyState === "complete") {
     let sum = 0;
     let node = '';
@@ -38,3 +39,30 @@ list.addEventListener('click', (event) => {
     parentList.removeChild(clicked.parentNode.parentNode.parentNode);
   }
 });
+
+checkoutButton.addEventListener('click', (event) => {
+  const cart = retrieveCart();
+  checkout(cart);
+})
+
+const checkout = (cart) => {
+  const obj = new FormData();
+  cart.forEach((value, key) => {
+    obj.append(key, value.qty);
+  })
+  
+  const XHR = new XMLHttpRequest();
+
+  XHR.addEventListener("load", (event) => {
+    let response = JSON.parse(event.target.responseText);
+    console.log(response);
+    // if (event.target.status === 201) { 
+    //   console.log(response.result);
+    // }
+
+  });
+
+  XHR.open('POST', 'http://localhost:8080/api/v1/orders');
+  XHR.setRequestHeader('Authorization', `Bearer ${localStorage.authToken}`);
+  XHR.send(obj);
+}

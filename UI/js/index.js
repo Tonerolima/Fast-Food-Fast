@@ -14,20 +14,21 @@ const closeMenu = () => {
     linksWrapper.classList.remove('animate');
 }
 
+const checkToken = () => {
+  if (localStorage.authToken) {
+    return true;
+  }
+  return false;
+}
+
 const toggleAuthLinks = () => {
-  if (checkToken) {
-    document.querySelector('.nav-links:nth-of-type(2)').innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
+  const navLinks = document.querySelector('.nav-links:nth-of-type(2)');
+  if (checkToken()) {
+    navLinks.innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
     document.getElementById('logout').addEventListener('click', (event) => {
       logout();
     })
   }
-}
-
-const checkToken = () => {
-  if (localStorage.getItem('authToken')) {
-    return true;
-  }
-  return false;
 }
 
 const createCart = () => {
@@ -48,7 +49,8 @@ const resaveCart = (array) => {
 const addToCart = async (food) => {
   if (!food) { return false }
   const { id } = food;
-  const properties = (({ name, image, cost}) => ({name, image, cost}))(food);
+  const properties = (({ name, image, cost }) => ({ name, image, cost }))(food);
+  properties.qty = 1;
   const cart = retrieveCart();
   await cart.set(id, properties);
   return resaveCart(cart);
@@ -64,22 +66,6 @@ const removeFromCart = async (foodId) => {
 const checkCartForItem = (foodId) => {
   if (!foodId) { return false }
   return retrieveCart().has(foodId);
-}
-
-const checkout = ([...foodId]) => {
-  for (food in arguments) {
-    const XHR = new XMLHttpRequest();
-
-    XHR.addEventListener("load", (event) => {
-      let response = JSON.parse(event.target.responseText);
-      if (event.target.status === 201) { 
-        console.log(response.result);
-      }
-    });
-
-    XHR.open('POST', 'http://localhost:8080/api/v1/orders');
-    XHR.send(food);
-  }
 }
 
 const logout = () => {
