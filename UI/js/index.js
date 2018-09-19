@@ -14,12 +14,63 @@ const closeMenu = () => {
     linksWrapper.classList.remove('animate');
 }
 
-const checkToken = () => {
-  if (localStorage.getItem('authToken')) {
+const toggleAuthLinks = () => {
+  if (checkToken) {
     document.querySelector('.nav-links:nth-of-type(2)').innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
     document.getElementById('logout').addEventListener('click', (event) => {
       logout();
     })
+  }
+}
+
+const checkToken = () => {
+  if (localStorage.getItem('authToken')) {
+    return true;
+  }
+  return false;
+}
+
+const createCart = () => {
+  if (!localStorage.cart) {
+    localStorage.cart = '[]';
+    console.log(localStorage.cart);
+  }
+}
+
+const addToCart = (food) => {
+  const cart = new Map(JSON.parse(localStorage.cart));
+  const { id } = food;
+  const properties = (({ name, image, cost}) => ({name, image, cost}))(food);
+  cart.set(id, properties);
+  localStorage.cart = JSON.stringify(Array.from(cart.entries()));
+  console.log(localStorage.cart);
+}
+
+const removeFromCart = async (foodId) => {
+  const cart = new Map(JSON.parse(localStorage.cart));
+  await cart.delete(foodId);
+  localStorage.cart = JSON.stringify(Array.from(cart.entries()));
+  console.log(localStorage.cart);
+}
+
+const checkCartForItem = (foodId) => {
+  const cart = new Map(JSON.parse(localStorage.cart));
+  return cart.has(foodId);
+}
+
+const checkout = ([...foodId]) => {
+  for (food in arguments) {
+    const XHR = new XMLHttpRequest();
+
+    XHR.addEventListener("load", (event) => {
+      let response = JSON.parse(event.target.responseText);
+      if (event.target.status === 201) { 
+        console.log(response.result);
+      }
+    });
+
+    XHR.open('POST', 'http://localhost:8080/api/v1/orders');
+    XHR.send(food);
   }
 }
 
@@ -61,4 +112,5 @@ toggler.addEventListener('click', function () {
     }
 })
 
-checkToken();
+toggleAuthLinks();
+createCart();
