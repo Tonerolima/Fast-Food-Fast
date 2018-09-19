@@ -16,7 +16,7 @@ document.onreadystatechange = () => {
         </div>
         <div class="horizontal card-details">
           <h4 class="food-name">${item.name}</h4>
-          <h6 class="amount">Amount: NGN <span class="amount">${item.cost}</span></h6>
+          <h6 class="amount">Amount: &#8358 <span class="amount">${item.cost}</span></h6>
           <h6>Qty: 1</h6>
           <div class="order-buttons">
             <button class="big button decline" data-id="${key}" data-cost="${item.cost}">Remove</button>
