@@ -1,16 +1,17 @@
-const toggler = document.getElementById('nav-toggle');
+const openToggler = document.getElementById('nav-toggle-open');
+const closeToggler = document.getElementById('nav-toggle-close');
 const linksWrapper = document.querySelector('.nav-links-wrapper');
 const nav = document.querySelector('#navbar');
 
 const openMenu = () => {
-    toggler.classList.remove('fa-bars');
-    toggler.classList.add('fa-times', 'white');
+    // toggler.classList.remove('fa-bars');
+    // toggler.classList.add('fa-times', 'white');
     linksWrapper.classList.add('animate');
 }
 
 const closeMenu = () => {
-    toggler.classList.remove('fa-times', 'white');
-    toggler.classList.add('fa-bars');
+    // toggler.classList.remove('fa-times', 'white');
+    // toggler.classList.add('fa-bars');
     linksWrapper.classList.remove('animate');
 }
 
@@ -98,12 +99,22 @@ const login = (data) => {
   XHR.send(formData);
 }
 
-toggler.addEventListener('click', function () {
-    if (!linksWrapper.classList.contains('animate')) {
-        openMenu();
-    } else {
-        closeMenu();
-    }
+openToggler.addEventListener('click', function () {
+  openMenu();
+    // if (!linksWrapper.classList.contains('animate')) {
+    //     openMenu();
+    // } else {
+    //     closeMenu();
+    // }
+})
+
+closeToggler.addEventListener('click', function () {
+  closeMenu();
+    // if (!linksWrapper.classList.contains('animate')) {
+    //     openMenu();
+    // } else {
+    //     closeMenu();
+    // }
 })
 
 toggleAuthLinks();

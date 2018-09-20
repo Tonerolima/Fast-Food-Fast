@@ -43,9 +43,9 @@ body > * {
   margin-left: 5px;
 }
 
-#nav-toggle {
-  display: none;
-  line-height: 80px;
+.nav-toggle {
+  display: none !important;
+  line-height: 80px !important;
   cursor: pointer;
 }
 
@@ -450,7 +450,6 @@ input:focus {
     position: fixed; left: -300px; top: 0;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 85px 0;
     margin: 0;
     width: 250px;
     height: 100%;
@@ -490,9 +489,14 @@ input:focus {
     border-left: none;
   }
   
-  #nav-toggle {
-    display: inline;
-    z-index: 3;
+  .nav-toggle {
+    display: inline !important;
+  }
+
+  #nav-toggle-close {
+    left: 200px;
+    align-self: flex-end;
+    padding-right: 30px;
   }
   
 }
@@ -503,7 +507,7 @@ input:focus {
     padding-right: 0;
   }
 
-  #nav-toggle {
+  #nav-toggle-open {
     margin-right: 10px;
   }
 
