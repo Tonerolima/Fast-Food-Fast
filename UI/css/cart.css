@@ -1,0 +1,9 @@
+.shrink {
+  max-height: 0px !important;
+  margin: 0;
+}
+
+.fade {
+  visibility: hidden;
+  opacity: 0;
+}

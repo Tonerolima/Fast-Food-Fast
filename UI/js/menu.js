@@ -28,7 +28,7 @@ const populateMenu = (arr) => {
 							<div class="img-thumbnail"><img src=${elem.image} alt=${elem.name}></div>
   						<div class="vertical card-details">
           			<h4 class="food-name">${elem.name}</h4>
-          			<h6 class="amount">Amount: <span class="amount">${elem.cost}</span></h6>
+          			<h6 class="amount">Amount: &#8358 <span class="amount">${elem.cost}</span></h6>
 	 							<div class="order-buttons">
                   <button class="big fluid button ${buttonClass}" data-id="${elem.id}" data-name="${elem.name}" data-image="${elem.image}" data-cost="${elem.cost}">
                   ${buttonText}
