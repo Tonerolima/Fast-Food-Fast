@@ -16,34 +16,36 @@
 
 <body>
   <nav id="navbar">
-    <i class="fa fa-bars fa-2x" aria-hidden="true" id='nav-toggle'></i>
+    <i class="fa fa-bars fa-2x nav-toggle" aria-hidden="true" id='nav-toggle-open'></i>
     <div id="nav-container">
       <h3 class="nav-title">
         <a href="index.html">Fast Food Fast​</a>
         <i class="fas fa-shipping-fast" id="logo"></i>
       </h3>
       <div class="nav-links-wrapper">
-          <ul class='nav-links'>
-          </ul>
-          <ul class='nav-links'>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="register.html">Sign Up</a></li>
-          </ul>
-        </div>
+        <i class="fa fa-times fa-2x nav-toggle" aria-hidden="true" id='nav-toggle-close'></i>
+        <ul class='nav-links'>
+        </ul>
+        <ul class='nav-links'>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Sign Up</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
   <div class="section">
-    <form action="#">
+    <form id="myForm" action="http://localhost:8080/api/v1/signup" method="POST">
       <h2 class="form-title">Sign Up</h2>
-      <input type="text" name="name" placeholder="Full name" required>
-      <input type="email" name="email" placeholder="Email address" required>
-      <input type="phone" name="phone" placeholder="Phone number">
-      <input type="password" name="password" placeholder="Enter password" required>
+      <input type="text" name="name" value="Anthony Oyathelemhi" required>
+      <input type="text" name="username" value="tonerolima" required>
+      <input type="phone" name="phone" value="07081627814">
+      <input type="password" name="password" value="71535old" required>
       <input type="submit" value="Register">
     </form>
   </div>
   
 
   <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript" src="js/register.js"></script>
 </body>
