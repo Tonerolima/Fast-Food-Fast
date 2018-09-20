@@ -30,13 +30,24 @@ document.onreadystatechange = () => {
   }
 }
 
+const fadeOut = (element) => {
+  element.classList.add('fade');
+  window.setTimeout(() => {
+    element.classList.add('shrink');
+  }, 600)
+  window.setTimeout(() => {
+    element.classList.add('hidden');
+  }, 1100)
+}
+
 list.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.tagName === 'BUTTON') {
     removeFromCart(clicked.dataset.id);
     total.textContent = parseInt(total.textContent) - parseInt(clicked.dataset.cost);
-    const parentList = clicked.parentNode.parentNode.parentNode.parentNode;
-    parentList.removeChild(clicked.parentNode.parentNode.parentNode);
+    const parentList = clicked.parentNode.parentNode.parentNode;
+    fadeOut(parentList);
+    // parentList.removeChild(clicked.parentNode.parentNode.parentNode);
   }
 });
 
