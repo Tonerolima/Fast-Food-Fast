@@ -4,15 +4,21 @@ const linksWrapper = document.querySelector('.nav-links-wrapper');
 const nav = document.querySelector('#navbar');
 
 const openMenu = () => {
-    // toggler.classList.remove('fa-bars');
-    // toggler.classList.add('fa-times', 'white');
-    linksWrapper.classList.add('animate');
+  linksWrapper.classList.add('animate');
+  document.documentElement.addEventListener('click', closeMenuOnBodyClick);
 }
 
 const closeMenu = () => {
-    // toggler.classList.remove('fa-times', 'white');
-    // toggler.classList.add('fa-bars');
-    linksWrapper.classList.remove('animate');
+  linksWrapper.classList.remove('animate');
+  document.documentElement.removeEventListener('click', closeMenuOnBodyClick);
+}
+
+const closeMenuOnBodyClick = (event) => {
+  let path = event.composedPath();
+  if (path.some(elem => elem.tagName === 'NAV')) {
+    return;
+  }
+  closeMenu();
 }
 
 const checkToken = () => {
@@ -99,22 +105,12 @@ const login = (data) => {
   XHR.send(formData);
 }
 
-openToggler.addEventListener('click', function () {
+openToggler.addEventListener('click', (event) => {
   openMenu();
-    // if (!linksWrapper.classList.contains('animate')) {
-    //     openMenu();
-    // } else {
-    //     closeMenu();
-    // }
 })
 
-closeToggler.addEventListener('click', function () {
+closeToggler.addEventListener('click', (event) => {
   closeMenu();
-    // if (!linksWrapper.classList.contains('animate')) {
-    //     openMenu();
-    // } else {
-    //     closeMenu();
-    // }
 })
 
 toggleAuthLinks();
