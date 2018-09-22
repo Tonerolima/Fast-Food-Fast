@@ -15,7 +15,7 @@ const closeMenu = () => {
 
 const closeMenuOnBodyClick = (event) => {
   let path = event.composedPath();
-  if (path.some(elem => elem.tagName === 'NAV')) {
+  if (path.some(elem => elem.classList? elem.classList[0] === 'nav-links-wrapper' : false )) {
     return;
   }
   closeMenu();
@@ -106,6 +106,7 @@ const login = (data) => {
 }
 
 openToggler.addEventListener('click', (event) => {
+  event.stopImmediatePropagation();
   openMenu();
 })
 
