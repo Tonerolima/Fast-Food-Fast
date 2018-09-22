@@ -455,6 +455,7 @@ input:focus {
     width: 250px;
     height: 100%;
     box-shadow: 13px 0px 16px -1px rgba(0,0,0,0.2);
+    z-index: 3;
   }
 
   .nav-links-wrapper a {
