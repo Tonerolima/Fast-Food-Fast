@@ -105,6 +105,13 @@ const login = (data) => {
   XHR.send(formData);
 }
 
+const htmlToElement = (html) => {
+  var template = document.createElement('template');
+  html = html.trim();
+  template.innerHTML = html;
+  return template.content.firstChild;
+}
+
 openToggler.addEventListener('click', (event) => {
   event.stopImmediatePropagation();
   openMenu();

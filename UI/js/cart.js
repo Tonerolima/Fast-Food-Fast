@@ -1,15 +1,15 @@
 const list = document.querySelector('.vertical.list');
 const total = document.getElementById('total');
 const checkoutButton = document.getElementById('checkout');
+const sectionFooter = document.querySelector('.section-footer');
 
 document.onreadystatechange = () => {
   const cart = retrieveCart();
   if (document.readyState === "complete") {
     let sum = 0;
-    let node = '';
     cart.forEach((item, key) => {
       sum += parseInt(item.cost);
-      node += `
+      node = `
       <li class="horizontal card">
         <div class="img-thumbnail">
           <img src="${item.image}" alt="${item.name}">
@@ -23,9 +23,9 @@ document.onreadystatechange = () => {
           </div>
         </div>
       </li>
-      `
+      `;
+      list.insertBefore(htmlToElement(node), sectionFooter);
     });
-    list.innerHTML = node;
     total.textContent = sum;
   }
 }
