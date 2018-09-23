@@ -77,32 +77,7 @@ const checkCartForItem = (foodId) => {
 
 const logout = () => {
   localStorage.removeItem('authToken');
-  window.location = 'file:///C:/Users/toner/webdev/UI/Fast-Food-Fast/UI/login.html';
-}
-
-const login = (data) => {
-  const XHR = new XMLHttpRequest();
-
-  const formData = new FormData(data);
-
-  // Define what happens on successful data submission
-  XHR.addEventListener("load", (event) => {
-    let response = JSON.parse(event.target.responseText);
-    if (!response.status) { return alert(response.message); }
-    localStorage.setItem('authToken', response.token);
-    window.location = 'file:///C:/Users/toner/webdev/UI/Fast-Food-Fast/UI/index.html';
-  });
-
-  // Define what happens in case of error
-  XHR.addEventListener("error", (event) => {
-    alert('Oops! Something went wrong.');
-  });
-
-  // Set up our request
-  XHR.open(data.method, data.action);
-
-  // The data sent is what the user provided in the form
-  XHR.send(formData);
+  window.location = 'login.html';
 }
 
 const htmlToElement = (html) => {

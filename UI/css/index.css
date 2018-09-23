@@ -103,8 +103,7 @@ a {
   box-sizing: border-box;
   color: rgb(22, 41, 67);
   justify-content: flex-start;
-  align-items: center;
-  height: auto;
+  min-height: calc(100vh - 86px);
 }
 
 .section.landing {
@@ -130,8 +129,12 @@ a {
 }
 
 .main-section::after {
-  content: "";
   background: url('https://images.unsplash.com/photo-1511516315833-9c19f0e41bf4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=768b66c6b7354ddf24768ac457cfdc8e&auto=format&fit=crop&w=1051&q=80');
+  
+}
+
+.section::after {
+  content: "";
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0.8;
@@ -150,7 +153,6 @@ form {
   padding-bottom: 10px;
   width: 350px;
   color: rgb(22, 41, 67);
-  margin-top: 50px;
 }
 
 form[id="landing"] {
