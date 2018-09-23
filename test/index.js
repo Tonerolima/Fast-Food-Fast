@@ -82,7 +82,7 @@ describe('Authentication', () => {
     it('should return 201 and authentication token for successful signup', (done) => {
       chai.request(app)
       .post('/api/v1/signup')
-      .send({ username: 'user1', password: 'user1pass', name: 'User One' })
+      .send({ username: 'user1', password: 'user1pass', firstname: 'User', lastname: 'One', email: 'user1@example.com' })
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.have.property('token');
@@ -101,7 +101,7 @@ describe('Authentication', () => {
     it('should handle additional user signup', (done) => {
       chai.request(app)
       .post('/api/v1/signup')
-      .send({ username: 'user2', password: 'user2pass', name: 'User Two' })
+      .send({ username: 'user2', password: 'user2pass', firstname: 'User', lastname: 'Two', email: 'user2@example.com' })
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.have.property('token');
@@ -109,7 +109,7 @@ describe('Authentication', () => {
       });
       chai.request(app)
       .post('/api/v1/signup')
-      .send({ username: 'user3', password: 'user3pass', name: 'User Three' })
+      .send({ username: 'user3', password: 'user3pass', firstname: 'User', lastname: 'Three', email: 'user3@example.com' })
       .end((err, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.have.property('token');
