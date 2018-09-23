@@ -1,18 +1,12 @@
 form {
-  height: 400px;
+  min-height: 400px;
 }
 
 .section::after {
-  z-index: -1;
-  content: "";
   background: url('https://images.unsplash.com/photo-1516685018646-549198525c1b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b62378793198b7e3934d04f96dac9e3e&auto=format&fit=crop&w=1050&q=80');
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 0.8;
-  top: 0;  bottom: 0;  left: 0;  right: 0;
-  position: absolute;
+
 }
 
 .section {
-  height: 100vh;
+  justify-content: center;
 }
