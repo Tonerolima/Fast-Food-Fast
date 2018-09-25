@@ -1,0 +1,12 @@
+form {
+  min-height: 500px;
+}
+
+.section::after {
+  background: url('https://images.unsplash.com/photo-1516684542079-927175cedbb0?ixlib=rb-0.3.5&s=c7b72efdc4542787d00119eb9a16c31e&auto=format&fit=crop&w=1050&q=80');
+
+}
+
+.section {
+  justify-content: center;
+}
