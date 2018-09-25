@@ -4,8 +4,8 @@
   "description": "Food delivry app for a restaurant",
   "main": "app.js",
   "scripts": {
-    "start": "babel-node lib/app.js",
-    "build": "babel lib -d dist",
+    "start": "babel-node server/app.js",
+    "build": "babel server -d dist",
     "serve": "node dist/app.js",
     "test": "nyc --reporter=lcov mocha --require babel-core/register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
