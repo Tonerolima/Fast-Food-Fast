@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
-import orders from './routes/orders';
-import menu from './routes/menu';
-import index from './routes/index';
+import orders from './routes/ordersRoute';
+import menu from './routes/menuRoute';
+import index from './routes/indexRoute';
 
 const app = express();
 
