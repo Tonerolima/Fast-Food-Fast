@@ -1,5 +1,5 @@
 import uniqId from 'uniqid';
-import menu from './menu';
+import menu from './menuModel';
 
 export default {
   orders: [],
