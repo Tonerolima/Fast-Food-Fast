@@ -87,6 +87,44 @@ const htmlToElement = (html) => {
   return template.content.firstChild;
 }
 
+const fetchMenu = (foodCount=10, offset=0, parentNode) => {
+  fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu?offset=${offset}&&limit=${foodCount}`)
+  .then(response => response.json())
+  .catch(error => console.log('Request failed', error))
+  .then(response => {
+    if (!response.status) { return alert(response.message); }
+    populateMenu(response.result, parentNode)
+  });
+}
+
+const populateMenu = (foodList, parentNode) => {
+  let item = '';
+  let buttonClass;
+  let buttonText;
+	foodList.forEach((elem) => {
+    if (!checkCartForItem(elem.id)) {
+      buttonClass = 'confirm';
+      buttonText = 'Add to cart';
+    } else {
+      buttonClass = 'decline';
+      buttonText = 'Remove from cart';
+    }
+		item += `<li class="vertical card">
+							<div class="img-thumbnail"><img src=${elem.image} alt=${elem.name}></div>
+  						<div class="vertical card-details">
+          			<h4 class="food-name">${elem.name}</h4>
+          			<h6 class="amount">Amount: &#8358 <span class="amount">${elem.cost}</span></h6>
+	 							<div class="order-buttons">
+                  <button class="big fluid button ${buttonClass}" data-id="${elem.id}" data-name="${elem.name}" data-image="${elem.image}" data-cost="${elem.cost}">
+                  ${buttonText}
+                  </button>
+			          </div>
+			        </div>
+			      </li>`;
+	});
+	parentNode.innerHTML = item;
+}
+
 openToggler.addEventListener('click', (event) => {
   event.stopImmediatePropagation();
   openMenu();
