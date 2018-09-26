@@ -32,6 +32,7 @@ body > * {
   padding: 0 30px;
   width: 100%;
   box-sizing: border-box;
+  transition: background .3s linear;
 }
 
 .nav-title {
@@ -45,7 +46,7 @@ body > * {
 
 .nav-toggle {
   display: none !important;
-  line-height: 80px !important;
+  line-height: 84px !important;
   cursor: pointer;
 }
 
@@ -61,7 +62,7 @@ body > * {
   flex: 2 1 auto;
   display: flex;
   justify-content: space-between;
-  transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out, background 0s linear;
   box-sizing: border-box;
   font-family: 'Exo 2', sans-serif;
   font-size: 17px;
@@ -106,26 +107,43 @@ a {
   min-height: calc(100vh - 86px);
 }
 
-.section.landing {
+.landing.section {
   color: #fff;
   position: relative;
   z-index: 1;
-  justify-content: center;
   font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
   height: 100vh;
+  padding-top: 320px;
+  padding-bottom: 20px;
 }
 
 .section>h1 {
   margin-bottom: 10px;
 }
 
-.section>p {
+.landing.section>p {
   margin-top: 0;
-  font-style: italic;
+  margin-bottom: 20px;
   font-weight: normal;
   font-size: 1.1em;
+  text-shadow: 2px 1px 4px rgb(22, 41, 67);
+}
+
+.landing.section>p:first-of-type {
+  font-size: 2em;
+}
+
+.landing.section>p:nth-of-type(2) {
+  font-style: italic;
+  font-size: inherit;
+  margin-bottom: 100px;
+}
+
+.landing.section>p:nth-of-type(4) {
+  margin-top: auto;
+  margin-bottom: 5px;
 }
 
 .main-section::after {
@@ -241,6 +259,7 @@ input:focus {
   padding: 30px;
   margin-top: 0;
   margin-bottom: 0;
+  box-sizing: border-box;
 }
 
 .vertical.list {
@@ -252,7 +271,11 @@ input:focus {
 .horizontal.list {
   flex-flow: row wrap;
   width: 100%;
-  justify-content: center;
+  max-width: 1200px;
+}
+
+.horizontal.list>.card {
+  margin-right: auto;
 }
 
 .card {
@@ -432,6 +455,11 @@ input:focus {
 .inverted {
   background: white;
   color:  rgb(22, 41, 67);
+}
+
+.moved-down {
+  transition: transform 0.3s linear;
+  transform: translateY(15px);
 }
 
 @media screen and (max-width: 992px) {
