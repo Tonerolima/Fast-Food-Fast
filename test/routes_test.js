@@ -4,7 +4,25 @@ const app = require('../server/app').default;
 
 const { assert } = chai;
 const { expect } = chai;
+chai.should();
+
 const foodId = 'eexbt1qvjlm5nj38';
+
+// test user objects
+const userTemplate = {
+  firstname: "User",
+  lastname: "One",
+  address: "user one address",
+  phone: "08012345678",
+  password: "password",
+  admin_secret: "secret"
+};
+
+const user1 = {...userTemplate, username: "userone" };
+const user2 = {...userTemplate, username: "usertwo" };
+const admin1 = {...userTemplate, username: "adminone", admin_secret: "secret" };
+const admin2 = {...userTemplate, username: "admintwo", admin_secret: "wrong" };
+
 let orderId;
 
 chai.use(chaiHttp);
@@ -16,9 +34,9 @@ describe('Root route', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         return done();
-      })
-  })
-})
+      });
+  });
+});
 
 describe('Menu route', () => {
   it('should return 200 for a successful request', (done) => {
@@ -62,6 +80,7 @@ describe('Menu route', () => {
       });
   });
 });
+
 describe('Orders route', () => {
   describe('POST /orders', () => {
     it('should return 201 and created object', (done) => {
@@ -189,3 +208,70 @@ describe('Orders route', () => {
   });
 });
 
+describe('Authentication', () => {
+  describe('signup', () => {
+    it('should return 400 for incomplete user data and include an error message', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(userTemplate)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        res.body.should.have.own.property('error');
+        return done();
+      });
+    });
+    it('should return 401 for incorrect admin_secret and include an error message', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(admin2)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        res.body.should.have.own.property('error');
+        return done();
+      });
+    });
+    it('should return 201 and user object with authentication token for successful user signup', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(user1)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        res.body.should.have.own.property('result');
+        res.body.result.should.have.own.property('token');
+        return done();
+      });
+    });
+    it('should return 201 and user object with authentication token for successful admin signup', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(admin1)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        res.body.should.have.own.property('result');
+        res.body.result.should.have.own.property('token');
+        return done();
+      });
+    });
+    it('should return 400 and error message if user already exists', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(user1)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        res.body.should.have.own.property('error');
+        return done();
+      });
+    });
+    it('should handle additional user signup', (done) => {
+      chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send(user2)
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.have.own.property('result');
+        expect(res.body.result).to.have.own.property('token');
+        return done();
+      });
+    });
+  });
+});
