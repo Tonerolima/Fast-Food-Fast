@@ -3,8 +3,7 @@ form {
 }
 
 .section::after {
-  background: url('https://images.unsplash.com/photo-1516684542079-927175cedbb0?ixlib=rb-0.3.5&s=c7b72efdc4542787d00119eb9a16c31e&auto=format&fit=crop&w=1050&q=80');
-
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(22,41,67,80) 100%);
 }
 
 .section {
