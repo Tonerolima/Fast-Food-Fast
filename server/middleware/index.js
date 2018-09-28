@@ -27,12 +27,22 @@ middleware.getOrders = (req, res, next) => {
   return next();
 };
 
-
 middleware.updateOrder = (req, res, next) => {
   if (!req.body.orderStatus) {
     return res.status(400).send({ status: false, message: 'No data was received to update the orderStatus' });
   }
-  req.order = orders.updateOrderStatus(req.params.id, req.body.orderStatus);
+
+  const orderStatus = req.body.orderStatus.toLowerCase();
+
+  const validOrderStatus = ['new', 'processing', 'cancelled', 'complete'];
+  if (!validOrderStatus.includes(orderStatus)) {
+    return res.status(422).send({
+      status: false,
+      message: 'Invalid orderStatus'
+    })
+  }
+
+  req.order = orders.updateOrderStatus(req.params.id, orderStatus);
   if (!req.order) {
     return res.status(404).send({ status: false, message: 'Order does not exist' });
   }
