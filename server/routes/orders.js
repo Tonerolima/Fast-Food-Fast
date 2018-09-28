@@ -27,7 +27,7 @@ v1.get('/:id', middleware.getOrder, (req, res) => {
 
 // Update order status
 v1.put('/:id', middleware.updateOrder, (req, res) => {
-  res.status(201).send({ status: true, result: req.order, message: `Order status has been updated to ${req.body.orderStatus}` });
+  res.status(200).send({ status: true, result: req.order, message: `Order status has been updated to ${req.body.orderStatus}` });
 });
 
 

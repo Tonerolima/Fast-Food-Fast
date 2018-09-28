@@ -134,7 +134,7 @@ describe('Orders route', () => {
     it('should return 404 for incorrect order id', (done) => {
       chai.request(app)
         .put('/api/v1/orders/ubeogbasadgweg')
-        .send({ orderStatus: 'confirmed' })
+        .send({ orderStatus: 'processing' })
         .end((err, res) => {
           expect(res).to.have.status(404);
           return done();
@@ -148,12 +148,12 @@ describe('Orders route', () => {
           return done();
         });
     });
-    it('should return 201 and the updated order object', (done) => {
+    it('should return 200 and the updated order object', (done) => {
       chai.request(app)
         .put(`/api/v1/orders/${orderId}`)
-        .send({ orderStatus: 'confirmed' })
+        .send({ orderStatus: 'processing' })
         .end((err, res) => {
-          expect(res).to.have.status(201);
+          expect(res).to.have.status(200);
           assert.isObject(res.body.result);
           return done();
         });
