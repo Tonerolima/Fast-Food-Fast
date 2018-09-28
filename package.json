@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "prestart": "babel -q server -d dist",
-    "start": "node dist/app.js",
+    "start": "node -r dotenv/config dist/app.js",
     "test": "nyc --reporter=lcov mocha --require babel-core/register --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -20,16 +20,22 @@
   },
   "homepage": "https://github.com/Tonerolima/Fast-Food-Fast#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "method-override": "^3.0.0",
-    "uniqid": "^5.0.3",
     "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
     "babel-cli": "^6.26.0",
     "babel-preset-airbnb": "^2.6.0",
     "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-validator": "^5.3.0",
+    "jsonwebtoken": "^8.3.0",
+    "method-override": "^3.0.0",
+    "multer": "^1.4.0",
+    "pg": "^7.4.3",
+    "uniqid": "^5.0.3"
   },
   "devDependencies": {
     "ajv": "^6.5.3",
