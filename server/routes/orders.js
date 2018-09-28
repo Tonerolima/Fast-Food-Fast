@@ -13,7 +13,6 @@ v1.post('/', middleware.createOrder, (req, res) => {
 
 // Retrieve orders
 v1.get('/', middleware.getOrders, (req, res) => {
-  if (!req.order[0]) return res.status(404).send({ status: false, message: 'No order was found' });
   return res.status(200).send({ status: true, result: req.order });
 });
 
