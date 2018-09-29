@@ -12,9 +12,7 @@ v1.post('/', middleware.createOrder, (req, res) => {
 
 
 // Retrieve orders
-v1.get('/', middleware.getOrders, (req, res) => {
-  return res.status(200).send({ status: true, result: req.order });
-});
+v1.get('/', middleware.getOrders, (req, res) => res.status(200).send({ status: true, result: req.order }));
 
 
 // Retrieve specific order

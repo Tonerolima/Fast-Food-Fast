@@ -1,10 +1,14 @@
 env:
   global:
     - CC_TEST_REPORTER_ID=e2ce25cd87b36e19fd9021b6fa1c7799819be2f1e61efcd9fe8385dc0a142911
+    - DATABASE_URL=postgresql://postgres@localhost:5432/fastfoodfast
 language: node_js
 node_js:
   - "7"
+services:
+  - postgresql
 before_script:
+  - psql -c 'create database fastfoodfast;' -U postgres
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build --debug
