@@ -1,5 +1,5 @@
-import menu from '../models/menu';
-import orders from '../models/order';
+import menu from '../models/menuModel';
+import orders from '../models/ordersModel';
 
 
 const middleware = {};
