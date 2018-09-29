@@ -148,6 +148,15 @@ describe('Orders route', () => {
           return done();
         });
     });
+    it('should return 422 for invalid orderStatus', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/ubeogbasadgweg')
+        .send({ orderStatus: 'wrong string' })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          return done();
+        });
+    });
     it('should return 200 and the updated order object', (done) => {
       chai.request(app)
         .put(`/api/v1/orders/${orderId}`)
