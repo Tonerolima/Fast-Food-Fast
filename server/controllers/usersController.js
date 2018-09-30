@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Pool } from 'pg';
-import UsersModel from '../models/usersModel';
 
-UsersModel();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true,
@@ -50,7 +48,7 @@ export default {
         const user = response.rows[0];
         bcrypt.compare(req.body.password, user.password, (error, bcryptResponse) => {
           if (!bcryptResponse) {
-            return res.status(401).json({ status: false, message: 'Incorrect password' });
+            return res.status(422).json({ status: false, message: 'Incorrect password' });
           }
           let result;
           jwt.sign(user, process.env.JWTSECRET, (err, token) => {
@@ -65,6 +63,6 @@ export default {
           return res.status(200).json({ status: true, result, message: 'Login successful' });
         });
       })
-      .catch(e => res.status(404).send({ status: false, message: 'Incorrect username' }));
+      .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
   },
 };

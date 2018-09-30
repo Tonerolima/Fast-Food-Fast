@@ -7,8 +7,6 @@ import orders from './routes/ordersRoute';
 import menu from './routes/menuRoute';
 import users from './routes/usersRoute';
 import index from './routes/indexRoute';
-import 'regenerator-runtime/runtime';
-
 
 const app = express();
 
@@ -32,9 +30,9 @@ app.use((req, res, next) => {
 });
 
 // route handlers
+app.use(users);
 app.use(orders);
 app.use(menu);
-app.use(users);
 app.use(index);
 
 

@@ -1,17 +1,14 @@
 import express from 'express';
 import middleware from '../middleware';
+import Menu from '../controllers/menuController';
 
 const router = express();
 const v1 = express.Router();
 
+v1.post('/', middleware.validateMenuItem, Menu.addFood);
 
 // retrieve menu
-v1.get('/', middleware.getMenu, (req, res) => {
-  if (req.menu.length === 0) {
-    return res.status(404).send({ status: false, message: 'No dish found for the search criteria' });
-  }
-  return res.status(200).send({ status: true, result: req.menu });
-});
+v1.get('/', Menu.getMenu);
 
 
 router.use('/api/v1/menu', v1);

@@ -9,6 +9,7 @@ services:
   - postgresql
 before_script:
   - psql -c 'create database fastfoodfast;' -U postgres
+  - cat ./server/models/seed.sql | psql -h 127.0.0.1 -U postgres fastfoodfast
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build --debug
