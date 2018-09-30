@@ -1,32 +1,24 @@
-import uniqId from 'uniqid';
-import menu from './menuModel';
+import { Pool } from 'pg';
 
-export default {
-  orders: [],
-  addOrder(foodId) {
-    const meal = menu.findMealById(foodId);
-    if (!meal) { return undefined; }
-    const order = { ...meal, id: uniqId(), orderStatus: 'new' };
-    this.orders.push(order);
-    return order;
-  },
-  findOrderById(orderId) {
-    const order = this.orders.find(elem => elem.id === orderId);
-    if (!order) { return undefined; }
-    return order;
-  },
-  getOders() {
-    return this.orders;
-  },
-  updateOrderStatus(orderId, orderStatus) {
-    const order = this.findOrderById(orderId);
-    if (!order) { return undefined; }
-    order.orderStatus = orderStatus;
-    return order;
-  },
-  deleteOrder(orderId) {
-    const index = this.orders.findIndex(order => order.id === orderId);
-    if (index < 0) { return undefined; }
-    return this.orders.splice(index, 1);
-  },
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+export default () => {
+  const queryString = `CREATE TABLE IF NOT EXISTS orders(
+    id SERIAL PRIMARY KEY, 
+    user_id INTEGER,
+    amount INTEGER NOT NULL,
+    address VARCHAR(40) NOT NULL,
+    food_ids TEXT[] NOT NULL,
+    order_status VARCHAR(10) NOT NULL)`;
+
+  pool.query(queryString)
+    .then((response) => {
+      pool.end();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

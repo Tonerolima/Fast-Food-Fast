@@ -17,7 +17,11 @@ export default () => {
     cart TEXT[][],
     isadmin BOOLEAN DEFAULT 'false')`;
 
-  pool.query(queryString, (err, res) => {
-    pool.end();
-  });
+  pool.query(queryString)
+    .then((response) => {
+      pool.end();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

@@ -13,10 +13,15 @@ const pool = new Pool({
 export default {
   addFood(req, res) {
     const { name, image, cost } = req.body;
-    const query = `INSERT INTO menu(name, image, cost) VALUES('${name}', '${image}', '${cost}')`;
+    const query = `INSERT INTO menu(name, image, cost) 
+      VALUES('${name}', '${image}', '${cost}') RETURNING *`;
     pool.query(query)
       .then((response) => {
-        res.status(201).json({ status: true, message: 'Food added successfully' });
+        res.status(201).json({ 
+          status: true, 
+          message: 'Food added successfully',
+          result: response.rows[0]
+        });
       })
       .catch((error) => {
         res.status(422).json({ status: false, message: 'Food already exists' });
