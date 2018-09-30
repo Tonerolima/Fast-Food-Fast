@@ -1,7 +1,4 @@
 import { Pool } from 'pg';
-import OrdersModel from '../models/ordersModel';
-
-OrdersModel();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

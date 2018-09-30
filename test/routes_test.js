@@ -44,62 +44,30 @@ describe('Menu route', () => {
     it('should return 422 for invalid or incomplete food data', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
-        .send({ name: 'Beans', cost: '2000', image: 'invalid url'})
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
-        });
-      chai.request(app)
-        .post('/api/v1/menu')
-        .send({ name: 'Beans', image: 'https://example.com/image.jpg'})
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
-        });
-      chai.request(app)
-        .post('/api/v1/menu')
         .send({name: '1', cost: '2000', image: 'http://example.com/image.jpg'})
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
+          return done();
         });
-        return done();
     });
     it('should return 201 and food object for successful creation', (done) => {
-      chai.request(app)
-        .post('/api/v1/menu')
-        .send({name:'Beans', cost:'2000', image:'http://example.com/image.jpg'})
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          res.body.should.have.own.property('result');
-          foodId1 = res.body.result.id;
-        });
-      chai.request(app)
-        .post('/api/v1/menu')
-        .send({name: 'Rice', cost:'500', image:'https://example.com/image.jpg'})
-        .end((err, res) => {
-          expect(res).to.have.status(201);
-          res.body.should.have.own.property('result');
-          foodId2 = res.body.result.id;
-        });
       chai.request(app)
         .post('/api/v1/menu')
         .send({name:'Egusi', cost:'1500', image:'http://example.com/image.jpg'})
         .end((err, res) => {
           expect(res).to.have.status(201);
           res.body.should.have.own.property('result');
-          foodId3 = res.body.result.id;
+          foodId1 = res.body.result.id;
+          return done();
         });
-        return done();
     });
     it('should return 422 and error if food already exists', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
-        .send({name: 'Rice', cost: '700', image:'http://example.com/image.jpg'})
+        .send({name: 'Egusi', cost: '700', image:'http://example.com/image.jpg'})
         .end((err, res) => {
           expect(res).to.have.status(422);
           res.body.should.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -120,7 +88,6 @@ describe('Authentication', () => {
         .end((err, res) => {
           expect(res).to.have.status(422);
           res.body.should.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -139,7 +106,6 @@ describe('Authentication', () => {
         .end((err, res) => {
           expect(res).to.have.status(422);
           res.body.should.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -192,7 +158,6 @@ describe('Authentication', () => {
         .end((err, res) => {
           expect(res).to.have.status(409);
           res.body.should.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -217,36 +182,6 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "",
-          "lastname": "two",
-          "username": "usertwo",
-          "address": "example",
-          "phone": "08012345678",
-          "password": "usertwopass"
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body).to.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
-        });
-      chai.request(app)
-        .post('/api/v1/auth/signup')
-        .send({
-          "firstname": "2",
-          "lastname": "233",
-          "username": "usertwo",
-          "address": "example",
-          "phone": "08012345678",
-          "password": "usertwopass"
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body).to.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
-        });
-      chai.request(app)
-        .post('/api/v1/auth/signup')
-        .send({
           "firstname": "user",
           "lastname": "two",
           "username": "usertwo",
@@ -257,9 +192,8 @@ describe('Authentication', () => {
         .end((err, res) => {
           expect(res).to.have.status(422);
           expect(res.body).to.have.own.property('message');
-          expect(res.body['status']).to.equal(false);
+          return done();
         });
-        return done();
     })
   });
   
@@ -272,7 +206,6 @@ describe('Authentication', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -284,7 +217,6 @@ describe('Authentication', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     })
@@ -297,7 +229,6 @@ describe('Authentication', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -310,7 +241,6 @@ describe('Authentication', () => {
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     })
@@ -329,14 +259,13 @@ describe('Authentication', () => {
   })
 });
 
-
 describe('Orders route', () => {
   describe('POST /orders', () => {
     it('should return 201 and created object', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
         .send({ 
-          foodIds: [foodId1, foodId2],
+          foodIds: [foodId1],
           address: 'some place'
         })
         .end((err, res) => {
@@ -351,7 +280,6 @@ describe('Orders route', () => {
         .post('/api/v1/orders')
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -359,12 +287,11 @@ describe('Orders route', () => {
       chai.request(app)
         .post('/api/v1/orders')
         .send({ 
-          foodIds: [foodId3, 'wrong id'],
+          foodIds: [foodId1, 'wrong id'],
           address: 'some address'
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -386,7 +313,6 @@ describe('Orders route', () => {
         .get('/api/v1/orders/777777')
         .end((err, res) => {
           expect(res).to.have.status(404);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -407,7 +333,6 @@ describe('Orders route', () => {
         .send({ orderStatus: 'processing' })
         .end((err, res) => {
           expect(res).to.have.status(404);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -416,7 +341,6 @@ describe('Orders route', () => {
         .put(`/api/v1/orders/${orderId1}`)
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -426,7 +350,6 @@ describe('Orders route', () => {
         .send({ orderStatus: 'wrong string' })
         .end((err, res) => {
           expect(res).to.have.status(422);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
@@ -447,7 +370,6 @@ describe('Orders route', () => {
         .delete(`/api/v1/orders/ubeogbasadgweg`)
         .end((err, res) => {
           expect(res).to.have.status(404);
-          expect(res.body['status']).to.equal(false);
           return done();
         });
     });

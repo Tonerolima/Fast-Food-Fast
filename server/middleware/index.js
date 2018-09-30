@@ -1,6 +1,3 @@
-import { check, validationResult } from 'express-validator/check';
-import menu from '../models/menuModel';
-import orders from '../models/ordersModel';
 import { Pool } from 'pg';
 
 const pool = new Pool({

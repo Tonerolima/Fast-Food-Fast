@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Pool } from 'pg';
-import UsersModel from '../models/usersModel';
 
-UsersModel();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: true,

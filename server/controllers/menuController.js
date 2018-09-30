@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Pool } from 'pg';
-import MenuModel from '../models/menuModel';
-
-MenuModel();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
