@@ -23,12 +23,12 @@ export default {
         pool.query(query)
           .then((response) => {
             const newUser = response.rows[0];
-            jwt.sign(newUser, process.env.JWTSECRET, (er, token) => {
-              newUser.token = token;
+            jwt.sign(newUser, process.env.JWTSECRET, async (er, token) => {
               res.status(201).json({
                 status: true,
-                result: newUser,
                 message: 'Account created successfully',
+                result: newUser,
+                token
               });
             });
           })
@@ -52,15 +52,22 @@ export default {
           }
           let result;
           jwt.sign(user, process.env.JWTSECRET, (err, token) => {
+            
           // copy all user data to a new object excluding password
             result = (({
               id, firstname, lastname, username, phone, isadmin, cart,
             }) => ({
               id, firstname, lastname, username, phone, isadmin, cart,
             }))(user);
-            result.token = token;
+            
+            return res.status(200).json({ 
+              status: true, 
+              message: 'Login successful',
+              result,
+              token
+            });
           });
-          return res.status(200).json({ status: true, result, message: 'Login successful' });
+          
         });
       })
       .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
