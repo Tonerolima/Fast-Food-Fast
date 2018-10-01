@@ -58,7 +58,7 @@ export default {
       });
     }
     const foodIds = req.body.foodIds;
-    const address = req.body.address;
+    const address = req.body.address || req.user.address;
     const queryString = `INSERT INTO 
       orders(user_id, amount, address, food_ids, order_status)
       VALUES('${req.user.id}', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')

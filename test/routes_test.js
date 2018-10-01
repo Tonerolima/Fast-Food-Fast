@@ -360,13 +360,12 @@ describe('Orders route', () => {
           return done();
         });
     });
-    it('should return 201 and created object for another user', (done) => {
+    it('should return 201 and created object if no address is provided', (done) => {
       chai.request(app)
         .post('/api/v1/orders')
         .set({ Authorization: `Bearer ${user2token}` })
         .send({ 
-          foodIds: [foodId1],
-          address: 'some place'
+          foodIds: [foodId1]
         })
         .end((err, res) => {
           expect(res).to.have.status(201);
