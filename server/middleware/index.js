@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { Pool } from 'pg';
 
 const pool = new Pool({
@@ -95,7 +96,7 @@ middleware.validateOrderStatus = (req, res, next) => {
   next();
 };
 
-export const validateSignup = (req, res, next) => {
+middleware.validateSignup = (req, res, next) => {
   if (req.body.admin_secret) {
     if (req.body.admin_secret !== process.env.ADMINSECRET) {
       const response = { status: false, message: 'Invalid admin secret' };
@@ -127,8 +128,8 @@ export const validateSignup = (req, res, next) => {
   req.check('username')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('Username must not be empty')
-    .isAlpha()
-    .withMessage('Username can only contain alphabets')
+    .isAlphanumeric()
+    .withMessage('Username can only contain alphanumeric characters')
     .isLength({ min: 4, max: 25 })
     .withMessage('Username must have between 2 - 25 characters');
 
@@ -169,7 +170,7 @@ export const validateSignup = (req, res, next) => {
   next();
 };
 
-export const validateLogin = (req, res, next) => {
+middleware.validateLogin = (req, res, next) => {
   req.check('username')
     .exists({ checkNull: true, checkFalsy: true })
     .withMessage('Username must not be empty');
@@ -189,6 +190,38 @@ export const validateLogin = (req, res, next) => {
   }
 
   next();
+};
+
+middleware.verifyToken = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (typeof authorization === 'undefined') {
+    return res.status(401).send({ 
+      status: false,
+      message: 'Authorization token not received'
+    });
+  }
+  const token = authorization.split(' ')[1];
+  jwt.verify(token, process.env.JWTSECRET, (err, user) => {
+    if (err) { return res.status(401).send({ 
+      status: false, 
+      message: 'Invalid token'}
+    )}
+    req.user = user;
+    return next();
+  });
+};
+
+middleware.verifyUser = async (req, res, next) => {
+  await pool.query(`SELECT id FROM users WHERE id = '${req.params.id}'`)
+    .then((response) => {
+      if (response.rowCount === 0) {
+        return res.status(404).json({
+          status: false,
+          message: 'User does not exist'
+        });
+      }
+      return next();
+    });
 };
 
 export default middleware;

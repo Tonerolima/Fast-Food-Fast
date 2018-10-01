@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import { Pool } from 'pg';
 
 const pool = new Pool({
@@ -9,6 +7,12 @@ const pool = new Pool({
 
 export default {
   addFood(req, res) {
+    if (!req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: 'Only admins are allowed to add menu items'
+      })
+    }
     const { name, image, cost } = req.body;
     const query = `INSERT INTO menu(name, image, cost) 
       VALUES('${name}', '${image}', '${cost}') RETURNING *`;

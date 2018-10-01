@@ -7,28 +7,61 @@ const pool = new Pool({
 
 export default {
   getOrders(req, res) {
+    if (!req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: "Only admins can view all orders"
+      });
+    }
     pool.query(`SELECT * FROM orders`)
+      .then((orders) => {
+        return res.status(200).json({ status: true, result: orders.rows });
+      });
+  },
+  getUserOrders(req, res) {
+    if (req.user.id != req.params.id && !req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: "You are not authorized to view other users' orders"
+      });
+    }
+    pool.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
   },
   getOrder(req, res) {
     pool.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
-      .then((orders) => {
-        if (orders.rowCount === 0) {
+      .then((response) => {
+        if (response.rowCount === 0) {
           return res.status(404).json({
             status: false,
             message: 'No order exists for the specified id'});
         }
-        return res.status(200).json({ status: true, result: orders.rows[0] });
+        
+        const result = response.rows[0];
+        
+        if (req.user.id !== result.user_id && !req.user.isadmin) {
+          return res.status(403).json({
+            status: false,
+            message: "Only admins can view an order of another user"
+          });
+        }
+        return res.status(200).json({ status: true, result });
       });
   },
   createOrder(req, res) {
+    if (req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: 'Admins cannot place orders'
+      });
+    }
     const foodIds = req.body.foodIds;
     const address = req.body.address;
     const queryString = `INSERT INTO 
       orders(user_id, amount, address, food_ids, order_status)
-      VALUES('1', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')
+      VALUES('${req.user.id}', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')
       RETURNING *`;
       
     pool.query(queryString)
@@ -42,10 +75,16 @@ export default {
       .catch((error) => {
         return res.status(500).send({
           status: false, 
-          message: error });
+          message: 'An error occured, please try again later' });
       });
   },
   updateOrderStatus(req, res) {
+    if (!req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: 'Only admins can change the status of an order'
+      });
+    }
     const queryString = `UPDATE orders
       SET order_status = '${req.body.orderStatus}' 
       WHERE id = '${req.params.id}' RETURNING *`;
@@ -56,24 +95,6 @@ export default {
           status: true,
           message: `Status has been updated to ${order.rows[0].order_status}`,
           result: order.rows[0]
-        });
-      })
-      .catch((error) => {
-        return res.status(404).json({
-          status: false,
-          message: 'No order exists for the specified id'
-        });
-      });
-  },
-  deleteOrder(req, res) {
-    const queryString = `DELETE FROM orders
-      WHERE id = '${req.params.id}' RETURNING *`;
-      
-    pool.query(queryString)
-      .then((order) => {
-        return res.status(200).json({
-          status: true,
-          message: `Order has been deleted successfully`
         });
       })
       .catch((error) => {
