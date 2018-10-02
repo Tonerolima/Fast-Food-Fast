@@ -599,4 +599,58 @@ describe('Users Route', () => {
         });
     });
   });
+  describe('GET /users/userId/cart', () => {
+    it('should return 401 if no auth token was received', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/${user1Id}/orders`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 404 if user does not exist', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/0/cart`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 403 if user does not own the cart', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user2token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 200 and array for a successful request', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isArray(res.body.result);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it('should return 200 and array if user is an admin', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isArray(res.body.result);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+  });
+  
 });
