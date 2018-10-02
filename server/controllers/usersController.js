@@ -7,8 +7,8 @@ const pool = new Pool({
   ssl: true,
 });
 
-export default {
-  signup(req, res) {
+class User {
+  static signup(req, res) {
     const {
       firstname, lastname, username, address, phone, password, isAdmin,
     } = req.body;
@@ -40,9 +40,9 @@ export default {
           });
       });
     });
-  },
+  }
 
-  login(req, res) {
+  static login(req, res) {
     pool.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
       .then((response) => {
         const user = response.rows[0];
@@ -71,5 +71,7 @@ export default {
         });
       })
       .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
-  },
+  }
 };
+
+export default User;

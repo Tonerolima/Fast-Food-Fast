@@ -5,8 +5,8 @@ const pool = new Pool({
   ssl: true,
 });
 
-export default {
-  getOrders(req, res) {
+class Order {
+  static getOrders(req, res) {
     if (!req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -17,8 +17,9 @@ export default {
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
-  },
-  getUserOrders(req, res) {
+  }
+  
+  static getUserOrders(req, res) {
     if (req.user.id != req.params.id && !req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -29,8 +30,9 @@ export default {
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
-  },
-  getOrder(req, res) {
+  }
+  
+  static getOrder(req, res) {
     pool.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
       .then((response) => {
         if (response.rowCount === 0) {
@@ -49,8 +51,9 @@ export default {
         }
         return res.status(200).json({ status: true, result });
       });
-  },
-  createOrder(req, res) {
+  }
+  
+  static createOrder(req, res) {
     if (req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -77,8 +80,9 @@ export default {
           status: false, 
           message: 'An error occured, please try again later' });
       });
-  },
-  updateOrderStatus(req, res) {
+  }
+  
+  static updateOrderStatus(req, res) {
     if (!req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -105,3 +109,5 @@ export default {
       });
   }
 };
+
+export default Order;

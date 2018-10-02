@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS menu(
 
 CREATE TABLE IF NOT EXISTS orders(
   id SERIAL PRIMARY KEY,
-  user_id INTEGER, 
+  user_id INTEGER REFERENCES users(id),
   amount INTEGER NOT NULL, 
   address VARCHAR(40) NOT NULL, 
   food_ids TEXT[] NOT NULL, 
