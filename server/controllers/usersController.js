@@ -1,14 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { Pool } from 'pg';
+import db from '../config/dbconfig';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
-
-export default {
-  signup(req, res) {
+class User {
+  static signup(req, res) {
     const {
       firstname, lastname, username, address, phone, password, isAdmin,
     } = req.body;
@@ -20,7 +15,7 @@ export default {
                             RETURNING id, firstname, lastname, username, address, phone, isAdmin, cart`,
           values: [firstname, lastname, username, address, phone, hash, isAdmin],
         };
-        pool.query(query)
+        db.query(query)
           .then((response) => {
             const newUser = response.rows[0];
             jwt.sign(newUser, process.env.JWTSECRET, async (er, token) => {
@@ -40,10 +35,10 @@ export default {
           });
       });
     });
-  },
+  }
 
-  login(req, res) {
-    pool.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
+  static login(req, res) {
+    db.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
       .then((response) => {
         const user = response.rows[0];
         bcrypt.compare(req.body.password, user.password, (error, bcryptResponse) => {
@@ -71,5 +66,7 @@ export default {
         });
       })
       .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
-  },
+  }
 };
+
+export default User;

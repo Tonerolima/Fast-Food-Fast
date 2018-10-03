@@ -1,37 +1,34 @@
-import { Pool } from 'pg';
+import db from '../config/dbconfig';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
-
-export default {
-  getOrders(req, res) {
+class Order {
+  static getOrders(req, res) {
     if (!req.user.isadmin) {
       return res.status(403).json({
         status: false,
         message: "Only admins can view all orders"
       });
     }
-    pool.query(`SELECT * FROM orders`)
+    db.query(`SELECT * FROM orders`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
-  },
-  getUserOrders(req, res) {
+  }
+  
+  static getUserOrders(req, res) {
     if (req.user.id != req.params.id && !req.user.isadmin) {
       return res.status(403).json({
         status: false,
         message: "You are not authorized to view other users' orders"
       });
     }
-    pool.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
+    db.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
-  },
-  getOrder(req, res) {
-    pool.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
+  }
+  
+  static getOrder(req, res) {
+    db.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
       .then((response) => {
         if (response.rowCount === 0) {
           return res.status(404).json({
@@ -49,8 +46,9 @@ export default {
         }
         return res.status(200).json({ status: true, result });
       });
-  },
-  createOrder(req, res) {
+  }
+  
+  static createOrder(req, res) {
     if (req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -64,7 +62,7 @@ export default {
       VALUES('${req.user.id}', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')
       RETURNING *`;
       
-    pool.query(queryString)
+    db.query(queryString)
       .then((order) => {
         return res.status(201).json({
           status: true,
@@ -77,8 +75,9 @@ export default {
           status: false, 
           message: 'An error occured, please try again later' });
       });
-  },
-  updateOrderStatus(req, res) {
+  }
+  
+  static updateOrderStatus(req, res) {
     if (!req.user.isadmin) {
       return res.status(403).json({
         status: false,
@@ -89,7 +88,7 @@ export default {
       SET order_status = '${req.body.orderStatus}' 
       WHERE id = '${req.params.id}' RETURNING *`;
       
-    pool.query(queryString)
+    db.query(queryString)
       .then((order) => {
         return res.status(200).json({
           status: true,
@@ -105,3 +104,5 @@ export default {
       });
   }
 };
+
+export default Order;

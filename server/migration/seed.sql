@@ -1,4 +1,6 @@
-CREATE TABLE IF NOT EXISTS users(
+DROP TABLE IF EXISTS menu, orders, users;
+
+CREATE TABLE users(
   id SERIAL PRIMARY KEY, 
   firstname VARCHAR(40) NOT NULL,
   lastname VARCHAR(40) NOT NULL,
@@ -9,15 +11,15 @@ CREATE TABLE IF NOT EXISTS users(
   cart TEXT[][],
   isadmin BOOLEAN DEFAULT 'false');
   
-CREATE TABLE IF NOT EXISTS menu(
+CREATE TABLE menu(
   id SERIAL PRIMARY KEY,
   name VARCHAR(40) UNIQUE, 
   cost INTEGER NOT NULL, 
   image TEXT NOT NULL);
 
-CREATE TABLE IF NOT EXISTS orders(
+CREATE TABLE orders(
   id SERIAL PRIMARY KEY,
-  user_id INTEGER, 
+  user_id INTEGER REFERENCES users(id),
   amount INTEGER NOT NULL, 
   address VARCHAR(40) NOT NULL, 
   food_ids TEXT[] NOT NULL, 
