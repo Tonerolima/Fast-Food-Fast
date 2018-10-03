@@ -1,9 +1,4 @@
-import { Pool } from 'pg';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+import db from '../config/dbconfig';
 
 class Menu {
   static addFood(req, res) {
@@ -16,7 +11,7 @@ class Menu {
     const { name, image, cost } = req.body;
     const query = `INSERT INTO menu(name, image, cost) 
       VALUES('${name}', '${image}', '${cost}') RETURNING *`;
-    pool.query(query)
+    db.query(query)
       .then((response) => {
         res.status(201).json({ 
           status: true, 
@@ -34,7 +29,7 @@ class Menu {
     const offset = req.query.offset || 0;
     const limit = req.query.limit || 10;
     
-    pool.query(`SELECT * FROM menu`)
+    db.query(`SELECT * FROM menu`)
       .then((response) => {
         const menu = response.rows;
         const temp = menu.filter(food => food.name.toLowerCase()

@@ -1,10 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Pool } from 'pg';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+import db from '../config/dbconfig';
 
 class Middleware {
 
@@ -58,7 +53,7 @@ class Middleware {
     const queryString = `SELECT COUNT(id) as count, SUM(cost) as sum 
       FROM menu WHERE id IN (${foodIds})`;
       
-    pool.query(queryString)
+    db.query(queryString)
       .then((response) => {
         if (!(response.rows[0].count == foodIds.length)) {
           return res.status(422).json({
@@ -212,7 +207,7 @@ class Middleware {
   };
   
   static verifyUser (req, res, next) {
-    pool.query(`SELECT id FROM users WHERE id = '${req.params.id}'`)
+    db.query(`SELECT id FROM users WHERE id = '${req.params.id}'`)
       .then((response) => {
         if (response.rowCount === 0) {
           return res.status(404).json({

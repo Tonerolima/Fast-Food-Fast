@@ -1,11 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { Pool } from 'pg';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+import db from '../config/dbconfig';
 
 class User {
   static signup(req, res) {
@@ -20,7 +15,7 @@ class User {
                             RETURNING id, firstname, lastname, username, address, phone, isAdmin, cart`,
           values: [firstname, lastname, username, address, phone, hash, isAdmin],
         };
-        pool.query(query)
+        db.query(query)
           .then((response) => {
             const newUser = response.rows[0];
             jwt.sign(newUser, process.env.JWTSECRET, async (er, token) => {
@@ -43,7 +38,7 @@ class User {
   }
 
   static login(req, res) {
-    pool.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
+    db.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
       .then((response) => {
         const user = response.rows[0];
         bcrypt.compare(req.body.password, user.password, (error, bcryptResponse) => {

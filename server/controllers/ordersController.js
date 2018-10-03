@@ -1,9 +1,4 @@
-import { Pool } from 'pg';
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+import db from '../config/dbconfig';
 
 class Order {
   static getOrders(req, res) {
@@ -13,7 +8,7 @@ class Order {
         message: "Only admins can view all orders"
       });
     }
-    pool.query(`SELECT * FROM orders`)
+    db.query(`SELECT * FROM orders`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
@@ -26,14 +21,14 @@ class Order {
         message: "You are not authorized to view other users' orders"
       });
     }
-    pool.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
+    db.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
   }
   
   static getOrder(req, res) {
-    pool.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
+    db.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
       .then((response) => {
         if (response.rowCount === 0) {
           return res.status(404).json({
@@ -67,7 +62,7 @@ class Order {
       VALUES('${req.user.id}', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')
       RETURNING *`;
       
-    pool.query(queryString)
+    db.query(queryString)
       .then((order) => {
         return res.status(201).json({
           status: true,
@@ -93,7 +88,7 @@ class Order {
       SET order_status = '${req.body.orderStatus}' 
       WHERE id = '${req.params.id}' RETURNING *`;
       
-    pool.query(queryString)
+    db.query(queryString)
       .then((order) => {
         return res.status(200).json({
           status: true,
