@@ -37,7 +37,36 @@ class Middleware {
     }
   
     next();
-  };
+  }
+  
+  static checkFoodId(req, res, next) {
+    req.check('foodId')
+    .exists({ checkNull: true, checkFalsy: true })
+    .withMessage('No foodId received')
+    .isInt()
+    .withMessage('FoodId must be an integer');
+    
+    const errors = req.validationErrors();
+  
+    if (errors) {
+      const result = [];
+      errors.forEach(error => result.push(error.msg));
+      return res.status(422).json({ 
+        status: false, 
+        message: 'Invalid foodId', result });
+    }
+    
+    db.query(`SELECT * FROM menu WHERE id = '${req.body.foodId}'`)
+      .then((response) => {
+        if (response.rowCount === 0) {
+          return res.status(422).json({
+            status: false,
+            message: 'Food does not exist'
+          });
+        }
+        return next();
+      });
+  }
   
   static validateFoodIds(req, res, next) {
     if (!req.body.foodIds || !req.body.foodIds[0]) {
@@ -189,7 +218,7 @@ class Middleware {
   
   static verifyToken(req, res, next) {
     const { authorization } = req.headers;
-    if (typeof authorization === 'undefined') {
+    if (!authorization) {
       return res.status(401).send({ 
         status: false,
         message: 'Authorization token not received'
@@ -213,6 +242,11 @@ class Middleware {
           return res.status(404).json({
             status: false,
             message: 'User does not exist'
+          });
+        } else if (req.user.id != req.params.id && !req.user.isadmin) {
+          return res.status(403).json({
+            status: false,
+            message: "You are not authorized to visit this route"
           });
         }
         return next();

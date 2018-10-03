@@ -12,7 +12,7 @@ class User {
         const query = {
           text: `INSERT INTO users(firstname, lastname, username, address, phone, password, isAdmin) 
                             VALUES($1, $2, $3, $4, $5, $6, $7) 
-                            RETURNING id, firstname, lastname, username, address, phone, isAdmin, cart`,
+                            RETURNING id, firstname, lastname, username, address, phone, isAdmin`,
           values: [firstname, lastname, username, address, phone, hash, isAdmin],
         };
         db.query(query)
@@ -41,9 +41,11 @@ class User {
     db.query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
       .then((response) => {
         const user = response.rows[0];
-        bcrypt.compare(req.body.password, user.password, (error, bcryptResponse) => {
-          if (!bcryptResponse) {
-            return res.status(422).json({ status: false, message: 'Incorrect password' });
+        bcrypt.compare(req.body.password, user.password, (error, resp) => {
+          if (!resp) {
+            return res.status(422).json({ 
+              status: false, 
+              message: 'Incorrect password' });
           }
           let result;
           jwt.sign(user, process.env.JWTSECRET, (err, token) => {
@@ -65,16 +67,89 @@ class User {
           
         });
       })
-      .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
+      .catch(e => res.status(422).send({ 
+        status: false, 
+        message: 'Incorrect username' }));
+  }
+  
+  static addToCart(req, res) {
+    const foodId = req.body.foodId;
+    const userId = req.params.id;
+    
+    if (req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: 'Admins cannot add items to cart'
+      });
+    }
+    
+    const query = `SELECT cart FROM users WHERE id = '${userId}'`;
+    db.query(query)
+      .then((response => {
+        const cart = response.rows[0].cart || [];
+        if (cart.includes(foodId.toString())) {
+          return res.status(409).json({
+            status: false,
+            message: 'Food has already been added to cart'
+          });
+        }
+        cart.push(req.body.foodId);
+        db.query(`UPDATE users SET cart = ARRAY[${cart}] WHERE id = '${userId}'`)
+          .then((result) => {
+            return res.status(200).json({
+              status: true,
+              message: 'Cart updated successfully'
+            });
+          })
+          .catch(error => {
+            return res.status(500).json({
+              status: false,
+              message: error
+            });
+          });
+      }));
+  }
+
+  static removeFromCart(req, res) {
+    if (req.user.isadmin) {
+      return res.status(403).json({
+        status: false,
+        message: 'Admins cannot delete users cart entries'
+      });
+    }
+    
+    const foodId = req.params.foodId;
+    const userId = req.params.id;
+    const query = `SELECT cart FROM users WHERE id = '${userId}'`;
+    db.query(query)
+      .then((response => {
+        const cart = response.rows[0].cart || [];
+        const index = cart.findIndex(id => id == foodId);
+        
+        if (index < 0) {
+          return res.status(422).json({
+            status: false,
+            message: 'Food item not found in cart'
+          });
+        }
+        cart.splice(index, 1);
+        db.query(`UPDATE users SET cart = ARRAY[${cart}]::integer[] WHERE id = '${userId}'`)
+          .then((result) => {
+            return res.status(200).json({
+              status: true,
+              message: 'Food item removed successfully'
+            });
+          })
+          .catch(error => {
+            return res.status(500).json({
+              status: false,
+              message: error
+            });
+          });
+      }));
   }
   
   static retrieveCart(req, res) {
-    if (req.user.id != req.params.id && !req.user.isadmin) {
-      return res.status(403).json({
-        status: false,
-        message: "You are not authorized to view other users' cart"
-      });
-    }
     db.query(`SELECT cart FROM users WHERE id = '${req.params.id}'`)
       .then((response) => {
         const result = response.rows[0].cart || [];
@@ -86,12 +161,6 @@ class User {
   }
   
   static retrieveOrders(req, res) {
-    if (req.user.id != req.params.id && !req.user.isadmin) {
-      return res.status(403).json({
-        status: false,
-        message: "You are not authorized to view other users' orders"
-      });
-    }
     db.query(`SELECT * FROM orders WHERE user_id = ${req.params.id}`)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });

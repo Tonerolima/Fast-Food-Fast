@@ -9,7 +9,6 @@ chai.should();
 
 let foodId1;
 let foodId2;
-let foodId3;
 
 let user1Id;
 let user2Id;
@@ -297,6 +296,19 @@ describe('Menu route', () => {
           expect(res.body['status']).to.equal(true);
           res.body.should.have.own.property('result');
           foodId1 = res.body.result.id;
+          return done();
+        });
+    });
+    it('should create additional food items', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .send({name:'Yam', cost:'1500', image:'http://example.com/image.jpg'})
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body['status']).to.equal(true);
+          res.body.should.have.own.property('result');
+          foodId2 = res.body.result.id;
           return done();
         });
     });
@@ -652,5 +664,164 @@ describe('Users Route', () => {
         });
     });
   });
+  describe('PUT /users/userId/cart', () => {
+    it('should return 401 if no auth token was received', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 404 if user does not exist', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/0/cart`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .send({ foodId: foodId1 })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 403 if user does not own the cart', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user2token}` })
+        .send({ foodId: foodId1 })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if no foodId was received', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if foodId is not a number', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .send({ foodId: 'text' })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if foodId does not exist', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .send({ foodId: 8 })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 200 for a successful request', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .send({ foodId: foodId1 })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it('should return 403 if user is an admin', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .send({ foodId: foodId2 })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 409 if food is already in the cart', (done) => {
+      chai.request(app)
+        .put(`/api/v1/users/${user1Id}/cart`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .send({ foodId: foodId1 })
+        .end((err, res) => {
+          expect(res).to.have.status(409);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+  });
   
+  describe('DELETE /users/userId/cart/:foodId', () => {
+    it('should return 401 if no auth token was received', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/${user1Id}/cart/${foodId1}`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 404 if user does not exist', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/0/cart/${foodId1}`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 403 if user does not own the cart', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/${user1Id}/cart/${foodId1}`)
+        .set({ Authorization: `Bearer ${user2token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 200 for successful removal', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/${user1Id}/cart/${foodId1}`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it('should return 403 if user is an admin', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/${user1Id}/cart/${foodId1}`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if foodId was not found in the cart', (done) => {
+      chai.request(app)
+        .delete(`/api/v1/users/${user1Id}/cart/88888`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+  });
 });
