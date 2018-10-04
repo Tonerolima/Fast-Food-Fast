@@ -1,11 +1,11 @@
 const filter = document.getElementById("filter");
 let orders = document.getElementsByClassName('card');
-let pending = document.getElementsByClassName('pending');
-let confirmed = document.getElementsByClassName('confirmed');
-let delivered = document.getElementsByClassName('delivered');
+let pending = document.getElementsByClassName('new');
+let processing = document.getElementsByClassName('processing');
+let cancelled = document.getElementsByClassName('cancelled');
+let complete = document.getElementsByClassName('complete');
 
 const filterOrders = (status) => {
-  console.log(status);
   for(let order of orders){
     if(status === "all") {
       if(order.classList.contains("hidden")){

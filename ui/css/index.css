@@ -111,12 +111,10 @@ a {
   color: #fff;
   position: relative;
   z-index: 1;
-  font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
   height: 100vh;
-  padding-top: 320px;
-  padding-bottom: 20px;
+  justify-content: center;
 }
 
 .section>h1 {
@@ -128,22 +126,15 @@ a {
   margin-bottom: 20px;
   font-weight: normal;
   font-size: 1.1em;
-  text-shadow: 2px 1px 4px rgb(22, 41, 67);
+}
+
+.bottom-page {
+  position: absolute;
+  bottom: 50px;
 }
 
 .landing.section>p:first-of-type {
-  font-size: 2em;
-}
-
-.landing.section>p:nth-of-type(2) {
-  font-style: italic;
-  font-size: inherit;
-  margin-bottom: 100px;
-}
-
-.landing.section>p:nth-of-type(4) {
-  margin-top: auto;
-  margin-bottom: 5px;
+  font-size: 1.5em;
 }
 
 .main-section::after {
@@ -252,13 +243,11 @@ input:focus {
 }
 
 .list {
-  position: relative;
   list-style-type: none;
   display: flex;
   height: auto;
   padding: 30px;
-  margin-top: 0;
-  margin-bottom: 0;
+  /* margin-bottom: 0; */
   box-sizing: border-box;
 }
 
@@ -274,10 +263,6 @@ input:focus {
   max-width: 1200px;
 }
 
-.horizontal.list>.card {
-  margin-right: auto;
-}
-
 .card {
   display: flex;
   background: white;
@@ -290,6 +275,15 @@ input:focus {
   transition: all .5s cubic-bezier(0.6, -1, 0.735, 0.045);
   border: 1px solid rgba(22, 41, 67, 0.25);
   border-radius: 3px;
+}
+
+.order.card {
+  min-width: 600px;
+  height: 80px;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .vertical.card {

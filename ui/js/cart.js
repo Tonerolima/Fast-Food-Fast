@@ -42,12 +42,11 @@ const fadeOut = (element) => {
 
 list.addEventListener('click', (event) => {
   const clicked = event.target;
-  if (clicked.tagName === 'BUTTON') {
+  if (clicked.textContent === 'Remove') {
     removeFromCart(clicked.dataset.id);
     total.textContent = parseInt(total.textContent) - parseInt(clicked.dataset.cost);
     const parentList = clicked.parentNode.parentNode.parentNode;
     fadeOut(parentList);
-    // parentList.removeChild(clicked.parentNode.parentNode.parentNode);
   }
 });
 
@@ -57,23 +56,18 @@ checkoutButton.addEventListener('click', (event) => {
 })
 
 const checkout = (cart) => {
-  const obj = new FormData();
-  cart.forEach((value, key) => {
-    obj.append(key, value.qty);
-  })
-  
-  const XHR = new XMLHttpRequest();
+  let obj = {};
+  obj.foodIds = [...cart.keys()];
 
-  XHR.addEventListener("load", (event) => {
-    let response = JSON.parse(event.target.responseText);
-    console.log(response);
-    // if (event.target.status === 201) { 
-    //   console.log(response.result);
-    // }
-
+  const myInit = { method: 'POST', body: JSON.stringify(obj), headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.authToken}` } };
+  const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
+  fetch(request)
+  .then(response => response.json())
+  .catch(error => console.log('Request failed', error))
+  .then(response => {
+    if (!response.status) { return alert(response.message); }
+    emptyCart();
+    alert(response.message);
+    window.location = 'order-history.html';
   });
-
-  XHR.open('POST', 'http://localhost:8080/api/v1/orders');
-  XHR.setRequestHeader('Authorization', `Bearer ${localStorage.authToken}`);
-  XHR.send(obj);
 }

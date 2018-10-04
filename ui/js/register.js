@@ -10,8 +10,10 @@ form.addEventListener("submit", (event) => {
   .then(response => response.json())
   .catch(error => console.log('Request failed', error))
   .then(response => {
-    if (!response.status) { return alert(response.message); }
+    if (!response.status) { return alert(response.result || response.message); }
+    console.log(response);
     localStorage.setItem('authToken', response.token);
+    localStorage.setItem('isAdmin', response.result.isadmin);
     window.location = 'index.html';
   });
 });

@@ -28,20 +28,34 @@ const checkToken = () => {
   return false;
 }
 
-const toggleAuthLinks = () => {
-  const navLinks = document.querySelector('.nav-links:nth-of-type(2)');
+const checkAdmin = () => {
+  if (localStorage.isAdmin === 'true') {
+    return true;
+  }
+  return false;
+}
+
+
+
+const toggleLinks = () => {
+  const navLinks1 = document.querySelector('.nav-links:nth-of-type(1)');
+  const navLinks2 = document.querySelector('.nav-links:nth-of-type(2)');
   if (checkToken()) {
-    navLinks.innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
+    navLinks2.innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
     document.getElementById('logout').addEventListener('click', (event) => {
       logout();
-    })
+    });
+    navLinks1.appendChild(htmlToElement(`<li><a href="order-history.html">My Orders</a></li>`));
+    navLinks1.appendChild(htmlToElement(`<li><a href="cart.html">Cart</a></li>`));
+    if (checkAdmin()) {
+      navLinks1.appendChild(htmlToElement('<li><a href="admin.html">Admin Portal</a></li>'));
+    }
   }
 }
 
 const createCart = () => {
   if (!localStorage.cart) {
     localStorage.cart = '[]';
-    console.log(localStorage.cart);
   }
 }
 
@@ -72,14 +86,20 @@ const removeFromCart = async (foodId) => {
 
 const checkCartForItem = (foodId) => {
   if (!foodId) { return false }
-  return retrieveCart().has(foodId);
+  return retrieveCart().has(foodId.toString());
+}
+
+const emptyCart = () => {
+  localStorage.cart = '[]';
 }
 
 const logout = () => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem('isAdmin');
   window.location = 'login.html';
 }
 
+// source: https://stackoverflow.com/a/494348
 const htmlToElement = (html) => {
   var template = document.createElement('template');
   html = html.trim();
@@ -134,5 +154,5 @@ closeToggler.addEventListener('click', (event) => {
   closeMenu();
 })
 
-toggleAuthLinks();
+toggleLinks();
 createCart();

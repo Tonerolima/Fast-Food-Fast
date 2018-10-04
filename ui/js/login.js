@@ -12,6 +12,8 @@ form.addEventListener("submit", (event) => {
   .then(response => {
     if (!response.status) { return alert(response.message); }
     localStorage.setItem('authToken', response.token);
+    localStorage.setItem('isAdmin', response.result.isadmin);
+    localStorage.setItem('userId', response.result.id);
     window.location = 'index.html';
   });
 });
