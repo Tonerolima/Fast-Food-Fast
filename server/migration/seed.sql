@@ -8,7 +8,6 @@ CREATE TABLE users(
   address VARCHAR(40) NOT NULL,
   phone VARCHAR(11) NOT NULL,
   password VARCHAR(100) NOT NULL,
-  cart TEXT[][],
   isadmin BOOLEAN DEFAULT 'false');
   
 CREATE TABLE menu(

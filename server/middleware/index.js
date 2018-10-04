@@ -123,16 +123,12 @@ class Middleware {
     req.check('username')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Username must not be empty')
-      .isAlphanumeric()
-      .withMessage('Username can only contain alphanumeric characters')
       .isLength({ min: 4, max: 25 })
       .withMessage('Username must have between 2 - 25 characters');
   
     req.check('address')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Address must not be empty')
-      .isAlphanumeric()
-      .withMessage('Address can only contain alphanumeric characters')
       .isLength({ min: 6, max: 40 })
       .withMessage('Address must have between 6 - 40 characters');
   
@@ -147,8 +143,6 @@ class Middleware {
     req.check('password')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Password must not be empty')
-      .isAlphanumeric()
-      .withMessage('Password can only contain alphanumeric characters')
       .isLength({ min: 6, max: 25 })
       .withMessage('Password must have between 6 - 25 characters');
   
