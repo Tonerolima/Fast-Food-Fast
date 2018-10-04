@@ -12,7 +12,7 @@ class User {
         const query = {
           text: `INSERT INTO users(firstname, lastname, username, address, phone, password, isAdmin) 
                             VALUES($1, $2, $3, $4, $5, $6, $7) 
-                            RETURNING id, firstname, lastname, username, address, phone, isAdmin, cart`,
+                            RETURNING id, firstname, lastname, username, address, phone, isAdmin`,
           values: [firstname, lastname, username, address, phone, hash, isAdmin],
         };
         db.query(query)
@@ -50,9 +50,9 @@ class User {
             
           // copy all user data to a new object excluding password
             result = (({
-              id, firstname, lastname, username, phone, isadmin, cart,
+              id, firstname, lastname, username, phone, isadmin
             }) => ({
-              id, firstname, lastname, username, phone, isadmin, cart,
+              id, firstname, lastname, username, phone, isadmin
             }))(user);
             
             return res.status(200).json({ 

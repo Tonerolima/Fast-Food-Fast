@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import methodOverride from 'method-override';
@@ -9,6 +10,7 @@ import users from './routes/usersRoute';
 import index from './routes/indexRoute';
 
 const app = express();
+app.use(cors());
 
 const upload = multer();
 
@@ -23,16 +25,10 @@ app.use(expressValidator());
 app.use(methodOverride('_method'));
 
 // Enable cross-origin resource sharing
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Max-Age', '1728000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next();
-});
+
 
 // route handlers
+app.options('*', cors());
 app.use(users);
 app.use(orders);
 app.use(menu);
