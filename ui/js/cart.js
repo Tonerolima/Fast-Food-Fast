@@ -30,16 +30,6 @@ document.onreadystatechange = () => {
   }
 }
 
-const fadeOut = (element) => {
-  element.classList.add('fade');
-  window.setTimeout(() => {
-    element.classList.add('shrink');
-  }, 600)
-  window.setTimeout(() => {
-    element.classList.add('hidden');
-  }, 1100)
-}
-
 list.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.textContent === 'Remove') {
@@ -63,11 +53,13 @@ const checkout = (cart) => {
   const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
   fetch(request)
   .then(response => response.json())
-  .catch(error => console.log('Request failed', error))
+  .catch(error => showMessage(error, 'failure'))
   .then(response => {
-    if (!response.status) { return alert(response.message); }
+    if (!response.status) { return showMessage(response.message, 'failure'); }
     emptyCart();
-    alert(response.message);
-    window.location = 'order-history.html';
+    showMessage(response.message, 'success');
+    setTimeout(() => {
+      window.location = 'order-history.html';
+    }, 3000)
   });
 }

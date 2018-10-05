@@ -5,6 +5,7 @@
   <title>Fast Food Fast​</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <link type="text/css" rel="stylesheet" href="css/index.css">
+  <link type="text/css" rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/solid.css" integrity="sha384-wnAC7ln+XN0UKdcPvJvtqIH3jOjs9pnKnq9qX68ImXvOGz2JuFoEiCjT8jyZQX2z"
     crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css" integrity="sha384-HbmWTHay9psM8qyzEKPc8odH4DsOuzdejtnr+OFtDmOcIVnhgReQ4GZBH7uwcjf6"
@@ -24,7 +25,7 @@
       <div class="nav-links-wrapper">
         <i class="fa fa-times fa-2x nav-toggle" aria-hidden="true" id='nav-toggle-close'></i>
         <ul class='nav-links'>
-          <li><a href="menu.html">Browse Menu</a></li>
+          
         </ul>
         <ul class='nav-links'>
           <li><a href="login.html">Login</a></li>
@@ -34,127 +35,43 @@
     </div>
   </nav>
 
-  
-  <div class='small section'>
-    <div class="section-header">
-      <h2>Orders</h2>
-      <div class="filter">
-        <label for="filter">Filter:</label>
-        <select name="filter" id="filter">
-          <option value="all">All</option>
-          <option value="pending" selected>Pending</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="delivered">Delivered</option>
-        </select>
-      </div>
-    </div>
-    
-    <ul class="vertical list">
-      <li class="pending horizontal card">
-        <div class="img-thumbnail">
-          <img src="http://www.foodstantly.com/product_image/big/142366775497271.jpg" alt="Pounded Yam & Egusi">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Pounded Yam & Egusi</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Pending</h6>
-          <div class="order-buttons">
-            <button class="small button confirm">Confirm</button>
-            <button class="small button decline">Decline</button>
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="pending horizontal card">
-        <div class="img-thumbnail">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx8gtSyqFNAYH-Xpkea3W33g4lov95EDg103oXgQOMRdB8Okyo_Q" alt="Spaghetti">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Spaghetti</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Pending</h6>
-          <div class="order-buttons">
-            <button class="small button confirm">Confirm</button>
-            <button class="small button decline">Decline</button>
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="delivered horizontal card">
-        <div class="img-thumbnail">
-            <img src="http://4.bp.blogspot.com/--7ui7whGVfU/TWR0S1XZlhI/AAAAAAAAAnI/0qtGjCyMr0s/s1600/DSC04065.JPG" alt="Ewa Agoyin">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Ewa Agoyin</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Delivered</h6>
-          <div class="order-buttons">
-          </div>
-        </div>
-      </li>
-
-      <li class="confirmed horizontal card">
-        <div class="img-thumbnail">
-            <img src="https://i2.wp.com/www.1qfoodplatter.com/wp-content/uploads/2015/11/nkwobi-recipe.jpg?fit=400%2C266&ssl=1" alt="Nkwobi">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Nkwobi</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Confirmed</h6>
-          <div class="order-buttons">
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="pending horizontal card">
-        <div class="img-thumbnail">
-            <img src="https://i.ytimg.com/vi/ez_N5ArYkA0/maxresdefault.jpg" alt="Asun">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Asun</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Pending</h6>
-          <div class="order-buttons">
-            <button class="small button confirm">Confirm</button>
-            <button class="small button decline">Decline</button>
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="confirmed horizontal card">
-        <div class="img-thumbnail">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDdKUntB-h6FyEKBuKw9gNTZzhT7L2ftaFCH3LJPxL7Wdmsb65dA" alt="Yam Porridge">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Yam Porridge</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Confirmed</h6>
-          <div class="order-buttons">
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-
-      <li class="pending horizontal card">
-        <div class="img-thumbnail">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnUqzH59_6q1KUqc7-w6arwNbw9MMrrswfFYVh3vE9aSpvw6q1" alt="Jollof Rice">
-        </div>
-        <div class="horizontal card-details">
-          <h4 class="food-name">Jollof Rice</h4>
-          <h5 class="customer-name">Customer: John Doe</h5>
-          <h6 class="order-status">Status: Pending</h6>
-          <div class="order-buttons">
-            <button class="small button confirm">Confirm</button>
-            <button class="small button decline">Decline</button>
-            <button class="small button complete">Done</button>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <div class='admin-dashbord'>
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Date Created</td>
+          <td>Customer Name</td>
+          <td>Delivery Address</td>
+          <td>Amount</td>
+          <td>Status</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>20-09-2018</td>
+          <td>Anthony Oyathelemhi</td>
+          <td>Lagos State</td>
+          <td>2500</td>
+          <td>new</td>
+          <td class="button-cell"><button class='small button confirm'>Accept</button></td>
+          <td class="button-cell"><button class='small button decline'>Decline</button></td>
+        </tr>
+        
+        <tr>
+          <td>1</td>
+          <td>20-09-2018</td>
+          <td>Anthony Oyathelemhi</td>
+          <td>Lagos State</td>
+          <td>2500</td>
+          <td>new</td>
+          <td class="button-cell"><button class='small button confirm'>Accept</button></td>
+          <td class="button-cell"><button class='small button decline'>Decline</button></td>
+        </tr>
+        
+      </tbody>
+    </table>
   </div>
   <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript" src="js/admin.js"></script>

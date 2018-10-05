@@ -19,6 +19,6 @@ const filterOrders = (status) => {
   }
 }
 
-filter.addEventListener("input", (e) => {
-  filterOrders(e.target.value);
-})
+// filter.addEventListener("input", (e) => {
+//   filterOrders(e.target.value);
+// })

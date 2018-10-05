@@ -45,11 +45,13 @@ const toggleLinks = () => {
     document.getElementById('logout').addEventListener('click', (event) => {
       logout();
     });
+    
+    if (checkAdmin()) {
+      return navLinks1.appendChild(htmlToElement('<li><a href="admin.html">Admin Portal</a></li>'));
+    }
+    navLinks1.appendChild(htmlToElement(`<li><a href="menu.html">Browse Menu</a></li>`));
     navLinks1.appendChild(htmlToElement(`<li><a href="order-history.html">My Orders</a></li>`));
     navLinks1.appendChild(htmlToElement(`<li><a href="cart.html">Cart</a></li>`));
-    if (checkAdmin()) {
-      navLinks1.appendChild(htmlToElement('<li><a href="admin.html">Admin Portal</a></li>'));
-    }
   }
 }
 
@@ -143,6 +145,31 @@ const populateMenu = (foodList, parentNode) => {
 			      </li>`;
 	});
 	parentNode.innerHTML = item;
+}
+
+const fadeOut = (element) => {
+  element.classList.add('fade');
+  window.setTimeout(() => {
+    element.classList.add('shrink');
+  }, 600)
+  window.setTimeout(() => {
+    element.classList.add('hidden');
+  }, 1100)
+}
+
+const showMessage = (message, status = "failure") => {
+  // construct the div element
+  const elem = htmlToElement(`<div class="pop-up ${status}">
+    <p>${message}</p>
+  </div>`);
+
+  // add div to the page and set a timer to remove it in 5s
+  nav.after(elem);
+  setTimeout(hideMessage, 3000);
+}
+
+const hideMessage = () => {
+  document.querySelector('.pop-up').remove();
 }
 
 openToggler.addEventListener('click', (event) => {
