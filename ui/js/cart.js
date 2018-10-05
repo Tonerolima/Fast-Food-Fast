@@ -30,24 +30,13 @@ document.onreadystatechange = () => {
   }
 }
 
-const fadeOut = (element) => {
-  element.classList.add('fade');
-  window.setTimeout(() => {
-    element.classList.add('shrink');
-  }, 600)
-  window.setTimeout(() => {
-    element.classList.add('hidden');
-  }, 1100)
-}
-
 list.addEventListener('click', (event) => {
   const clicked = event.target;
-  if (clicked.tagName === 'BUTTON') {
+  if (clicked.textContent === 'Remove') {
     removeFromCart(clicked.dataset.id);
     total.textContent = parseInt(total.textContent) - parseInt(clicked.dataset.cost);
     const parentList = clicked.parentNode.parentNode.parentNode;
     fadeOut(parentList);
-    // parentList.removeChild(clicked.parentNode.parentNode.parentNode);
   }
 });
 
@@ -57,23 +46,20 @@ checkoutButton.addEventListener('click', (event) => {
 })
 
 const checkout = (cart) => {
-  const obj = new FormData();
-  cart.forEach((value, key) => {
-    obj.append(key, value.qty);
-  })
-  
-  const XHR = new XMLHttpRequest();
+  let obj = {};
+  obj.foodIds = [...cart.keys()];
 
-  XHR.addEventListener("load", (event) => {
-    let response = JSON.parse(event.target.responseText);
-    console.log(response);
-    // if (event.target.status === 201) { 
-    //   console.log(response.result);
-    // }
-
+  const myInit = { method: 'POST', body: JSON.stringify(obj), headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.authToken}` } };
+  const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
+  fetch(request)
+  .then(response => response.json())
+  .catch(error => showMessage(error, 'failure'))
+  .then(response => {
+    if (!response.status) { return showMessage(response.message, 'failure'); }
+    emptyCart();
+    showMessage(response.message, 'success');
+    setTimeout(() => {
+      window.location = 'order-history.html';
+    }, 3000)
   });
-
-  XHR.open('POST', 'http://localhost:8080/api/v1/orders');
-  XHR.setRequestHeader('Authorization', `Bearer ${localStorage.authToken}`);
-  XHR.send(obj);
 }
