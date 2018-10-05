@@ -28,20 +28,36 @@ const checkToken = () => {
   return false;
 }
 
-const toggleAuthLinks = () => {
-  const navLinks = document.querySelector('.nav-links:nth-of-type(2)');
+const checkAdmin = () => {
+  if (localStorage.isAdmin === 'true') {
+    return true;
+  }
+  return false;
+}
+
+
+
+const toggleLinks = () => {
+  const navLinks1 = document.querySelector('.nav-links:nth-of-type(1)');
+  const navLinks2 = document.querySelector('.nav-links:nth-of-type(2)');
   if (checkToken()) {
-    navLinks.innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
+    navLinks2.innerHTML = '<li id="logout"><a href="#">Logout</a></li>';
     document.getElementById('logout').addEventListener('click', (event) => {
       logout();
-    })
+    });
+    
+    if (checkAdmin()) {
+      return navLinks1.appendChild(htmlToElement('<li><a href="admin.html">Admin Portal</a></li>'));
+    }
+    navLinks1.appendChild(htmlToElement(`<li><a href="menu.html">Browse Menu</a></li>`));
+    navLinks1.appendChild(htmlToElement(`<li><a href="order-history.html">My Orders</a></li>`));
+    navLinks1.appendChild(htmlToElement(`<li><a href="cart.html">Cart</a></li>`));
   }
 }
 
 const createCart = () => {
   if (!localStorage.cart) {
     localStorage.cart = '[]';
-    console.log(localStorage.cart);
   }
 }
 
@@ -72,14 +88,20 @@ const removeFromCart = async (foodId) => {
 
 const checkCartForItem = (foodId) => {
   if (!foodId) { return false }
-  return retrieveCart().has(foodId);
+  return retrieveCart().has(foodId.toString());
+}
+
+const emptyCart = () => {
+  localStorage.cart = '[]';
 }
 
 const logout = () => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem('isAdmin');
   window.location = 'login.html';
 }
 
+// source: https://stackoverflow.com/a/494348
 const htmlToElement = (html) => {
   var template = document.createElement('template');
   html = html.trim();
@@ -125,6 +147,31 @@ const populateMenu = (foodList, parentNode) => {
 	parentNode.innerHTML = item;
 }
 
+const fadeOut = (element) => {
+  element.classList.add('fade');
+  window.setTimeout(() => {
+    element.classList.add('shrink');
+  }, 600)
+  window.setTimeout(() => {
+    element.classList.add('hidden');
+  }, 1100)
+}
+
+const showMessage = (message, status = "failure") => {
+  // construct the div element
+  const elem = htmlToElement(`<div class="pop-up ${status}">
+    <p>${message}</p>
+  </div>`);
+
+  // add div to the page and set a timer to remove it in 5s
+  nav.after(elem);
+  setTimeout(hideMessage, 3000);
+}
+
+const hideMessage = () => {
+  document.querySelector('.pop-up').remove();
+}
+
 openToggler.addEventListener('click', (event) => {
   event.stopImmediatePropagation();
   openMenu();
@@ -134,5 +181,5 @@ closeToggler.addEventListener('click', (event) => {
   closeMenu();
 })
 
-toggleAuthLinks();
+toggleLinks();
 createCart();
