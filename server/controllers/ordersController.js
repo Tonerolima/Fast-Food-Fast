@@ -85,7 +85,7 @@ class Order {
       });
     }
     const queryString = `UPDATE orders
-      SET order_status = '${req.body.orderStatus}' 
+      SET order_status = '${req.orderStatus}' 
       WHERE id = '${req.params.id}' RETURNING *`;
       
     db.query(queryString)

@@ -2,21 +2,32 @@ import jwt from 'jsonwebtoken';
 import db from '../config/dbconfig';
 
 class Middleware {
+  
+  static validateParams(req, res, next) {
+    const params = req.params;
+    for (const param in params) {
+      if (req.params[param] != Number.parseInt(params[param], 10)) {
+        return res.status(422).json({
+          status: false,
+          message: `${param} must be a number`
+        });
+      }
+    }
+    next();
+  }
 
   static validateMenuItem(req, res, next) {
     req.check('name')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Name cannot be empty')
-      .isAlpha()
-      .withMessage('Name can only contain alphabets')
       .isLength({ min: 2, max: 25})
       .withMessage('Name must be between 2 to 25 characters');
       
     req.check('cost')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Cost cannot be empty')
-      .isInt()
-      .withMessage('Cost can only contain whole numbers')
+      .isNumeric({ no_symbols: true })
+      .withMessage('Cost can only contain positive whole numbers')
       .isLength({ min: 3, max: 5 })
       .withMessage('Cost must be between 3 to 5 digits');
       
@@ -35,6 +46,8 @@ class Middleware {
         status: false, 
         message: 'Invalid food data', result });
     }
+    
+    req.body.name = req.body.name.toLowerCase();
   
     next();
   };
@@ -79,13 +92,13 @@ class Middleware {
       });
     }
   
-    const orderStatus = req.body.orderStatus.toLowerCase();
+    req.orderStatus = req.body.orderStatus.toLowerCase();
     const validOrderStatus = ['new', 'processing', 'cancelled', 'complete'];
     
-    if (!validOrderStatus.includes(orderStatus)) {
+    if (!validOrderStatus.includes(req.orderStatus)) {
       return res.status(422).send({
         status: false,
-        message: 'Invalid orderStatus',
+        message: `orderStatus must be one of ${[...validOrderStatus]}`,
       });
     }
     next();
@@ -135,7 +148,7 @@ class Middleware {
     req.check('phone')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Phone number must not be empty')
-      .isNumeric({ min: 11, max: 11 })
+      .isNumeric({ min: 11, max: 11, no_symbols: true })
       .withMessage('Phone number can only contain numbers')
       .isLength({ min: 11, max: 11 })
       .withMessage('Phone number must be exactly 11 digts');
