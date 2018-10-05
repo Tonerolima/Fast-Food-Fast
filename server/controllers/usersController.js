@@ -12,7 +12,7 @@ class User {
         const query = {
           text: `INSERT INTO users(firstname, lastname, username, address, phone, password, isAdmin) 
                             VALUES($1, $2, $3, $4, $5, $6, $7) 
-                            RETURNING id, firstname, lastname, username, address, phone, isAdmin`,
+                            RETURNING id, username, isAdmin`,
           values: [firstname, lastname, username, address, phone, hash, isAdmin],
         };
         db.query(query)
@@ -43,7 +43,7 @@ class User {
         const user = response.rows[0];
         bcrypt.compare(req.body.password, user.password, (error, bcryptResponse) => {
           if (!bcryptResponse) {
-            return res.status(422).json({ status: false, message: 'Incorrect password' });
+            return res.status(422).json({ status: false, message: 'Incorrect username/password' });
           }
           let result;
           jwt.sign(user, process.env.JWTSECRET, (err, token) => {
@@ -65,7 +65,7 @@ class User {
           
         });
       })
-      .catch(e => res.status(422).send({ status: false, message: 'Incorrect username' }));
+      .catch(e => res.status(422).send({ status: false, message: 'Incorrect username/password' }));
   }
 };
 
