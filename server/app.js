@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import multer from 'multer';
 import expressValidator from 'express-validator';
 import orders from './routes/ordersRoute';
 import menu from './routes/menuRoute';
@@ -15,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ strict: false }));
 app.use(bodyParser.raw());
 app.use(expressValidator());
+
+const upload = multer();
+app.use(upload.fields([]));
 
 // route handlers
 app.options('*', cors());
