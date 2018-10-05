@@ -6,9 +6,9 @@ const getOrders = () => {
 
     fetch(request)
         .then(response => response.json())
-        .catch(error => console.log('Request failed', error))
+        .catch(error => showMessage(response.message, 'failure'))
         .then(response => {
-            if (!response.status) { return alert(response.message); }
+            if (!response.status) { return showMessage(response.message, 'failure') }
             let item = '';
             let orders = response.result;
             orders.forEach((order) => {
@@ -21,14 +21,6 @@ const getOrders = () => {
             list.innerHTML = item;
         });
 
-
-    // fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu`)
-    //     .then(response => response.json())
-    //     .catch(error => console.log('Request failed', error))
-    //     .then(response => {
-    //         if (!response.status) { return alert(response.message); }
-            
-    // });
 }
 
 getOrders();
