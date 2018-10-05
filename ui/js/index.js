@@ -76,6 +76,7 @@ const addToCart = async (food) => {
   properties.qty = 1;
   const cart = retrieveCart();
   await cart.set(id, properties);
+  showMessage("Item added to cart", 'success')
   return resaveCart(cart);
 }
 
@@ -83,6 +84,7 @@ const removeFromCart = async (foodId) => {
   if (!foodId) { return false }
   const cart = retrieveCart();
   await cart.delete(foodId);
+  showMessage("Item removed from cart", 'success')
   return resaveCart(cart);
 }
 
