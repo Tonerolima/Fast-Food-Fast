@@ -8,10 +8,14 @@ form.addEventListener("submit", (event) => {
   
   fetch(request)
   .then(response => response.json())
-  .catch(error => console.log('Request failed', error))
+  .catch(error => showMessage(error, 'failure'))
   .then(response => {
-    if (!response.status) { return alert(response.message); }
+    if (!response.status) { return showMessage(response.result || response.message, 'failure') }
     localStorage.setItem('authToken', response.token);
-    window.location = 'index.html';
+    localStorage.setItem('isAdmin', response.result.isadmin);
+    showMessage(response.message, 'success');
+    setTimeout(() => {
+      window.location = 'index.html';
+    }, 3000)
   });
 });

@@ -1,20 +1,8 @@
-const list = document.querySelector('.horizontal.list');
+const hlist = document.querySelector('.horizontal.list');
 
-// const xmlhttp = new XMLHttpRequest();
-// const url = "https://fast-food-fast-adc.herokuapp.com/api/v1/menu";
+fetchMenu(10, 0, hlist);
 
-// xmlhttp.onreadystatechange = function() {
-// 	if (this.readyState == 4 && this.status == 200) {
-// 		var myArr = JSON.parse(this.responseText);
-// 		populateMenu(myArr.result, list);
-// 	}
-// };
-// xmlhttp.open("GET", url, true);
-// xmlhttp.send();
-
-fetchMenu(10, 0, list);
-
-list.addEventListener('click', (event) => {
+hlist.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.tagName === 'BUTTON') {
     if (clicked.classList.contains('decline')) {
