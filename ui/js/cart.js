@@ -60,6 +60,6 @@ const checkout = (cart) => {
     showMessage(response.message, 'success');
     setTimeout(() => {
       window.location = 'order-history.html';
-    }, 3000)
+    }, 2000)
   });
 }

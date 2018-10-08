@@ -10,13 +10,6 @@ form.addEventListener("submit", (event) => {
   .then(response => response.json())
   .catch(error => showMessage(error, 'failure'))
   .then(response => {
-    if (!response.status) { return showMessage(response.message, 'failure') }
-    localStorage.setItem('authToken', response.token);
-    localStorage.setItem('isAdmin', response.result.isadmin);
-    localStorage.setItem('userId', response.result.id);
-    showMessage(response.message, 'success');
-    setTimeout(() => {
-      window.location = 'index.html';
-    }, 3000)
+    login(response);
   });
 });
