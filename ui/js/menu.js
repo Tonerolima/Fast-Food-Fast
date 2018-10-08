@@ -1,8 +1,8 @@
-const hlist = document.querySelector('.horizontal.list');
+const searchForm = document.querySelector('.search-form');
+const searchInput = document.querySelector('input[type="search"]');
+const searchIcon = document.querySelector('.search-form > i');
 
-fetchMenu(10, 0, hlist);
-
-hlist.addEventListener('click', (event) => {
+list.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.tagName === 'BUTTON') {
     if (clicked.classList.contains('decline')) {
@@ -15,4 +15,20 @@ hlist.addEventListener('click', (event) => {
     clicked.classList.replace('confirm', 'decline');
     clicked.textContent = 'Remove from cart';
   }
+});
+
+searchIcon.addEventListener("click", (e) => {
+  search(searchInput.value.trim());
+});
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  search(searchInput.value.trim());
+})
+
+fetchMenu().then((result) => {
+  populateMenu(result, list)
+    .catch((error) => {
+      showMessage(error);
+    });
 });
