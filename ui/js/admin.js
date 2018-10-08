@@ -1,9 +1,10 @@
 const filter = document.getElementById("filter");
-let orders = document.getElementsByClassName('card');
-let pending = document.getElementsByClassName('new');
-let processing = document.getElementsByClassName('processing');
-let cancelled = document.getElementsByClassName('cancelled');
-let complete = document.getElementsByClassName('complete');
+const orders = document.getElementsByClassName('card');
+const pending = document.getElementsByClassName('new');
+const processing = document.getElementsByClassName('processing');
+const cancelled = document.getElementsByClassName('cancelled');
+const complete = document.getElementsByClassName('complete');
+
 
 const filterOrders = (status) => {
   for(let order of orders){

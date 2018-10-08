@@ -51,7 +51,7 @@ body > * {
 }
 
 #nav-container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   justify-content: left;
@@ -98,6 +98,7 @@ a {
 }
 
 .pop-up {
+  z-index: 5;
   position: fixed;
   top: 100px;
   display: flex;
@@ -105,7 +106,7 @@ a {
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 50px;
+  max-height: 50px;
   height: auto;
   color: #fff;
 }
@@ -142,10 +143,8 @@ a {
   color: #fff;
   position: relative;
   z-index: 1;
-  font-size: 1.3rem;
   text-align: center;
-  height: 60vh;
-  min-height: 60vh !important;
+  min-height: 55vh !important;
   justify-content: flex-end;
 }
 
@@ -161,8 +160,9 @@ a {
 .landing.section>p:first-of-type {
   margin-top: 0;
   font-weight: normal;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   margin-bottom: 20px;
+  font-style: italic;
 }
 
 .main-section::after {
@@ -197,28 +197,29 @@ form {
   font-style: italic;
 }
 
-form[id="landing"] {
+.search-form {
   background: none;
   flex-direction: row;
   box-shadow: none;
-  width: 500px;
-  margin-top: 0;
+  width: 800px;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 1.3rem;
 }
 
-form[id="landing"]>input {
-  border-radius: 0;
+.search-form>input {
+  border-radius: 5px 0 0 5px;
   box-shadow: none;
 }
 
-form[id="landing"]>input[type="submit"] {
-  width: 200px;
-  color: rgb(22, 41, 67);
-  font-weight: bold;
-  
-}
-
-form[id="landing"]>input[type="submit"]:hover {
-  transform: none;
+.search-form>i {
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  line-height: 2.5;
+  background-color: white;
+  border-radius: 0 5px 5px 0;
 }
 
 input {
@@ -228,7 +229,6 @@ input {
   font-size: 1.01em;
   transition-duration: .5s;
   border: none;
-  margin-bottom: 15px;
   font-family: 'Exo 2', sans-serif;
   box-sizing: border-box;
 }
@@ -243,8 +243,11 @@ input[type='submit']:hover {
   transform: scale(1.05,1.05);
 }
 
-input:focus {
+#myForm > input:focus {
   box-shadow: -2px 25px 16px -9px rgba(0,0,0,0.2);
+}
+
+input:focus {
   outline: none;
 }
 
@@ -279,9 +282,9 @@ input:focus {
   list-style-type: none;
   display: flex;
   height: auto;
-  padding: 30px;
-  /* margin-bottom: 0; */
   box-sizing: border-box;
+  padding: 0;
+  margin-top: 50px;
 }
 
 .vertical.list {
@@ -293,13 +296,14 @@ input:focus {
 .horizontal.list {
   flex-flow: row wrap;
   width: 100%;
-  max-width: 1200px;
+  max-width: 90vw;
+  justify-content: left;
 }
 
 .card {
   display: flex;
   background: white;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   box-sizing: content-box;
   box-shadow: 1px 0px 20px 0px rgba(0,0,0,0.2);
   overflow: hidden;
@@ -321,11 +325,11 @@ input:focus {
 .vertical.card {
   flex-direction: column;
   justify-content: space-between;
-  width: 250px;
+  width: 300px;
   max-width: 100%;
-  height: 320px;
+  height: 350px;
   align-items: flex-start;
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .horizontal.card {
@@ -386,7 +390,7 @@ input:focus {
 
 .vertical.card>.img-thumbnail {
   width: 100%;
-  height: 200px;
+  height: 65%;
   max-width: 100%;
   max-height: 100%;
 }
@@ -488,7 +492,6 @@ input:focus {
 }
 
 @media screen and (max-width: 992px) {
-  
   #navbar {
     display: flex;
     justify-content: space-between;
@@ -556,6 +559,10 @@ input:focus {
     align-self: flex-end;
     padding-right: 30px;
   }
+
+  .search-form {
+    width: 80%;
+  }
   
 }
 
@@ -566,24 +573,19 @@ input:focus {
   }
 
   #nav-toggle-open {
-    margin-right: 10px;
-  }
-
-  .section.landing {
-    font-size: 1em;
+    margin: 0 10px;
   }
 
   .list {
     padding-right: 0;
     padding-left: 0;
+    margin-top: 15px;
   }
 
-  .horizontal.card {
-    width: 400px;
-  }
-
-  .vertical.card {
-    width: 100%;
+  .card {
+    width: 100vw !important;
+    margin-bottom: 30px !important;
+    margin-left: 0 !important;
   }
 
   .order-details {
@@ -598,12 +600,12 @@ input:focus {
     width: 60px;
   }
 
-  form[id="landing"] {
-    flex-direction: column;
-    width: 300px;
+  .search-form {
+    width: 95%;
+    margin-bottom: 0;
   }
 
-  form[id="landing"] >* {
-    width: 100% !important;
+  .order.card {
+    min-width: 100%;
   }
 }
