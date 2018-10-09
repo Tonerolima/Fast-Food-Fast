@@ -1,4 +1,4 @@
-const list = document.querySelector('.vertical.list');
+const cartList = document.querySelector('.vertical.list');
 const total = document.getElementById('total');
 const checkoutButton = document.getElementById('checkout');
 const sectionFooter = document.querySelector('.section-footer');
@@ -24,13 +24,13 @@ document.onreadystatechange = () => {
         </div>
       </li>
       `;
-      list.insertBefore(htmlToElement(node), sectionFooter);
+      cartList.insertBefore(htmlToElement(node), sectionFooter);
     });
     total.textContent = sum;
   }
 }
 
-list.addEventListener('click', (event) => {
+cartList.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.textContent === 'Remove') {
     removeFromCart(clicked.dataset.id);

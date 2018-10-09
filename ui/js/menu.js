@@ -1,5 +1,5 @@
 const searchForm = document.querySelector('.search-form');
-const searchInput = document.querySelector('input[type="search"]');
+const searchInput = document.querySelector('.search-form > input');
 const searchIcon = document.querySelector('.search-form > i');
 
 list.addEventListener('click', (event) => {

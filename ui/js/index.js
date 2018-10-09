@@ -208,9 +208,7 @@ const search = (value) => {
       populateMenu(result, list)
       .then((v) => {
         searchInput.value = "";
-        if (window.location.toString().slice(-10, -5) === "index") {
-          window.scroll({ top: 520, behavior: "smooth" });
-        }
+        window.location = '#menu-section';
       })
       .catch((error) => {
         showMessage(error);
