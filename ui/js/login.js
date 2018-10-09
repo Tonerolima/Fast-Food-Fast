@@ -1,4 +1,4 @@
-const form = document.getElementById('myForm');
+const form = document.querySelector('.default-form');
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
