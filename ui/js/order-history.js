@@ -1,4 +1,4 @@
-const list = document.querySelector('.vertical.list');
+const ordersList = document.querySelector('.vertical.list');
 
 const getOrders = () => {
     const myInit = { method: 'GET', headers: { Authorization: `Bearer ${localStorage.authToken}` } };
@@ -18,7 +18,7 @@ const getOrders = () => {
                             <p>Status: <span>${order.order_status}</span> </p>
                         </li>`
             });
-            list.innerHTML = item;
+            ordersList.innerHTML = item;
         });
 
 }

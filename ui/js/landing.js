@@ -1,5 +1,5 @@
 const searchForm = document.querySelector('.search-form');
-const searchInput = document.querySelector('input[type="search"]');
+const searchInput = document.querySelector('.search-form > input');
 const searchIcon = document.querySelector('.search-form > i');
 
 window.onscroll = () => {
@@ -34,7 +34,7 @@ searchForm.addEventListener("submit", (e) => {
   search(searchInput.value.trim());
 })
 
-fetchMenu().then((result) => {
+fetchMenu({}).then((result) => {
   populateMenu(result, list)
     .catch((error) => {
       showMessage(error);
