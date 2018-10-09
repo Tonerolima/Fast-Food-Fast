@@ -127,7 +127,7 @@ const htmlToElement = (html) => {
   return template.content.firstChild;
 }
 
-const fetchMenu = (search="", foodCount=10, offset=0) => {
+const fetchMenu = ({search="", foodCount=10, offset=0}) => {
   return new Promise((resolve, reject) => {
     const hostUrl = 'https://fast-food-fast-adc.herokuapp.com/api/v1';
     fetch(`${hostUrl}/menu?offset=${offset}&&limit=${foodCount}&&search=${search}`)
@@ -203,7 +203,7 @@ const search = (value) => {
   if (!value) {
     return showMessage("Enter a search value");
   }
-  fetchMenu(value)
+  fetchMenu({search: value})
     .then((result) => {
       populateMenu(result, list)
       .then((v) => {

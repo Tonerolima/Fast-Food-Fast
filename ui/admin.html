@@ -35,8 +35,20 @@
     </div>
   </nav>
 
+  <div id="tab">
+    <p id="add-food-tab" class="underlined">Add food</p>
+    <p id="view-menu-tab">View orders</p>
+  </div>
   <div class='admin-dashbord'>
-    <table cellspacing="0">
+    <!--Tab content-->
+    <form id="add-food" class="default-form" action="https://fast-food-fast-adc.herokuapp.com/api/v1/menu">
+      <h2>Add menu item</h2>
+      <input type="text" name="name" placeholder="Food name">
+      <input type="number" name="cost" placeholder="Price">
+      <input type="text" name="image" placeholder="Image URL">
+      <input type="submit" value="Add Food">
+    </form>
+    <table cellspacing="0" id="orders-table" class="hidden">
       <thead>
         <tr>
           <td>ID</td>

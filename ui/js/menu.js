@@ -26,7 +26,7 @@ searchForm.addEventListener("submit", (e) => {
   search(searchInput.value.trim());
 })
 
-fetchMenu().then((result) => {
+fetchMenu({foodCount: 20}).then((result) => {
   populateMenu(result, list)
     .catch((error) => {
       showMessage(error);
