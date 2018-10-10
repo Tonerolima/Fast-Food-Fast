@@ -8,7 +8,11 @@ class Order {
         message: "Only admins can view all orders"
       });
     }
-    db.query(`SELECT * FROM orders`)
+    
+    const query = `select orders.id, firstname, lastname, orders.address, 
+                  amount, food_ids, order_status, created_on FROM orders 
+                  JOIN users ON orders.user_id = users.id`;
+    db.query(query)
       .then((orders) => {
         return res.status(200).json({ status: true, result: orders.rows });
       });
@@ -28,7 +32,13 @@ class Order {
   }
   
   static getOrder(req, res) {
-    db.query(`SELECT * FROM orders WHERE id = '${req.params.id}'`)
+    const query = `select orders.id, firstname, lastname, orders.address, 
+                  amount, food_ids, order_status, created_on, user_id
+                  FROM orders 
+                  JOIN users ON orders.user_id = users.id
+                  WHERE orders.id = '${req.params.id}'`;
+    
+    db.query(query)
       .then((response) => {
         if (response.rowCount === 0) {
           return res.status(404).json({
@@ -59,7 +69,8 @@ class Order {
     const address = req.body.address || req.user.address;
     const queryString = `INSERT INTO 
       orders(user_id, amount, address, food_ids, order_status)
-      VALUES('${req.user.id}', '${req.amount}', '${address}', ARRAY[${foodIds}], 'new')
+      VALUES('${req.user.id}', '${req.amount}', '${address}', 
+        ARRAY[${foodIds}], 'new')
       RETURNING *`;
       
     db.query(queryString)
