@@ -41,6 +41,25 @@ class Menu {
         res.status(500).json({ status: false, message: 'Server error' });
       });
   }
+  
+  static getMenuItem(req, res) {
+    const id = req.params.foodId;
+    
+    db.query(`SELECT name, cost FROM menu WHERE id = '${id}'`)
+      .then((response) => {
+        const result = response.rows[0];
+        if (!result) {
+          return res.status(404).json({
+            status: false,
+            message: 'No food exists with that id'
+          })
+        }
+        return res.status(200).json({
+          status: true,
+          result
+        })
+      })
+  }
 };
 
 export default Menu;
