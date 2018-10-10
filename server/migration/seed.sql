@@ -22,4 +22,5 @@ CREATE TABLE orders(
   amount INTEGER NOT NULL, 
   address VARCHAR(40) NOT NULL, 
   food_ids TEXT[] NOT NULL, 
-  order_status VARCHAR(10) NOT NULL);
+  order_status VARCHAR(10) NOT NULL,
+  created_on date DEFAULT CURRENT_DATE);
