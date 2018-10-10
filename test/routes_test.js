@@ -241,19 +241,6 @@ describe('Authentication', () => {
 });
 
 describe('Menu route', () => {
-  describe('GET /menu', () => {
-    it('should return 200 and an array for a successful request', (done) => {
-      chai.request(app)
-        .get('/api/v1/menu')
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          assert.isArray(res.body.result);
-          expect(res.body['status']).to.equal(true);
-          return done();
-        });
-    });
-  });
-  
   describe('POST /menu', () => {
     it('should return 401 if no auth token was received', (done) => {
       chai.request(app)
@@ -309,6 +296,48 @@ describe('Menu route', () => {
           expect(res).to.have.status(422);
           expect(res.body['status']).to.equal(false);
           res.body.should.have.own.property('message');
+          return done();
+        });
+    });
+  });
+  describe('GET /menu', () => {
+    it('should return 200 and an array for a successful request', (done) => {
+      chai.request(app)
+        .get('/api/v1/menu')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isArray(res.body.result);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+  });
+  describe('GET /menu/id', () => {
+    it('should return 200 and an object for a successful request', (done) => {
+      chai.request(app)
+        .get(`/api/v1/menu/${foodId1}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isObject(res.body.result);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it(`should return 404 if food id doesn't exist`, (done) => {
+      chai.request(app)
+        .get(`/api/v1/menu/10`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it(`should return 422 if food id is not a number`, (done) => {
+      chai.request(app)
+        .get(`/api/v1/menu/string`)
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
           return done();
         });
     });
