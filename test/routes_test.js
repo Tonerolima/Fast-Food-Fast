@@ -472,6 +472,16 @@ describe('Orders route', () => {
           return done();
         });
     });
+    it('should return 422 if order id is not a number', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders/string')
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
     it('should return 403 if the user does not own the order', (done) => {
       chai.request(app)
         .get(`/api/v1/orders/${orderId1}`)
@@ -513,6 +523,17 @@ describe('Orders route', () => {
         .send({ orderStatus: 'processing' })
         .end((err, res) => {
           expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if order id is not a number', (done) => {
+      chai.request(app)
+        .put('/api/v1/orders/string')
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .send({ orderStatus: 'processing' })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
           expect(res.body['status']).to.equal(false);
           return done();
         });
@@ -591,6 +612,16 @@ describe('Users Route', () => {
         .set({ Authorization: `Bearer ${admintoken}` })
         .end((err, res) => {
           expect(res).to.have.status(404);
+          expect(res.body['status']).to.equal(false);
+          return done();
+        });
+    });
+    it('should return 422 if user id is not a number', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/string/orders`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(422);
           expect(res.body['status']).to.equal(false);
           return done();
         });
