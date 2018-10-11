@@ -16,6 +16,10 @@ body > * {
   box-sizing: content-box;
 }
 
+ul {
+  list-style-type: none;
+}
+
 #navbar.landing {
   position: fixed;
   background: none;
@@ -427,8 +431,21 @@ input:focus {
   font-weight: 700;
 }
 
-.inverted.button {
-  color: rgb(89, 114, 148);
+.inverted.confirm.button {
+  color: rgb(22, 41, 67);
+  border: 1px solid rgb(22, 41, 67);
+  background: #fff;
+}
+
+.inverted.decline.button {
+  color: rgb(226, 20, 20);
+  border: 1px solid rgb(226, 20, 20);
+  background: #fff;
+}
+
+.inverted.complete.button {
+  color: rgb(13, 206, 13);
+  border: 1px solid rgb(13, 206, 13);
   background: #fff;
 }
 
@@ -454,7 +471,7 @@ input:focus {
 }
 
 .confirm {
-  background: rgb(24, 77, 213);
+  background: rgb(22, 41, 67);
 }
 
 .decline {
@@ -492,7 +509,7 @@ input:focus {
 }
 
 .raised {
-  box-shadow: -2px 25px 16px -9px rgba(0,0,0,0.2);
+  box-shadow: 1px 0px 20px 0px rgba(0,0,0,0.2);
 }
 
 .inverted {
