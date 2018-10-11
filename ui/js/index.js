@@ -15,7 +15,7 @@ const closeMenu = () => {
 }
 
 const closeMenuOnBodyClick = (event) => {
-  let path = event.composedPath();
+  const path = event.composedPath();
   if (path.some(elem => elem.classList? elem.classList[0] === 'nav-links-wrapper' : false )) {
     return;
   }

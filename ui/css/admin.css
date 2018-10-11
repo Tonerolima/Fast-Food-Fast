@@ -1,12 +1,12 @@
 #tab {
   display: flex;
   justify-content: flex-start;
-  width: 900px;
+  width: 1200px;
   margin: 20px auto;
 }
 
 #tab > p {
-  padding: 20px;
+  padding: 10px;
   cursor: pointer;
   margin: 0;
   font-size: 1.2rem;
@@ -14,12 +14,8 @@
 
 .admin-dashbord {
   width: 100vw;
-  max-width: 1100px;
-  margin: 50px auto 0;
-}
-
-#orders-table {
-  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto 0;
 }
 
 #add-food {
@@ -27,27 +23,89 @@
   margin: 0 auto;
 }
 
-tr {
-  height: 50px;
+#orders {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-tbody > tr {
-  background: turquoise;
+.order {
+  width: 600px;
 }
 
-.button-cell {
-  width: 80px;
-  background: none;
+.order-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px 15px;
+  height: 130px;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 5px;
 }
 
-.button-cell > button {
-  height: 50px;
-  border-radius: 2px;
-  transition-property: none;
+.hide {
+  max-height: 0px !important;
 }
 
-@media screen and (max-width: 992px) {
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.food-details {
+  display: flex;
+  flex-direction: column;
+  margin: -10px auto 20px;
+  width: 95%;
+  overflow: hidden;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  background-color: rgba(179, 151, 151, 0.05);
+  height: auto;
+  max-height: 100%;
+  transition: all .5s ease-out;
+}
+
+.food-details > p {
+  padding-left: 20px;
+}
+
+.food-details > p:first-of-type {
+  padding-top: 20px;
+}
+
+.food-list {
+  list-style-type: decimal;
+}
+
+.food-list > li{
+  margin: 20px 0;
+}
+
+.order-details:hover {
+  box-shadow: 1px 0px 40px 0px rgba(0, 0, 0, 0.2);
+}
+
+.order * p{
+  margin: 0;
+} 
+
+.order * p > span {
+  font-family: 'Exo 2', sans-serif;
+  margin-right: 10%;
+} 
+
+@media screen and (max-width: 500px) {
   #tab {
     width: 90vw;
+  }
+
+  #orders {
+    padding: 0;
+  }
+
+  .order {
+    width: 100vw;
   }
 }
