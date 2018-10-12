@@ -63,23 +63,29 @@ orderList.addEventListener('click', (e) => {
 })
 
 const getFoodDetails = ([...food_ids], foodList) => {
-  food_ids.forEach((id) => {
-    fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu/${id}`)
-      .then(response => response.json())
-      .then((response) => {
-        appendFoodDetails(foodList, response.result);
-      });
+  Promise.all(
+    food_ids.map((id) => {
+      return new Promise((resolve, reject) => {
+        fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu/${id}`)
+          .then(response => response.json())
+          .then((response) => {
+            console.log(response.result);
+            const { name, cost } = response.result;
+            const template = `<li>
+              <p><span class="title">Meal: <span class="value">${name}</span></span></p>
+              <p><span class="title">Price: &#8358<span class="value">${cost}</span></span></p>
+            </li>`;
+            resolve(template);
+          })
+        })
+    })
+  )
+  .then((foodArray) => {
+    foodArray.forEach((value) => {
+      foodList.appendChild(htmlToElement(value));
+    })
   })
-}
-
-const appendFoodDetails = (orderNode, foodObject) => {
-  const { name, cost } = foodObject;
-  const template = htmlToElement(`<li>
-    <p><span class="title">Meal: <span class="value">${name}</span></span></p>
-    <p><span class="title">Price: &#8358<span class="value">${cost}</span></span></p>
-  </li>`);
-  orderNode.appendChild(template);
-}
+};
 
 const updateOrderStatus = (orderId, status) => {
   const init = {
