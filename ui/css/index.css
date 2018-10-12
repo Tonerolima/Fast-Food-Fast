@@ -270,19 +270,17 @@ input:focus {
 
 .section-header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline; 
-  border-bottom: 2px solid rgb(201, 186, 186);
-  width: 600px;
-  padding: 0 20px;
+  align-items: baseline;
+  width: 100%;
+  padding: 0 12px;
+  margin-bottom: 10px;
 }
 
 #filter {
   height: 30px;
   width: 120px;
-  border: none;
   border-radius: 2px;
-  padding: 0 10px;
+  padding: 0 7px;
   margin-left: 10px;
 }
 
@@ -620,10 +618,6 @@ input:focus {
 
   .order-details {
     margin-left: 5px; 
-  }
-
-  .section-header {
-    width: 400px;
   }
 
   .small.button {
