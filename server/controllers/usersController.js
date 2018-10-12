@@ -13,7 +13,7 @@ class User {
       text: `INSERT INTO 
         users(firstname, lastname, username, address, phone, password, isadmin) 
         VALUES($1, $2, $3, $4, $5, $6, $7) 
-        RETURNING id, username, isadmin`,
+        RETURNING id, username, isadmin, address`,
       values: [firstname, lastname, username, address, phone, hash, isAdmin],
     };
 
@@ -38,7 +38,7 @@ class User {
 
   static async login(req, res) {
     const { username, password } = req.body;
-    const query = `SELECT id, isadmin, password 
+    const query = `SELECT id, isadmin, password, address
                   FROM users WHERE username = '${username}'`;
 
     try {
