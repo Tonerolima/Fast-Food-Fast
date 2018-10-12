@@ -580,7 +580,7 @@ describe('Orders route', () => {
           return done();
         });
     });
-    it('should return 200 and the updated order object', (done) => {
+    it('should return 200 for a successful update', (done) => {
       chai.request(app)
         .put(`/api/v1/orders/${orderId1}`)
         .set({ Authorization: `Bearer ${admintoken}` })
@@ -588,7 +588,6 @@ describe('Orders route', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body['status']).to.equal(true);
-          assert.isObject(res.body.result);
           return done();
         });
     });
