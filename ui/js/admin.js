@@ -45,14 +45,19 @@ orderList.addEventListener('click', (e) => {
   const c = e.target;
   if (c.tagName !== 'BUTTON') {
     const details = c.closest('.order-details').nextElementSibling;
+    const icon = c.closest('.order-details').querySelector('i');
     const foodList = details.querySelector('.food-list');
     if (details.classList.contains('hide')) {
       if (!foodList.querySelector('p')) {
         getFoodDetails(foodList.dataset.food_ids.split(','), foodList);
       }
-      return details.classList.remove('hide')
+      icon.classList.remove('fa-angle-down');
+      icon.classList.add('fa-angle-up');
+      return details.classList.remove('hide');
     }
     details.classList.add('hide');
+    icon.classList.remove('fa-angle-up');
+    icon.classList.add('fa-angle-down');
   } else if (c.textContent === 'Confirm') {
     updateOrderStatus(c.parentNode.dataset.id, 'processing');
   } else if (c.textContent === 'Decline') {
@@ -69,7 +74,6 @@ const getFoodDetails = ([...food_ids], foodList) => {
         fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu/${id}`)
           .then(response => response.json())
           .then((response) => {
-            console.log(response.result);
             const { name, cost } = response.result;
             const template = `<li>
               <p><span class="title">Meal: <span class="value">${name}</span></span></p>
@@ -98,7 +102,6 @@ const updateOrderStatus = (orderId, status) => {
   }
   const url = `https://fast-food-fast-adc.herokuapp.com/api/v1/orders/${orderId}`;
   const request = new Request(url, init);
-
   fetch(request)
     .then(response => response.json())
     .then((response) => {
@@ -161,7 +164,6 @@ document.onreadystatechange = () => {
             </div>
           </li>`;
           orderList.appendChild(htmlToElement(template));
-
         });
       })
   }
