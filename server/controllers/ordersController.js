@@ -10,7 +10,8 @@ class Order {
     }
 
     const query = `select orders.id, firstname, lastname, orders.address, 
-                  amount, food_ids, order_status, created_on FROM orders 
+                  amount, food_ids, order_status, created_on, updated_on
+                  FROM orders 
                   JOIN users ON orders.user_id = users.id`;
     const orders = await db.query(query);
     return res.status(200).json({
@@ -20,14 +21,18 @@ class Order {
   }
 
   static async getUserOrders(req, res) {
-    if (Number(req.user.id) !== Number(req.params.id) && !req.user.isadmin) {
+    if (req.user.id !== Number(req.params.id) && !req.user.isadmin) {
       return res.status(403).json({
         status: false,
         message: "You are not authorized to view other users' orders",
       });
     }
 
-    const query = `SELECT * FROM orders WHERE user_id = ${req.params.id}`;
+    const query = `select orders.id, firstname, lastname, orders.address, 
+                  amount, food_ids, order_status, created_on,updated_on, user_id
+                  FROM orders 
+                  JOIN users ON orders.user_id = users.id
+                  WHERE user_id = '${req.params.id}'`;
     const orders = await db.query(query);
     return res.status(200).json({
       status: true,
@@ -37,7 +42,7 @@ class Order {
 
   static async getOrder(req, res) {
     const query = `select orders.id, firstname, lastname, orders.address, 
-                  amount, food_ids, order_status, created_on, user_id
+                  amount, food_ids, order_status, created_on,updated_on, user_id
                   FROM orders 
                   JOIN users ON orders.user_id = users.id
                   WHERE orders.id = '${req.params.id}'`;
@@ -92,7 +97,8 @@ class Order {
       });
     }
     const queryString = `UPDATE orders
-      SET order_status = '${req.orderStatus}' 
+      SET order_status = '${req.orderStatus}',
+      updated_on = '${new Date().toISOString()}'
       WHERE id = '${req.params.id}' RETURNING *`;
 
     try {
@@ -100,7 +106,6 @@ class Order {
       return res.status(200).json({
         status: true,
         message: `Status has been updated to ${response.rows[0].order_status}`,
-        result: response.rows[0],
       });
     } catch (error) {
       return res.status(404).json({
