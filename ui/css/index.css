@@ -102,7 +102,6 @@ a {
 }
 
 .pop-up {
-  z-index: 5;
   position: fixed;
   top: 100px;
   display: flex;

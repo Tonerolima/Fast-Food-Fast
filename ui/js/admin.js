@@ -36,23 +36,28 @@ form.addEventListener("submit", (event) => {
   .then(response => response.json())
   .catch(error => showMessage(error, 'failure'))
   .then(response => {
-    showMessage(response.message, 'success');
+    showMessage(response.message, response.status? 'success' : 'failure');
     form.reset();
   });
 });
 
 orderList.addEventListener('click', (e) => {
   const c = e.target;
-  if (c.tagName === 'I') {
+  if (c.tagName !== 'BUTTON') {
     const details = c.closest('.order-details').nextElementSibling;
+    const icon = c.closest('.order-details').querySelector('i');
     const foodList = details.querySelector('.food-list');
     if (details.classList.contains('hide')) {
       if (!foodList.querySelector('p')) {
-        getFoodDetails(c.dataset.food_ids.split(','), foodList);
+        getFoodDetails(foodList.dataset.food_ids.split(','), foodList);
       }
-      return details.classList.remove('hide')
+      icon.classList.remove('fa-angle-down');
+      icon.classList.add('fa-angle-up');
+      return details.classList.remove('hide');
     }
     details.classList.add('hide');
+    icon.classList.remove('fa-angle-up');
+    icon.classList.add('fa-angle-down');
   } else if (c.textContent === 'Confirm') {
     updateOrderStatus(c.parentNode.dataset.id, 'processing');
   } else if (c.textContent === 'Decline') {
@@ -63,23 +68,28 @@ orderList.addEventListener('click', (e) => {
 })
 
 const getFoodDetails = ([...food_ids], foodList) => {
-  food_ids.forEach((id) => {
-    fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu/${id}`)
-      .then(response => response.json())
-      .then((response) => {
-        appendFoodDetails(foodList, response.result);
-      });
+  Promise.all(
+    food_ids.map((id) => {
+      return new Promise((resolve, reject) => {
+        fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu/${id}`)
+          .then(response => response.json())
+          .then((response) => {
+            const { name, cost } = response.result;
+            const template = `<li>
+              <p><span class="title">Meal: <span class="value">${name}</span></span></p>
+              <p><span class="title">Price: &#8358<span class="value">${cost}</span></span></p>
+            </li>`;
+            resolve(template);
+          })
+        })
+    })
+  )
+  .then((foodArray) => {
+    foodArray.forEach((value) => {
+      foodList.appendChild(htmlToElement(value));
+    })
   })
-}
-
-const appendFoodDetails = (orderNode, foodObject) => {
-  const { name, cost } = foodObject;
-  const template = htmlToElement(`<li>
-    <p>Meal: <span>${name}</span></p>
-    <p>Price: &#8358<span>${cost}</span></p>
-  </li>`);
-  orderNode.appendChild(template);
-}
+};
 
 const updateOrderStatus = (orderId, status) => {
   const init = {
@@ -92,7 +102,6 @@ const updateOrderStatus = (orderId, status) => {
   }
   const url = `https://fast-food-fast-adc.herokuapp.com/api/v1/orders/${orderId}`;
   const request = new Request(url, init);
-
   fetch(request)
     .then(response => response.json())
     .then((response) => {
@@ -104,53 +113,58 @@ const updateOrderStatus = (orderId, status) => {
 }
 
 document.onreadystatechange = () => {
-  const myInit = {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${localStorage.authToken}` }
-  }
+  if (document.readyState === 'complete') {
+    const myInit = {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${localStorage.authToken}` }
+    }
 
-  const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
+    const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
 
-  fetch(request)
-    .then(response => response.json())
-    .then((response) => {
-      const result = response.result;
-
-      result.forEach((order) => {
-        const created = new Date(order.created_on).toLocaleDateString('en-GB');
-        const {id, firstname, lastname, amount, order_status, address, food_ids} = order;
-        let buttons = '';
-        if (order_status === 'new') {
-          buttons = `<button class="big inverted confirm button">Confirm</button>
-            <button class="big inverted decline button">Decline</button>`
-        } else if (order_status === 'processing') {
-          buttons = `<button class="big inverted complete button">Complete</button>`
-        }
-        const template = `<li class="order">
-          <div class="raised order-details">
-            <p>Customer Name: <span>${firstname} ${lastname}</span></p>
-            <p>Date: 
-              <span>${created}</span> Amount: 
-              <span>${amount}</span> Status: 
-              <span>${order_status}</span>
-            </p>
-            <div class="buttons">
-              <div data-id=${id}>
-                ${buttons}
+    fetch(request)
+      .then(response => response.json())
+      .then((response) => {
+        if (!response.status) { return showMessage(response.message, 'failure') }
+        const result = response.result;
+        result.forEach((order) => {
+          const created = new Date(order.created_on).toLocaleDateString('en-GB');
+          const updated = new Date(order.updated_on).toLocaleDateString('en-GB');
+          const {id, firstname, lastname, amount, order_status, address, food_ids} = order;
+          let buttons = '';
+          if (order_status === 'new') {
+            buttons = `<button class="big confirm button">Confirm</button>
+              <button class="big inverted decline button">Decline</button>`
+          } else if (order_status === 'processing') {
+            buttons = `<button class="big confirm button">Complete</button>`
+          }
+          const template = `<li class="order">
+            <div class="raised order-details">
+              <p><span class="title">Customer Name: <span class="value">${firstname} ${lastname}</span></span></p>
+              <p>
+                <span class="title">Date: <span class="value">${created}</span></span>
+                <span class="title">Status: <span class="value">${order_status}</span></span>
+              </p>
+              <p>
+                <span class="title">Amount: <span class="value">${amount}</span></span>
+                <span class="title">Last update: <span class="value">${updated}</span></span>
+              </p>
+              <div class="buttons">
+                <div data-id=${id}>
+                  ${buttons}
+                </div>
+                <i class="fas fa-angle-down fa-2x"></i>
               </div>
-              <i class="fas fa-angle-down fa-2x" data-food_ids="${food_ids}"></i>
+              
             </div>
-            
-          </div>
-          <div class="food-details hide">
-            <p>Order Id: <span>${id}</span></p>
-            <p>Delivery address: <span>${address}</span></p>
-            <ul class="food-list">
-            </ul>
-          </div>
-        </li>`;
-        orderList.appendChild(htmlToElement(template));
-
-      });
-    })
+            <div class="food-details hide">
+              <p><span class="title">Order Id: <span class="value">${id}</span></span></p>
+              <p><span class="title">Delivery address: <span class="value">${address}</span></span></p>
+              <ul class="food-list" data-food_ids="${food_ids}">
+              </ul>
+            </div>
+          </li>`;
+          orderList.appendChild(htmlToElement(template));
+        });
+      })
+  }
 }
