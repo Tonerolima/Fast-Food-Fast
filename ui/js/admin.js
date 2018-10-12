@@ -1,12 +1,22 @@
 const form = document.querySelector('.default-form');
 const addFoodTab = document.getElementById('add-food-tab');
 const viewMenuTab = document.getElementById('view-menu-tab');
-
 const addFoodForm = document.getElementById('add-food');
 const orderList = document.getElementById('orders');
-
 const orderDetails = document.getElementsByClassName('order-details');
 const orderButtons = document.getElementsByTagName('button');
+const filter = document.getElementById('filter');
+
+filter.addEventListener('input', (e) => {
+  const orders = document.querySelectorAll('.order');
+  const status = filter.value;
+  orders.forEach((order) => {
+    if (order.classList.contains(status) || status === 'all') {
+      return order.classList.remove('hidden');
+    }
+    order.classList.add('hidden');
+  })
+})
 
 addFoodTab.addEventListener('click', (e) => {
   addFoodTab.classList.add('underlined');
@@ -24,14 +34,12 @@ viewMenuTab.addEventListener('click', (e) => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-
   const myInit = { 
     method: 'POST', 
     body:  new FormData(event.target), 
     headers: { Authorization: `Bearer ${localStorage.authToken}` }
   }
   const request = new Request(event.target.action, myInit);
-  
   fetch(request)
   .then(response => response.json())
   .catch(error => showMessage(error, 'failure'))
@@ -42,28 +50,31 @@ form.addEventListener("submit", (event) => {
 });
 
 orderList.addEventListener('click', (e) => {
-  const c = e.target;
-  if (c.tagName !== 'BUTTON') {
-    const details = c.closest('.order-details').nextElementSibling;
-    const icon = c.closest('.order-details').querySelector('i');
-    const foodList = details.querySelector('.food-list');
-    if (details.classList.contains('hide')) {
-      if (!foodList.querySelector('p')) {
-        getFoodDetails(foodList.dataset.food_ids.split(','), foodList);
+  const path = e.composedPath();
+  if (path.some(elem => elem.tagName === 'LI')) {
+    const c = e.target;
+    if (c.tagName !== 'BUTTON') {
+      const details = c.closest('.order-details').nextElementSibling;
+      const icon = c.closest('.order-details').querySelector('i');
+      const foodList = details.querySelector('.food-list');
+      if (details.classList.contains('hide')) {
+        if (!foodList.querySelector('p')) {
+          getFoodDetails(foodList.dataset.food_ids.split(','), foodList);
+        }
+        icon.classList.remove('fa-angle-down');
+        icon.classList.add('fa-angle-up');
+        return details.classList.remove('hide');
       }
-      icon.classList.remove('fa-angle-down');
-      icon.classList.add('fa-angle-up');
-      return details.classList.remove('hide');
+      details.classList.add('hide');
+      icon.classList.remove('fa-angle-up');
+      icon.classList.add('fa-angle-down');
+    } else if (c.textContent === 'Confirm') {
+      updateOrderStatus(c.parentNode.dataset.id, 'processing');
+    } else if (c.textContent === 'Decline') {
+      updateOrderStatus(c.parentNode.dataset.id, 'cancelled');
+    } else if (c.textContent === 'Complete') {
+      updateOrderStatus(c.parentNode.dataset.id, 'complete');
     }
-    details.classList.add('hide');
-    icon.classList.remove('fa-angle-up');
-    icon.classList.add('fa-angle-down');
-  } else if (c.textContent === 'Confirm') {
-    updateOrderStatus(c.parentNode.dataset.id, 'processing');
-  } else if (c.textContent === 'Decline') {
-    updateOrderStatus(c.parentNode.dataset.id, 'cancelled');
-  } else if (c.textContent === 'Complete') {
-    updateOrderStatus(c.parentNode.dataset.id, 'complete');
   }
 })
 
@@ -118,9 +129,7 @@ document.onreadystatechange = () => {
       method: 'GET',
       headers: { Authorization: `Bearer ${localStorage.authToken}` }
     }
-
     const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
-
     fetch(request)
       .then(response => response.json())
       .then((response) => {
@@ -137,7 +146,7 @@ document.onreadystatechange = () => {
           } else if (order_status === 'processing') {
             buttons = `<button class="big confirm button">Complete</button>`
           }
-          const template = `<li class="order">
+          const template = `<li class="${order_status !== 'new'? 'hidden order' : 'order'} ${order_status}">
             <div class="raised order-details">
               <p><span class="title">Customer Name: <span class="value">${firstname} ${lastname}</span></span></p>
               <p>
