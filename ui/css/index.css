@@ -475,7 +475,7 @@ input:focus {
   background: rgb(226, 20, 20);
 }
 
-.complete {
+.complete.button {
   background: rgb(13, 206, 13);
 }
 
