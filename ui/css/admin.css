@@ -87,13 +87,18 @@
   box-shadow: 1px 0px 40px 0px rgba(0, 0, 0, 0.2);
 }
 
-.order * p{
+.order p {
   margin: 0;
+  display: flex;
+  justify-content: space-between;
 } 
 
-.order * p > span {
+.order .value {
   font-family: 'Exo 2', sans-serif;
-  margin-right: 10%;
+}
+
+.order .title {
+  min-width: 50%;
 } 
 
 @media screen and (max-width: 500px) {
@@ -107,5 +112,13 @@
 
   .order {
     width: 100vw;
+  }
+
+  .order .title {
+    min-width: 30%;
+  }
+
+  .food-details {
+    margin-bottom: 10px;
   }
 }
