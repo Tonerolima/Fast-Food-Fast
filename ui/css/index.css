@@ -259,7 +259,7 @@ input:focus {
 }
 
 .underlined {
-  border-bottom: 1px solid rgba(0,0,0,0.2) !important;
+  border-bottom: 2px solid lawngreen !important;
 }
 
 /* Shared rules */
