@@ -34,6 +34,7 @@ ordersList.addEventListener('click', (e) => {
 })
 
 const getFoodDetails = ([...food_ids], foodList) => {
+  showLoader('Loading food list');
   Promise.all(
     food_ids.map((id) => {
       return new Promise((resolve, reject) => {
@@ -48,9 +49,14 @@ const getFoodDetails = ([...food_ids], foodList) => {
             resolve(template);
           })
         })
+        .catch((error) => {
+          hideLoader();
+          showMessage('Network error, try reloading the page');
+        })
     })
   )
   .then((foodArray) => {
+    hideLoader();
     foodArray.forEach((value) => {
       foodList.appendChild(htmlToElement(value));
     })
@@ -58,13 +64,14 @@ const getFoodDetails = ([...food_ids], foodList) => {
 };
 
 const getOrders = () => {
+  showLoader('Fetching your orders');
   const myInit = { method: 'GET', headers: { Authorization: `Bearer ${localStorage.authToken}` } };
   const request = new Request(`https://fast-food-fast-adc.herokuapp.com/api/v1/users/${localStorage.userId}/orders`, myInit);
 
   fetch(request)
     .then(response => response.json())
-    .catch(error => showMessage(response.message, 'failure'))
     .then(response => {
+      hideLoader();
       if (!response.status) { return showMessage(response.message, 'failure') }
       let orders = response.result;
       orders.forEach((order) => {
@@ -95,7 +102,11 @@ const getOrders = () => {
 
         ordersList.appendChild(htmlToElement(item));
       });
-    });
+    })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try reloading the page');
+    })
 }
 
 document.onreadystatechange = (e) => {

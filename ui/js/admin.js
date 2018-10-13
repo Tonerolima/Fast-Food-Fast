@@ -1,4 +1,5 @@
 const form = document.querySelector('.default-form');
+const addFoodButton = document.querySelector('input[type=submit]');
 const addFoodTab = document.getElementById('add-food-tab');
 const viewMenuTab = document.getElementById('view-menu-tab');
 const addFoodForm = document.getElementById('add-food');
@@ -34,6 +35,8 @@ viewMenuTab.addEventListener('click', (e) => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  addFoodButton.disabled = true;
+  addFoodButton.value = 'Adding food to menu...';
   const myInit = { 
     method: 'POST', 
     body:  new FormData(event.target), 
@@ -42,11 +45,17 @@ form.addEventListener("submit", (event) => {
   const request = new Request(event.target.action, myInit);
   fetch(request)
   .then(response => response.json())
-  .catch(error => showMessage(error, 'failure'))
   .then(response => {
     showMessage(response.message, response.status? 'success' : 'failure');
     form.reset();
-  });
+    addFoodButton.disabled = false;
+    addFoodButton.value = 'Add Food';
+  })
+  .catch((error) => {
+    addFoodButton.disabled = false;
+    addFoodButton.value = 'Add Food';
+    showMessage('Network error, try reloading the page')
+  })
 });
 
 orderList.addEventListener('click', (e) => {
@@ -79,6 +88,7 @@ orderList.addEventListener('click', (e) => {
 })
 
 const getFoodDetails = ([...food_ids], foodList) => {
+  showLoader('Loading food list');
   Promise.all(
     food_ids.map((id) => {
       return new Promise((resolve, reject) => {
@@ -93,9 +103,14 @@ const getFoodDetails = ([...food_ids], foodList) => {
             resolve(template);
           })
         })
+        .catch((error) => {
+          hideLoader();
+          showMessage('Network error, try reloading the page');
+        })
     })
   )
   .then((foodArray) => {
+    hideLoader();
     foodArray.forEach((value) => {
       foodList.appendChild(htmlToElement(value));
     })
@@ -103,6 +118,7 @@ const getFoodDetails = ([...food_ids], foodList) => {
 };
 
 const updateOrderStatus = (orderId, status) => {
+  showLoader('Updating order status...');
   const init = {
     method: 'PUT',
     body: JSON.stringify({ orderStatus: status }),
@@ -116,15 +132,21 @@ const updateOrderStatus = (orderId, status) => {
   fetch(request)
     .then(response => response.json())
     .then((response) => {
+      hideLoader();
       showMessage(response.message, 'success');
       setTimeout(() => {
         window.location = window.location;
       }, 2000)
     })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try again');
+    })
 }
 
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
+    showLoader('Fetching orders...');
     const myInit = {
       method: 'GET',
       headers: { Authorization: `Bearer ${localStorage.authToken}` }
@@ -133,6 +155,7 @@ document.onreadystatechange = () => {
     fetch(request)
       .then(response => response.json())
       .then((response) => {
+        hideLoader();
         if (!response.status) { return showMessage(response.message, 'failure') }
         const result = response.result;
         result.forEach((order) => {
@@ -174,6 +197,10 @@ document.onreadystatechange = () => {
           </li>`;
           orderList.appendChild(htmlToElement(template));
         });
+      })
+      .catch((error) => {
+        hideLoader();
+        showMessage('Network error, try reloading the page');
       })
   }
 }
