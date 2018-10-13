@@ -41,12 +41,12 @@
   </div>
   <div class='admin-dashbord'>
     <!--Tab content-->
-    <form id="add-food" class="default-form hidden" action="https://fast-food-fast-adc.herokuapp.com/api/v1/menu">
+    <form id="add-food" class="raised default-form hidden" action="https://fast-food-fast-adc.herokuapp.com/api/v1/menu">
       <h2>Add menu item</h2>
-      <input type="text" name="name" placeholder="Food name">
+      <input type="text" name="name" placeholder="Food name" autocomplete="off">
       <input type="number" name="cost" placeholder="Price">
       <input type="text" name="image" placeholder="Image URL">
-      <input type="submit" value="Add Food">
+      <input type="submit" value="Add Food" class="raised">
     </form>
 
     <ul id="orders">
