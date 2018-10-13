@@ -1,8 +1,7 @@
 #tab {
   display: flex;
   justify-content: flex-start;
-  width: 1200px;
-  margin: 20px auto;
+  margin: 20px;
 }
 
 #tab > p {
@@ -14,7 +13,6 @@
 
 .admin-dashbord {
   width: 100vw;
-  max-width: 1200px;
   margin: 20px auto 0;
 }
 
@@ -103,7 +101,7 @@
 
 @media screen and (max-width: 500px) {
   #tab {
-    width: 95vw;
+    margin-left: 0;
   }
 
   #orders {
