@@ -1,8 +1,7 @@
 #tab {
   display: flex;
   justify-content: flex-start;
-  width: 1200px;
-  margin: 20px auto;
+  margin: 20px;
 }
 
 #tab > p {
@@ -14,7 +13,6 @@
 
 .admin-dashbord {
   width: 100vw;
-  max-width: 1200px;
   margin: 20px auto 0;
 }
 
@@ -42,6 +40,7 @@
   cursor: pointer;
   margin: 10px;
   border-radius: 5px;
+  border-top: 2px solid powderblue;
 }
 
 .hide {
@@ -84,7 +83,7 @@
 }
 
 .order-details:hover {
-  box-shadow: 1px 0px 40px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
 }
 
 .order p {
@@ -103,7 +102,7 @@
 
 @media screen and (max-width: 500px) {
   #tab {
-    width: 95vw;
+    margin-left: 0;
   }
 
   #orders {

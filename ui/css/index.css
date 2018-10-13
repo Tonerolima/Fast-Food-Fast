@@ -55,7 +55,6 @@ ul {
 }
 
 #nav-container {
-  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   justify-content: left;
@@ -189,11 +188,11 @@ form {
   justify-content: space-evenly;
   align-items: center;
   background: rgb(244, 244, 244);
-  box-shadow: 1px 0px 20px 0px rgba(0,0,0,0.2);
   padding-bottom: 10px;
   min-width: 350px;
   width: 450px;
   color: rgb(22, 41, 67);
+  border-radius: 5px;
 }
 
 .emphasis {
@@ -238,7 +237,6 @@ input {
 }
 
 input[type='submit'] {
-  box-shadow: 1px 2px 2px 0px rgb(89, 114, 148);
   cursor: pointer;
   padding-left: 0;
 }
@@ -248,7 +246,7 @@ input[type='submit']:hover {
 }
 
 .default-form > input:focus {
-  box-shadow: -2px 25px 16px -9px rgba(0,0,0,0.2);
+  box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.2);
 }
 
 input:focus {
@@ -260,7 +258,7 @@ input:focus {
 }
 
 .underlined {
-  border-bottom: 1px solid rgba(0,0,0,0.2) !important;
+  border-bottom: 2px solid powderblue;
 }
 
 /* Shared rules */
@@ -311,7 +309,6 @@ input:focus {
   background: white;
   margin-bottom: 60px;
   box-sizing: content-box;
-  box-shadow: 1px 0px 20px 0px rgba(0,0,0,0.2);
   overflow: hidden;
   visibility: visible;
   opacity: 1;
@@ -499,14 +496,8 @@ input:focus {
   width: 100% !important;
 }
 
-.container {
-  width: 1200px;
-  max-width: 90%;
-  margin: 0 auto;
-}
-
 .raised {
-  box-shadow: 1px 0px 20px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.2);
 }
 
 .inverted {
