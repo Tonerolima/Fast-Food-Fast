@@ -10,14 +10,13 @@ document.onreadystatechange = () => {
     cart.forEach((item, key) => {
       sum += parseInt(item.cost);
       node = `
-      <li class="horizontal card">
+      <li class="raised horizontal card">
         <div class="img-thumbnail">
           <img src="${item.image}" alt="${item.name}">
         </div>
         <div class="horizontal card-details">
           <h4 class="food-name">${item.name}</h4>
           <h6 class="amount">Amount: &#8358 <span class="amount">${item.cost}</span></h6>
-          <h6>Qty: 1</h6>
           <div class="order-buttons">
             <button class="big button decline" data-id="${key}" data-cost="${item.cost}">Remove</button>
           </div>

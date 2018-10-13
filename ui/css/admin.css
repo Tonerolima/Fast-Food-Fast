@@ -40,7 +40,7 @@
   cursor: pointer;
   margin: 10px;
   border-radius: 5px;
-  border-top: 2px solid lawngreen;
+  border-top: 2px solid powderblue;
 }
 
 .hide {
@@ -83,7 +83,7 @@
 }
 
 .order-details:hover {
-  box-shadow: 1px 0px 40px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.2);
 }
 
 .order p {

@@ -156,7 +156,7 @@ const populateMenu = (foodList, parentNode) => {
         buttonClass = 'decline';
         buttonText = 'Remove from cart';
       }
-      item += `<li class="vertical card">
+      item += `<li class="raised vertical card">
                 <div class="img-thumbnail"><img src=${elem.image} alt=${elem.name}></div>
                 <div class="vertical card-details">
                   <h4 class="food-name">${elem.name}</h4>
