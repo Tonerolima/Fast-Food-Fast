@@ -1,4 +1,4 @@
-const list = document.querySelector('.vertical.list');
+const cartList = document.querySelector('.vertical.list');
 const total = document.getElementById('total');
 const checkoutButton = document.getElementById('checkout');
 const sectionFooter = document.querySelector('.section-footer');
@@ -10,27 +10,26 @@ document.onreadystatechange = () => {
     cart.forEach((item, key) => {
       sum += parseInt(item.cost);
       node = `
-      <li class="horizontal card">
+      <li class="raised horizontal card">
         <div class="img-thumbnail">
           <img src="${item.image}" alt="${item.name}">
         </div>
         <div class="horizontal card-details">
           <h4 class="food-name">${item.name}</h4>
           <h6 class="amount">Amount: &#8358 <span class="amount">${item.cost}</span></h6>
-          <h6>Qty: 1</h6>
           <div class="order-buttons">
             <button class="big button decline" data-id="${key}" data-cost="${item.cost}">Remove</button>
           </div>
         </div>
       </li>
       `;
-      list.insertBefore(htmlToElement(node), sectionFooter);
+      cartList.insertBefore(htmlToElement(node), sectionFooter);
     });
     total.textContent = sum;
   }
 }
 
-list.addEventListener('click', (event) => {
+cartList.addEventListener('click', (event) => {
   const clicked = event.target;
   if (clicked.textContent === 'Remove') {
     removeFromCart(clicked.dataset.id);
@@ -46,6 +45,7 @@ checkoutButton.addEventListener('click', (event) => {
 })
 
 const checkout = (cart) => {
+  showLoader('Placing order...');
   let obj = {};
   obj.foodIds = [...cart.keys()];
 
@@ -53,13 +53,17 @@ const checkout = (cart) => {
   const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
   fetch(request)
   .then(response => response.json())
-  .catch(error => showMessage(error, 'failure'))
   .then(response => {
+    hideLoader();
     if (!response.status) { return showMessage(response.message, 'failure'); }
     emptyCart();
     showMessage(response.message, 'success');
     setTimeout(() => {
       window.location = 'order-history.html';
-    }, 3000)
-  });
+    }, 2000)
+  })
+  .catch((error) => {
+    hideLoader();
+    showMessage('Network error, try reloading the page');
+  })
 }

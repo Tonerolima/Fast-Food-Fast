@@ -2,6 +2,7 @@ const openToggler = document.getElementById('nav-toggle-open');
 const closeToggler = document.getElementById('nav-toggle-close');
 const linksWrapper = document.querySelector('.nav-links-wrapper');
 const nav = document.querySelector('#navbar');
+const list = document.querySelector('.horizontal.list');
 
 const openMenu = () => {
   linksWrapper.classList.add('animate');
@@ -14,7 +15,7 @@ const closeMenu = () => {
 }
 
 const closeMenuOnBodyClick = (event) => {
-  let path = event.composedPath();
+  const path = event.composedPath();
   if (path.some(elem => elem.classList? elem.classList[0] === 'nav-links-wrapper' : false )) {
     return;
   }
@@ -34,8 +35,6 @@ const checkAdmin = () => {
   }
   return false;
 }
-
-
 
 const toggleLinks = () => {
   const navLinks1 = document.querySelector('.nav-links:nth-of-type(1)');
@@ -76,6 +75,7 @@ const addToCart = async (food) => {
   properties.qty = 1;
   const cart = retrieveCart();
   await cart.set(id, properties);
+  showMessage("Item added to cart", 'success')
   return resaveCart(cart);
 }
 
@@ -83,6 +83,7 @@ const removeFromCart = async (foodId) => {
   if (!foodId) { return false }
   const cart = retrieveCart();
   await cart.delete(foodId);
+  showMessage("Item removed from cart", 'success')
   return resaveCart(cart);
 }
 
@@ -95,9 +96,23 @@ const emptyCart = () => {
   localStorage.cart = '[]';
 }
 
+const login = (response) => {
+  localStorage.setItem('authToken', response.token);
+  localStorage.setItem('isAdmin', response.result.isadmin);
+  localStorage.setItem('userId', response.result.id);
+  showMessage(response.message, 'success');
+  setTimeout(() => {
+    if (localStorage.isAdmin === "true") {
+      return window.location = 'admin.html';
+    }
+    window.location = 'index.html';
+  }, 2000)
+}
+
 const logout = () => {
   localStorage.removeItem('authToken');
   localStorage.removeItem('isAdmin');
+  localStorage.removeItem('userId');
   window.location = 'login.html';
 }
 
@@ -109,42 +124,55 @@ const htmlToElement = (html) => {
   return template.content.firstChild;
 }
 
-const fetchMenu = (foodCount=10, offset=0, parentNode) => {
-  fetch(`https://fast-food-fast-adc.herokuapp.com/api/v1/menu?offset=${offset}&&limit=${foodCount}`)
-  .then(response => response.json())
-  .catch(error => console.log('Request failed', error))
-  .then(response => {
-    if (!response.status) { return alert(response.message); }
-    populateMenu(response.result, parentNode)
-  });
+const fetchMenu = ({search="", foodCount=10, offset=0}) => {
+  return new Promise((resolve, reject) => {
+    showLoader('Loading menu...');
+    const hostUrl = 'https://fast-food-fast-adc.herokuapp.com/api/v1';
+    fetch(`${hostUrl}/menu?offset=${offset}&&limit=${foodCount}&&search=${search}`)
+    .then(response => response.json())
+    .then(response => {
+      hideLoader();
+      if (!response.status) { return reject('Request failed') }
+      resolve(response.result);
+    })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try reloading the page');
+    })
+  })
 }
 
 const populateMenu = (foodList, parentNode) => {
-  let item = '';
-  let buttonClass;
-  let buttonText;
-	foodList.forEach((elem) => {
-    if (!checkCartForItem(elem.id)) {
-      buttonClass = 'confirm';
-      buttonText = 'Add to cart';
-    } else {
-      buttonClass = 'decline';
-      buttonText = 'Remove from cart';
+  return new Promise((resolve, reject) => {
+    if (foodList.length == 0) { 
+      return reject("No items match your search");
     }
-		item += `<li class="vertical card">
-							<div class="img-thumbnail"><img src=${elem.image} alt=${elem.name}></div>
-  						<div class="vertical card-details">
-          			<h4 class="food-name">${elem.name}</h4>
-          			<h6 class="amount">Amount: &#8358 <span class="amount">${elem.cost}</span></h6>
-	 							<div class="order-buttons">
-                  <button class="big fluid button ${buttonClass}" data-id="${elem.id}" data-name="${elem.name}" data-image="${elem.image}" data-cost="${elem.cost}">
-                  ${buttonText}
-                  </button>
-			          </div>
-			        </div>
-			      </li>`;
-	});
-	parentNode.innerHTML = item;
+    let item = '';
+    let buttonClass;
+    let buttonText;
+    foodList.forEach((elem) => {
+      if (!checkCartForItem(elem.id)) {
+        buttonClass = 'confirm';
+        buttonText = 'Add to cart';
+      } else {
+        buttonClass = 'decline';
+        buttonText = 'Remove from cart';
+      }
+      item += `<li class="raised vertical card">
+                <div class="img-thumbnail"><img src=${elem.image} alt=${elem.name}></div>
+                <div class="vertical card-details">
+                  <h4 class="food-name">${elem.name}</h4>
+                  <h6 class="amount">Amount: &#8358 <span class="amount">${elem.cost}</span></h6>
+                  <div class="order-buttons">
+                    <button class="big fluid button ${buttonClass}" data-id="${elem.id}" data-name="${elem.name}" data-image="${elem.image}" data-cost="${elem.cost}">
+                    ${buttonText}
+                    </button>
+                  </div>
+                </div>
+              </li>`;
+    });
+    resolve(parentNode.innerHTML = item);
+  })
 }
 
 const fadeOut = (element) => {
@@ -158,18 +186,54 @@ const fadeOut = (element) => {
 }
 
 const showMessage = (message, status = "failure") => {
-  // construct the div element
+  if (document.querySelector('.pop-up')) {
+    hideMessage();
+  }
   const elem = htmlToElement(`<div class="pop-up ${status}">
-    <p>${message}</p>
-  </div>`);
+    <p>${message}</p></div>`);
 
-  // add div to the page and set a timer to remove it in 5s
   nav.after(elem);
-  setTimeout(hideMessage, 3000);
+  localStorage.setItem("msgTimeout", setTimeout(hideMessage, 2000));
 }
 
 const hideMessage = () => {
+  window.clearTimeout(localStorage.msgTimeout);
   document.querySelector('.pop-up').remove();
+}
+
+const showLoader = (message = 'Loading') => {
+  if (document.querySelector('.loader')) {
+    hideLoader();
+  }
+  const elem = htmlToElement(`
+    <p class="loader">${message} 
+      <i class="fas fa-spinner fa-pulse"></i>
+    </p>`);
+  document.body.after(elem);
+}
+
+const hideLoader = () => {
+  document.querySelector('.loader').remove();
+}
+
+const search = (value) => {
+  showLoader('Searching menu...');
+  if (!value) {
+    return showMessage("Enter a search value");
+  }
+  fetchMenu({search: value})
+    .then((result) => {
+      hideLoader();
+      populateMenu(result, list)
+      .then((v) => {
+        searchInput.value = "";
+        window.location = '#menu-section';
+      })
+    })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try again');
+    })
 }
 
 openToggler.addEventListener('click', (event) => {

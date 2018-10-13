@@ -35,43 +35,33 @@
     </div>
   </nav>
 
+  <div id="tab">
+    <p id="view-menu-tab" class="underlined">View orders</p>
+    <p id="add-food-tab">Add food</p>
+  </div>
   <div class='admin-dashbord'>
-    <table cellspacing="0">
-      <thead>
-        <tr>
-          <td>ID</td>
-          <td>Date Created</td>
-          <td>Customer Name</td>
-          <td>Delivery Address</td>
-          <td>Amount</td>
-          <td>Status</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>20-09-2018</td>
-          <td>Anthony Oyathelemhi</td>
-          <td>Lagos State</td>
-          <td>2500</td>
-          <td>new</td>
-          <td class="button-cell"><button class='small button confirm'>Accept</button></td>
-          <td class="button-cell"><button class='small button decline'>Decline</button></td>
-        </tr>
-        
-        <tr>
-          <td>1</td>
-          <td>20-09-2018</td>
-          <td>Anthony Oyathelemhi</td>
-          <td>Lagos State</td>
-          <td>2500</td>
-          <td>new</td>
-          <td class="button-cell"><button class='small button confirm'>Accept</button></td>
-          <td class="button-cell"><button class='small button decline'>Decline</button></td>
-        </tr>
-        
-      </tbody>
-    </table>
+    <!--Tab content-->
+    <form id="add-food" class="raised default-form hidden" action="https://fast-food-fast-adc.herokuapp.com/api/v1/menu">
+      <h2>Add menu item</h2>
+      <input type="text" name="name" placeholder="Food name" autocomplete="off">
+      <input type="number" name="cost" placeholder="Price">
+      <input type="text" name="image" placeholder="Image URL">
+      <input type="submit" value="Add Food" class="raised">
+    </form>
+
+    <ul id="orders">
+      <div class="section-header">
+        <label for="filter">Filter:</label>
+        <select name="filter" id="filter">
+          <option value="all">All</option>
+          <option value="new" selected>New</option>
+          <option value="processing">Processing</option>
+          <option value="cancelled">Cancelled</option>
+          <option value="complete">Complete</option>
+        </select>
+      </div>
+      
+    </ul>
   </div>
   <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript" src="js/admin.js"></script>
