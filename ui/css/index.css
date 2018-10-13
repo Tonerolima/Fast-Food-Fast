@@ -510,6 +510,21 @@ input:focus {
   transform: translateY(15px);
 }
 
+.loader {
+  position: fixed;
+  bottom: 0px;
+  left: 10px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: rgb(22, 41, 67);
+  padding: 8px 20px;
+  border-radius: 5px;
+}
+
+.loader > .fa-spinner {
+  font-size: 1.4em;
+}
+
 @media screen and (max-width: 992px) {
   #navbar {
     display: flex;

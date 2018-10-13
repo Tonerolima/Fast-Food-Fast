@@ -45,6 +45,7 @@ checkoutButton.addEventListener('click', (event) => {
 })
 
 const checkout = (cart) => {
+  showLoader('Placing order...');
   let obj = {};
   obj.foodIds = [...cart.keys()];
 
@@ -52,13 +53,17 @@ const checkout = (cart) => {
   const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
   fetch(request)
   .then(response => response.json())
-  .catch(error => showMessage(error, 'failure'))
   .then(response => {
+    hideLoader();
     if (!response.status) { return showMessage(response.message, 'failure'); }
     emptyCart();
     showMessage(response.message, 'success');
     setTimeout(() => {
       window.location = 'order-history.html';
     }, 2000)
-  });
+  })
+  .catch((error) => {
+    hideLoader();
+    showMessage('Network error, try reloading the page');
+  })
 }
