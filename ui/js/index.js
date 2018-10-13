@@ -97,9 +97,6 @@ const emptyCart = () => {
 }
 
 const login = (response) => {
-  if (!response.status) { 
-    return showMessage(response.result || response.message, 'failure');
-  }
   localStorage.setItem('authToken', response.token);
   localStorage.setItem('isAdmin', response.result.isadmin);
   localStorage.setItem('userId', response.result.id);
@@ -129,14 +126,19 @@ const htmlToElement = (html) => {
 
 const fetchMenu = ({search="", foodCount=10, offset=0}) => {
   return new Promise((resolve, reject) => {
+    showLoader('Loading menu...');
     const hostUrl = 'https://fast-food-fast-adc.herokuapp.com/api/v1';
     fetch(`${hostUrl}/menu?offset=${offset}&&limit=${foodCount}&&search=${search}`)
     .then(response => response.json())
-    .catch(error => reject('Request failed'))
     .then(response => {
+      hideLoader();
       if (!response.status) { return reject('Request failed') }
       resolve(response.result);
-    });
+    })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try reloading the page');
+    })
   })
 }
 
@@ -199,20 +201,38 @@ const hideMessage = () => {
   document.querySelector('.pop-up').remove();
 }
 
+const showLoader = (message = 'Loading') => {
+  if (document.querySelector('.loader')) {
+    hideLoader();
+  }
+  const elem = htmlToElement(`
+    <p class="loader">${message} 
+      <i class="fas fa-spinner fa-pulse"></i>
+    </p>`);
+  document.body.after(elem);
+}
+
+const hideLoader = () => {
+  document.querySelector('.loader').remove();
+}
+
 const search = (value) => {
+  showLoader('Searching menu...');
   if (!value) {
     return showMessage("Enter a search value");
   }
   fetchMenu({search: value})
     .then((result) => {
+      hideLoader();
       populateMenu(result, list)
       .then((v) => {
         searchInput.value = "";
         window.location = '#menu-section';
       })
-      .catch((error) => {
-        showMessage(error);
-      });
+    })
+    .catch((error) => {
+      hideLoader();
+      showMessage('Network error, try again');
     })
 }
 
