@@ -22,6 +22,7 @@ app.use(upload.fields([]));
 
 // route handlers
 app.options('*', cors());
+app.use(express.static('ui'));
 app.use(users);
 app.use(orders);
 app.use(menu);

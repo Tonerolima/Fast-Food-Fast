@@ -26,7 +26,7 @@ chai.use(chaiHttp);
 describe('Root route', () => {
   it('should return 404 for any endpoint not defined', (done) => {
     chai.request(app)
-      .get('/')
+      .get('/someArbitraryRoute')
       .end((err, res) => {
         expect(res).to.have.status(404);
         return done();
