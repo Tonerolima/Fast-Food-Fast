@@ -126,17 +126,14 @@ const htmlToElement = (html) => {
 
 const fetchMenu = ({search="", foodCount=10, offset=0}) => {
   return new Promise((resolve, reject) => {
-    showLoader('Loading menu...');
     const hostUrl = 'https://fast-food-fast-adc.herokuapp.com/api/v1';
     fetch(`${hostUrl}/menu?offset=${offset}&&limit=${foodCount}&&search=${search}`)
     .then(response => response.json())
     .then(response => {
-      hideLoader();
       if (!response.status) { return reject('Request failed') }
       resolve(response.result);
     })
     .catch((error) => {
-      hideLoader();
       showMessage('Network error, try reloading the page');
     })
   })
@@ -219,6 +216,7 @@ const hideLoader = () => {
 const search = (value) => {
   showLoader('Searching menu...');
   if (!value) {
+    hideLoader();
     return showMessage("Enter a search value");
   }
   fetchMenu({search: value})
@@ -228,6 +226,9 @@ const search = (value) => {
       .then((v) => {
         searchInput.value = "";
         window.location = '#menu-section';
+      })
+      .catch((error) => {
+        showMessage(error);
       })
     })
     .catch((error) => {
