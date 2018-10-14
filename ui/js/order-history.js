@@ -78,7 +78,7 @@ const getOrders = () => {
         const created = new Date(order.created_on).toLocaleDateString('en-GB');
         const updated = new Date(order.updated_on).toLocaleDateString('en-GB');
         const {id, amount, order_status, address, food_ids} = order;
-        const item = `<li class="order${order_status} order">
+        const item = `<li class="${order_status} order">
           <div class="raised order-details">
             <p>
               <span class="title">Order id: <span class="value">${id}</span></span>
