@@ -4,8 +4,13 @@ const checkoutButton = document.getElementById('checkout');
 const addressInput = document.querySelector('#address_input');
 
 document.onreadystatechange = () => {
-  const cart = retrieveCart();
   if (document.readyState === "complete") {
+    const cart = retrieveCart();
+    if (cart.size === 0) {
+      const text = `<div>You have not added any food items to your cart</div>`
+      cartList.innerHTML = text;
+      return;
+    }
     let sum = 0;
     cart.forEach((item, key) => {
       sum += parseInt(item.cost);
