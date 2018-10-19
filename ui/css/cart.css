@@ -1,3 +1,15 @@
 .card {
   margin-bottom: 10px !important;
 }
+
+#address_input {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.section-footer {
+  align-self: flex-end;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}

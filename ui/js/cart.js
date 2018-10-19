@@ -1,11 +1,16 @@
 const cartList = document.querySelector('.vertical.list');
 const total = document.getElementById('total');
 const checkoutButton = document.getElementById('checkout');
-const sectionFooter = document.querySelector('.section-footer');
+const addressInput = document.querySelector('#address_input');
 
 document.onreadystatechange = () => {
-  const cart = retrieveCart();
   if (document.readyState === "complete") {
+    const cart = retrieveCart();
+    if (cart.size === 0) {
+      const text = `<div>You have not added any food items to your cart</div>`
+      cartList.innerHTML = text;
+      return;
+    }
     let sum = 0;
     cart.forEach((item, key) => {
       sum += parseInt(item.cost);
@@ -23,7 +28,7 @@ document.onreadystatechange = () => {
         </div>
       </li>
       `;
-      cartList.insertBefore(htmlToElement(node), sectionFooter);
+      cartList.insertBefore(htmlToElement(node), addressInput);
     });
     total.textContent = sum;
   }
@@ -46,8 +51,10 @@ checkoutButton.addEventListener('click', (event) => {
 
 const checkout = (cart) => {
   showLoader('Placing order...');
-  let obj = {};
-  obj.foodIds = [...cart.keys()];
+  let obj = {
+    foodIds: [...cart.keys()],
+    address: addressInput.value.trim(),
+  };
 
   const myInit = { method: 'POST', body: JSON.stringify(obj), headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.authToken}` } };
   const request = new Request('https://fast-food-fast-adc.herokuapp.com/api/v1/orders', myInit);
