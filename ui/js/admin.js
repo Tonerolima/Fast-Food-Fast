@@ -161,7 +161,7 @@ document.onreadystatechange = () => {
         result.forEach((order) => {
           const created = new Date(order.created_on).toLocaleDateString('en-GB');
           const updated = new Date(order.updated_on).toLocaleDateString('en-GB');
-          const {id, firstname, lastname, amount, order_status, address, food_ids} = order;
+          const {id, email, amount, order_status, address, food_ids} = order;
           let buttons = '';
           if (order_status === 'new') {
             buttons = `<button class="big confirm button">Confirm</button>
@@ -171,7 +171,7 @@ document.onreadystatechange = () => {
           }
           const template = `<li class="${order_status !== 'new'? 'hidden order' : 'order'} ${order_status}">
             <div class="raised order-details">
-              <p><span class="title">Customer Name: <span class="value">${firstname} ${lastname}</span></span></p>
+              <p><span class="title">Customer: <span class="value">${email}</span></span></p>
               <p>
                 <span class="title">Date: <span class="value">${created}</span></span>
                 <span class="title">Status: <span class="value">${order_status}</span></span>

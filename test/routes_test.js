@@ -40,9 +40,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "tony",
-          "lastname": "pass",
-          "username": "tonypass",
+          "email": "tonypass@example.com",
           "address": "awoniyi"
         })
         .end((err, res) => {
@@ -56,11 +54,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "admin",
-          "lastname": "two",
-          "username": "adminone",
+          "email": "adminone@example.com",
           "address": "awoniyi",
-          "phone": "08012345678",
           "password": "adminonepass",
           "admin_secret": "secret"
         })
@@ -75,11 +70,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "user",
-          "lastname": "one",
-          "username": "userone",
+          "email": "userone@example.com",
           "address": "example",
-          "phone": "08012345678",
           "password": "useronepass"
         })
         .end((err, res) => {
@@ -95,11 +87,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "admin",
-          "lastname": "one",
-          "username": "adminone",
+          "email": "adminone@example.com",
           "address": "awoniyi",
-          "phone": "08012345678",
           "password": "adminonepass",
           "admin_secret": process.env.ADMINSECRET
         })
@@ -116,11 +105,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "user",
-          "lastname": "one",
-          "username": "userone",
+          "email": "userone@example.com",
           "address": "example",
-          "phone": "08012345678",
           "password": "useronepass"
         })
         .end((err, res) => {
@@ -134,11 +120,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "user",
-          "lastname": "two",
-          "username": "usertwo",
+          "email": "usertwo@example.com",
           "address": "example",
-          "phone": "08012345678",
           "password": "usertwopass"
         })
         .end((err, res) => {
@@ -155,11 +138,8 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
-          "firstname": "user",
-          "lastname": "two",
-          "username": "usertwo",
-          "address": "example",
-          "phone": "0801245678",
+          "email": "usertwo@example.com",
+          "address": "ex",
           "password": "usertwopass"
         })
         .end((err, res) => {
@@ -168,11 +148,11 @@ describe('Authentication', () => {
           expect(res.body['status']).to.equal(false);
           return done();
         });
-    })
+    });
   });
   
   describe('login', () => {
-    it('should return 422 for no username received', (done) => {
+    it('should return 422 for no email received', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
@@ -188,19 +168,19 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
-          username: 'userone'
+          email: 'userone'
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
           expect(res.body['status']).to.equal(false);
           return done();
         });
-    })
-    it('should return 422 for incorrect username', (done) => {
+    });
+    it('should return 422 for incorrect email', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
-          username: 'userthree',
+          email: 'userthree@example.com',
           password: 'useronepass'
         })
         .end((err, res) => {
@@ -213,7 +193,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
-          username: 'userone',
+          email: 'userone@example.com',
           password: 'useronepa'
         })
         .end((err, res) => {
@@ -221,12 +201,12 @@ describe('Authentication', () => {
           expect(res.body['status']).to.equal(false);
           return done();
         });
-    })
+    });
     it('should return 200 for a successful login', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .send({
-          username: 'userone',
+          email: 'userone@example.com',
           password: 'useronepass'
         })
         .end((err, res) => {
@@ -236,8 +216,8 @@ describe('Authentication', () => {
           user1token = res.body.token;
           return done();
         });
-    })
-  })
+    });
+  });
 });
 
 describe('Menu route', () => {

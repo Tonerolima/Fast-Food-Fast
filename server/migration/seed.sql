@@ -1,13 +1,10 @@
 DROP TABLE IF EXISTS menu, orders, users;
 
 CREATE TABLE users(
-  id SERIAL PRIMARY KEY, 
-  firstname VARCHAR(40) NOT NULL,
-  lastname VARCHAR(40) NOT NULL,
-  username VARCHAR(40) NOT NULL UNIQUE,
-  address VARCHAR(40) NOT NULL,
-  phone VARCHAR(11) NOT NULL,
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(40) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
+  address VARCHAR(40) NOT NULL,
   isadmin BOOLEAN DEFAULT 'false');
   
 CREATE TABLE menu(

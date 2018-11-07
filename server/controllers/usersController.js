@@ -4,17 +4,14 @@ import db from '../config/dbconfig';
 
 class User {
   static async signup(req, res) {
-    const {
-      firstname, lastname, username, address, phone, password, isAdmin,
-    } = req.body;
+    const { email, address, password, isAdmin } = req.body;
 
     const hash = await bcrypt.hash(password, await bcrypt.genSalt(10));
     const query = {
       text: `INSERT INTO 
-        users(firstname, lastname, username, address, phone, password, isadmin) 
-        VALUES($1, $2, $3, $4, $5, $6, $7) 
-        RETURNING id, username, isadmin, address`,
-      values: [firstname, lastname, username, address, phone, hash, isAdmin],
+        users(email, address, password, isadmin)
+        VALUES($1, $2, $3, $4) RETURNING id, email, isadmin, address`,
+      values: [email, address, hash, isAdmin],
     };
 
     try {
@@ -31,15 +28,15 @@ class User {
     } catch (error) {
       res.status(409).json({
         status: false,
-        message: 'A user with that username already exists',
+        message: error,
       });
     }
   }
 
   static async login(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     const query = `SELECT id, isadmin, password, address
-                  FROM users WHERE username = '${username}'`;
+                  FROM users WHERE email = '${email}'`;
 
     try {
       const response = await db.query(query);
@@ -49,7 +46,7 @@ class User {
         if (!data) {
           return res.status(422).json({
             status: false,
-            message: 'Incorrect username/password',
+            message: 'Invalid email/password',
           });
         }
 
@@ -65,7 +62,7 @@ class User {
     } catch (error) {
       res.status(422).send({
         status: false,
-        message: 'Incorrect username/password',
+        message: 'Invalid email/password',
       });
     }
   }
