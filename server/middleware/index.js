@@ -112,41 +112,17 @@ class Middleware {
       req.body.isAdmin = false;
     }
 
-    req.check('firstname')
+    req.check('email')
       .exists({ checkNull: true, checkFalsy: true })
-      .withMessage('First name must not be empty')
-      .isAlpha()
-      .withMessage('First name can only contain alphabets')
-      .isLength({ min: 2, max: 25 })
-      .withMessage('First name must have between 2 - 25 characters');
-
-    req.check('lastname')
-      .exists({ checkNull: true, checkFalsy: true })
-      .withMessage('Last name must not be empty')
-      .isAlpha()
-      .withMessage('Last name can only contain alphabets')
-      .isLength({ min: 2, max: 25 })
-      .withMessage('Last name must have between 2 - 25 characters');
-
-    req.check('username')
-      .exists({ checkNull: true, checkFalsy: true })
-      .withMessage('Username must not be empty')
-      .isLength({ min: 4, max: 25 })
-      .withMessage('Username must have between 2 - 25 characters');
+      .withMessage('Email must not be empty')
+      .isEmail()
+      .withMessage('Enter a valid email address');
 
     req.check('address')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Address must not be empty')
       .isLength({ min: 6, max: 40 })
       .withMessage('Address must have between 6 - 40 characters');
-
-    req.check('phone')
-      .exists({ checkNull: true, checkFalsy: true })
-      .withMessage('Phone number must not be empty')
-      .isNumeric({ min: 11, max: 11, no_symbols: true })
-      .withMessage('Phone number can only contain numbers')
-      .isLength({ min: 11, max: 11 })
-      .withMessage('Phone number must be exactly 11 digts');
 
     req.check('password')
       .exists({ checkNull: true, checkFalsy: true })
@@ -169,9 +145,11 @@ class Middleware {
   }
 
   static validateLogin(req, res, next) {
-    req.check('username')
+    req.check('email')
       .exists({ checkNull: true, checkFalsy: true })
-      .withMessage('Username must not be empty');
+      .withMessage('Email must not be empty')
+      .isEmail()
+      .withMessage('Enter a valid email address');
 
     req.check('password')
       .exists({ checkNull: true, checkFalsy: true })

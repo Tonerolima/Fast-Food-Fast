@@ -9,10 +9,10 @@ class Order {
       });
     }
 
-    const query = `select orders.id, firstname, lastname, orders.address, 
-                  amount, food_ids, order_status, created_on, updated_on
-                  FROM orders 
-                  JOIN users ON orders.user_id = users.id`;
+    const query = `select orders.id, email, orders.address, 
+      amount, food_ids, order_status, created_on, updated_on
+      FROM orders 
+      JOIN users ON orders.user_id = users.id`;
     const orders = await db.query(query);
     return res.status(200).json({
       status: true,
@@ -28,11 +28,12 @@ class Order {
       });
     }
 
-    const query = `select orders.id, firstname, lastname, orders.address, 
-                  amount, food_ids, order_status, created_on,updated_on, user_id
-                  FROM orders 
-                  JOIN users ON orders.user_id = users.id
-                  WHERE user_id = '${req.params.id}'`;
+    const query = `select orders.id, email, orders.address, 
+      amount, food_ids, order_status, created_on,updated_on, user_id
+      FROM orders 
+      JOIN users ON orders.user_id = users.id
+      WHERE user_id = '${req.params.id}'`;
+      
     const orders = await db.query(query);
     return res.status(200).json({
       status: true,
@@ -41,11 +42,12 @@ class Order {
   }
 
   static async getOrder(req, res) {
-    const query = `select orders.id, firstname, lastname, orders.address, 
-                  amount, food_ids, order_status, created_on,updated_on, user_id
-                  FROM orders 
-                  JOIN users ON orders.user_id = users.id
-                  WHERE orders.id = '${req.params.id}'`;
+    const query = `select orders.id, email, orders.address,
+      amount, food_ids, order_status, created_on,updated_on, user_id
+      FROM orders
+      JOIN users ON orders.user_id = users.id
+      WHERE orders.id = '${req.params.id}'`;
+      
     const response = await db.query(query);
     if (response.rowCount === 0) {
       return res.status(404).json({
