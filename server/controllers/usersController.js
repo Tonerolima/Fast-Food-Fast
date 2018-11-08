@@ -28,7 +28,7 @@ class User {
     } catch (error) {
       res.status(409).json({
         status: false,
-        message: error,
+        message: 'A user already exists with that email address',
       });
     }
   }
@@ -36,7 +36,7 @@ class User {
   static async login(req, res) {
     const { email, password } = req.body;
     const query = `SELECT id, isadmin, password, address
-                  FROM users WHERE email = '${email}'`;
+      FROM users WHERE email = '${email}'`;
 
     try {
       const response = await db.query(query);
