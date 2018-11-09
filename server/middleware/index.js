@@ -112,6 +112,12 @@ class Middleware {
       req.body.isAdmin = false;
     }
 
+    req.check('name')
+      .exists({ checkNull: true, checkFalsy: true })
+      .withMessage('Name must not be empty')
+      .isLength({ min: 4, max: 25 })
+      .withMessage('Name must have between 4 - 25 characters');
+
     req.check('email')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Email must not be empty')

@@ -12,10 +12,4 @@ v1.post('/auth/login', validateLogin, User.login);
 
 router.use('/api/v1', v1);
 
-// Other routes
-router.all('/*', (req, res) => {
-  res.status(404).send({ status: false, message: 'Invalid request' });
-});
-
-
 export default router;

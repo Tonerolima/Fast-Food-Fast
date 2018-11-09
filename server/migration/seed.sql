@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS menu, orders, users;
 
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
+  name VARCHAR(25) NOT NULL,
   email VARCHAR(40) NOT NULL UNIQUE,
   password VARCHAR(100) NOT NULL,
   address VARCHAR(40) NOT NULL,
