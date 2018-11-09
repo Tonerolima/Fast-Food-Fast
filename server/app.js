@@ -6,7 +6,7 @@ import expressValidator from 'express-validator';
 import orders from './routes/ordersRoute';
 import menu from './routes/menuRoute';
 import users from './routes/usersRoute';
-import index from './routes/indexRoute';
+import auth from './routes/authRoute';
 
 const app = express();
 app.use(cors());
@@ -26,7 +26,12 @@ app.use(express.static('ui'));
 app.use(users);
 app.use(orders);
 app.use(menu);
-app.use(index);
+app.use(auth);
+
+// Other routes
+app.all('/*', (req, res) => {
+  res.status(404).send({ status: false, message: 'Invalid request' });
+});
 
 
 // http seerver
