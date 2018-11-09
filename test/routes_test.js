@@ -54,6 +54,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "adminone@example.com",
           "address": "awoniyi",
           "password": "adminonepass",
@@ -70,6 +71,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "userone@example.com",
           "address": "example",
           "password": "useronepass"
@@ -87,6 +89,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "adminone@example.com",
           "address": "awoniyi",
           "password": "adminonepass",
@@ -105,6 +108,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "userone@example.com",
           "address": "example",
           "password": "useronepass"
@@ -120,6 +124,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "usertwo@example.com",
           "address": "example",
           "password": "usertwopass"
@@ -138,6 +143,7 @@ describe('Authentication', () => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .send({
+          "name": "anthony oyathelemhi",
           "email": "usertwo@example.com",
           "address": "ex",
           "password": "usertwopass"
