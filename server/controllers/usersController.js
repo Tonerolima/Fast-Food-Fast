@@ -4,19 +4,18 @@ import db from '../config/dbconfig';
 
 class User {
   static async signup(req, res) {
-    const { email, address, password, isAdmin } = req.body;
+    const { name, email, address, password, isAdmin } = req.body;
 
     const hash = await bcrypt.hash(password, await bcrypt.genSalt(10));
     const query = {
       text: `INSERT INTO 
-        users(email, address, password, isadmin)
-        VALUES($1, $2, $3, $4) RETURNING id, email, isadmin, address`,
-      values: [email, address, hash, isAdmin],
+        users(name, email, address, password, isadmin)
+        VALUES($1, $2, $3, $4, $5) RETURNING id, name, email, isadmin, address`,
+      values: [name, email, address, hash, isAdmin],
     };
 
     try {
-      const response = await db.query(query);
-      const newUser = response.rows[0];
+      const { rows: [ newUser ] } = await db.query(query);
       const token = await jwt.sign(newUser, process.env.JWTSECRET);
 
       res.status(201).json({
@@ -35,12 +34,11 @@ class User {
 
   static async login(req, res) {
     const { email, password } = req.body;
-    const query = `SELECT id, isadmin, password, address
+    const query = `SELECT id, name, email, isadmin, password, address
       FROM users WHERE email = '${email}'`;
 
     try {
-      const response = await db.query(query);
-      const user = response.rows[0];
+      const { rows: [ user ] } = await db.query(query);
 
       await bcrypt.compare(password, user.password, async (error, data) => {
         if (!data) {
@@ -49,8 +47,13 @@ class User {
             message: 'Invalid email/password',
           });
         }
-
-        const token = await jwt.sign(user, process.env.JWTSECRET);
+        
+        const payload = (({ id, name, email, isadmin, address }) => {
+          return { id, name, email, isadmin, address };
+        })(user);
+        
+        const token = await jwt.sign(payload, process.env.JWTSECRET);
+          
         const result = (({ id, isadmin }) => ({ id, isadmin }))(user);
         return res.status(200).json({
           status: true,
