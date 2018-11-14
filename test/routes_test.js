@@ -273,6 +273,19 @@ describe('Menu route', () => {
           return done();
         });
     });
+    it('should return 201 and food object for successful creation', (done) => {
+      chai.request(app)
+        .post('/api/v1/menu')
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .send({name:'Banga', cost:'1500', image:'http://example.com/image.jpg'})
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body['status']).to.equal(true);
+          res.body.should.have.own.property('result');
+          foodId2 = res.body.result.id;
+          return done();
+        });
+    });
     it('should return 422 and error if food already exists', (done) => {
       chai.request(app)
         .post('/api/v1/menu')
@@ -364,7 +377,7 @@ describe('Orders route', () => {
         .post('/api/v1/orders')
         .set({ Authorization: `Bearer ${user1token}` })
         .send({ 
-          foodIds: [foodId1],
+          foodIds: [foodId1, foodId2],
           address: 'some place'
         })
         .end((err, res) => {
@@ -372,6 +385,21 @@ describe('Orders route', () => {
           expect(res.body['status']).to.equal(true);
           assert.isObject(res.body.result);
           orderId1 = res.body.result.id;
+          return done();
+        });
+    });
+    it('should return the array of food details with the created order', (done) => {
+      chai.request(app)
+        .post('/api/v1/orders')
+        .set({ Authorization: `Bearer ${user1token}` })
+        .send({ 
+          foodIds: [foodId1, foodId2],
+          address: 'some place'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body['status']).to.equal(true);
+          assert.isArray(res.body.result.foodList);
           return done();
         });
     });
@@ -446,6 +474,17 @@ describe('Orders route', () => {
           return done();
         });
     });
+    it('should return the array of food details with the orders', (done) => {
+      chai.request(app)
+        .get('/api/v1/orders')
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isArray(res.body.result[0].foodList);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
   });
   describe('GET /orders/:id', () => {
     it('should return 404 for incorrect order id', (done) => {
@@ -496,6 +535,17 @@ describe('Orders route', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           assert.isObject(res.body.result);
+          expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it('should return the array of food details with the order', (done) => {
+      chai.request(app)
+        .get(`/api/v1/orders/${orderId2}`)
+        .set({ Authorization: `Bearer ${admintoken}` })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          assert.isArray(res.body.result.foodList);
           expect(res.body['status']).to.equal(true);
           return done();
         });
@@ -629,6 +679,15 @@ describe('Users Route', () => {
           expect(res).to.have.status(200);
           assert.isArray(res.body.result);
           expect(res.body['status']).to.equal(true);
+          return done();
+        });
+    });
+    it('should return the array of food details with the order', (done) => {
+      chai.request(app)
+        .get(`/api/v1/users/${user1Id}/orders`)
+        .set({ Authorization: `Bearer ${user1token}` })
+        .end((err, res) => {
+          assert.isArray(res.body.result[0].foodList);
           return done();
         });
     });
