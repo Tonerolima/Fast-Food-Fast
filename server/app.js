@@ -35,6 +35,6 @@ app.all('/*', (req, res) => {
 
 
 // http seerver
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT);
 
 export default app;
